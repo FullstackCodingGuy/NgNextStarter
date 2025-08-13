@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { AuthGuard, NoAuthGuard } from './core/guards/auth.guard';
 import { UserRole } from './core/models/user.model';
+import { UnauthorizedComponent } from './shared/components/unauthorized.component';
 
 export const routes: Routes = [
   {
@@ -31,13 +32,7 @@ export const routes: Routes = [
   },
   {
     path: 'unauthorized',
-    template: `
-      <div style="text-align: center; padding: 50px;">
-        <h1>Access Denied</h1>
-        <p>You don't have permission to access this resource.</p>
-        <a routerLink="/dashboard">Go to Dashboard</a>
-      </div>
-    `
+    component: UnauthorizedComponent
   },
   {
     path: '**',

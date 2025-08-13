@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { SecuritiesPlaceholderComponent } from './securities-placeholder.component';
 
 const routes: Routes = [
   {
@@ -9,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: 'list',
-    template: '<div style="padding: 20px;"><h2>Securities Management (Coming Soon)</h2><p>Securities CRUD operations will be implemented here.</p></div>'
+    component: SecuritiesPlaceholderComponent
   }
 ];
 

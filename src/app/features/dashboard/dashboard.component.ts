@@ -1,10 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { SecurityService } from '../../../core/services/security.service';
-import { AuthService } from '../../../core/services/auth.service';
-import { User } from '../../../core/models/user.model';
+import { SecurityService } from '../../core/services/security.service';
+import { AuthService } from '../../core/services/auth.service';
+import { User } from '../../core/models/user.model';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
+import { LoadingSpinnerComponent } from '../../shared/components/ui-components';
 
 @Component({
   selector: 'app-dashboard',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    MatCardModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTableModule,
+    LoadingSpinnerComponent
+  ],
   template: `
     <div class="dashboard-container">
       <div class="dashboard-header">
@@ -347,7 +364,6 @@ import { User } from '../../../core/models/user.model';
   `]
 })
 export class DashboardComponent implements OnInit {
-  currentUser$ = this.authService.currentUser$;
   portfolioSummary: any;
   topPerformers: any[] = [];
   sectorAllocation: any[] = [];
@@ -360,6 +376,10 @@ export class DashboardComponent implements OnInit {
     private authService: AuthService
   ) {}
 
+  get currentUser$() {
+    return this.authService.currentUser$;
+  }
+
   ngOnInit(): void {
     this.loadDashboardData();
   }
@@ -368,13 +388,13 @@ export class DashboardComponent implements OnInit {
     this.isLoading = true;
 
     this.securityService.getPortfolioSummary().subscribe({
-      next: (summary) => {
+      next: (summary: any) => {
         this.portfolioSummary = summary;
         this.topPerformers = summary.topPerformers;
         this.sectorAllocation = summary.sectorAllocation;
         this.isLoading = false;
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error loading dashboard data:', error);
         this.isLoading = false;
       }
