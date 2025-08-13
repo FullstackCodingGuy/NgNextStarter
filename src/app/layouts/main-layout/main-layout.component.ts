@@ -86,36 +86,18 @@ import { User } from '../../core/models/user.model';
           role="navigation"
           aria-label="Primary">
           <mat-nav-list>
-            <a mat-list-item routerLink="/dashboard" routerLinkActive="active">
+            <a mat-list-item routerLink="/global-state-demo" routerLinkActive="active">
               <span matListItemIcon class="fa-solid fa-gauge" aria-hidden="true"></span>
               <span matListItemTitle>Dashboard</span>
             </a>
 
-            <a mat-list-item routerLink="/securities" routerLinkActive="active">
+            <a mat-list-item routerLink="/global-state-demo" routerLinkActive="active">
               <span matListItemIcon class="fa-solid fa-landmark" aria-hidden="true"></span>
-              <span matListItemTitle>Securities</span>
-            </a>
-
-            <a mat-list-item
-               routerLink="/users"
-               routerLinkActive="active"
-               *ngIf="hasUserManagementAccess()">
-              <span matListItemIcon class="fa-solid fa-users" aria-hidden="true"></span>
-              <span matListItemTitle>User Management</span>
+              <span matListItemTitle>Demo</span>
             </a>
 
             <mat-divider></mat-divider>
 
-            <h3 matSubheader>Reports</h3>
-            <a mat-list-item routerLink="/reports/portfolio" routerLinkActive="active">
-              <span matListItemIcon class="fa-solid fa-chart-pie" aria-hidden="true"></span>
-              <span matListItemTitle>Portfolio Analysis</span>
-            </a>
-
-            <a mat-list-item routerLink="/reports/performance" routerLinkActive="active">
-              <span matListItemIcon class="fa-solid fa-chart-line" aria-hidden="true"></span>
-              <span matListItemTitle>Performance</span>
-            </a>
           </mat-nav-list>
         </mat-sidenav>
 
@@ -323,7 +305,7 @@ export class MainLayoutComponent {
   }
 
   viewProfile(): void {
-    this.router.navigate(['/profile']);
+  this.router.navigate(['/settings']);
   }
 
   viewSettings(): void {
