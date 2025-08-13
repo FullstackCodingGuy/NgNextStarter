@@ -6,6 +6,16 @@
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 
+// Define CSS custom properties for dynamic theming
+:root {
+  --primary-color: #1976d2;
+  --accent-color: #ff4081;
+  --background-color: #fafafa;
+  --surface-color: #ffffff;
+  --text-primary: #212121;
+  --text-secondary: #757575;
+}
+
 html {
   @include mat.theme((
     color: (
@@ -32,8 +42,103 @@ body {
 
   // Reset the user agent margin.
   margin: 0;
+  
+  // Smooth transitions for theme changes
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
+
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+// Theme-specific styles
+.light-theme {
+  --primary-color: #1976d2;
+  --accent-color: #ff4081;
+  --background-color: #fafafa;
+  --surface-color: #ffffff;
+  --text-primary: #212121;
+  --text-secondary: #757575;
+  
+  color-scheme: light;
+  background-color: var(--background-color);
+  color: var(--text-primary);
+}
+
+.dark-theme {
+  --primary-color: #90caf9;
+  --accent-color: #f48fb1;
+  --background-color: #121212;
+  --surface-color: #1e1e1e;
+  --text-primary: #ffffff;
+  --text-secondary: #b3b3b3;
+  
+  color-scheme: dark;
+  background-color: var(--background-color);
+  color: var(--text-primary);
+}
+
+.blue-theme {
+  --primary-color: #2196f3;
+  --accent-color: #ff5722;
+  --background-color: #f3f9ff;
+  --surface-color: #ffffff;
+  --text-primary: #0d47a1;
+  --text-secondary: #1565c0;
+  
+  color-scheme: light;
+  background-color: var(--background-color);
+  color: var(--text-primary);
+}
+
+.purple-theme {
+  --primary-color: #673ab7;
+  --accent-color: #cddc39;
+  --background-color: #f8f5ff;
+  --surface-color: #ffffff;
+  --text-primary: #4a148c;
+  --text-secondary: #7b1fa2;
+  
+  color-scheme: light;
+  background-color: var(--background-color);
+  color: var(--text-primary);
+}
+
+// RTL support
+[dir="rtl"] {
+  text-align: right;
+  
+  .app-container {
+    direction: rtl;
+  }
+}
+
+// Global animations and transitions
+* {
+  box-sizing: border-box;
+}
+
+// Utility classes for theme-aware components
+.theme-surface {
+  background-color: var(--surface-color);
+  color: var(--text-primary);
+}
+
+.theme-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.theme-accent {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}

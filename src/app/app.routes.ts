@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { AuthGuard, NoAuthGuard } from './core/guards/auth.guard';
 import { UserRole } from './core/models/user.model';
 import { UnauthorizedComponent } from './shared/components/unauthorized.component';
+import { GlobalStateDemoComponent } from './shared/components/global-state-demo.component';
 
 export const routes: Routes = [
   {
@@ -29,6 +30,11 @@ export const routes: Routes = [
     path: 'securities',
     canActivate: [AuthGuard],
     loadChildren: () => import('./features/securities/securities.module').then(m => m.SecuritiesModule)
+  },
+  {
+    path: 'global-state-demo',
+    canActivate: [AuthGuard],
+    component: GlobalStateDemoComponent
   },
   {
     path: 'unauthorized',
