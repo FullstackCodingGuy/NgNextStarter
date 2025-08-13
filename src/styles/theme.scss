@@ -1,0 +1,82 @@
+// Centralized theme tokens and CSS variables
+
+// Typography
+:root {
+  --font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+
+  // Brand colors
+  --primary-color: #0f62fe;      // Corporate blue
+  --accent-color: #8a3ffc;       // Purple accent
+  --success-color: #12b76a;
+  --warning-color: #f79009;
+  --error-color: #d92d20;
+
+  // Surface and text
+  --background-color: #f7f7f9;   // App background
+  --surface-color: #ffffff;      // Cards/surfaces
+  --text-primary: #101828;       // High-contrast body text
+  --text-secondary: #667085;     // Muted text
+  --border-color: #e4e7ec;
+
+  // Radii and shadows
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
+  --shadow-md: 0 4px 8px rgba(16, 24, 40, 0.08);
+  --shadow-lg: 0 12px 24px rgba(16, 24, 40, 0.12);
+}
+
+// Theme classes toggle the variables for easy switching
+.light-theme {
+  --primary-color: #0f62fe;
+  --accent-color: #8a3ffc;
+  --background-color: #f7f7f9;
+  --surface-color: #ffffff;
+  --text-primary: #101828;
+  --text-secondary: #667085;
+
+  color-scheme: light;
+  background-color: var(--background-color);
+  color: var(--text-primary);
+}
+
+.dark-theme {
+  --primary-color: #8ab4ff;
+  --accent-color: #c3a6ff;
+  --background-color: #0b0f17;
+  --surface-color: #121826;
+  --text-primary: #f2f4f7;
+  --text-secondary: #98a2b3;
+
+  color-scheme: dark;
+  background-color: var(--background-color);
+  color: var(--text-primary);
+}
+
+.blue-theme {
+  --primary-color: #0f62fe;
+  --accent-color: #ff6a3d;
+  --background-color: #f3f8ff;
+  --surface-color: #ffffff;
+  --text-primary: #102a43;
+  --text-secondary: #486581;
+
+  color-scheme: light;
+  background-color: var(--background-color);
+  color: var(--text-primary);
+}
+
+.purple-theme {
+  --primary-color: #8a3ffc;
+  --accent-color: #12b76a;
+  --background-color: #f8f5ff;
+  --surface-color: #ffffff;
+  --text-primary: #3d2c8d;
+  --text-secondary: #6e59a5;
+
+  color-scheme: light;
+  background-color: var(--background-color);
+  color: var(--text-primary);
+}

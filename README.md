@@ -1,6 +1,6 @@
-# Securities Position Keeping System
+# ngNextStarter
 
-A comprehensive Angular 20 application for managing securities portfolios with enterprise-level security, OWASP compliance, and modern best practices.
+An Angular 20 + Material starter kit with enterprise security patterns, centralized theming, and modern best practices.
 
 ## 🚀 Features
 
@@ -12,12 +12,11 @@ A comprehensive Angular 20 application for managing securities portfolios with e
 - **Responsive Design**: Mobile-first design using Angular Material
 
 ### Security Features
-- **OWASP Compliance**: Implements OWASP security guidelines
-- **Input Validation**: Client and server-side validation with sanitization
-- **XSS Protection**: Content Security Policy and input sanitization
-- **CSRF Protection**: Anti-forgery tokens and secure headers
-- **Secure Authentication**: Strong password requirements, JWT tokens
-- **Role-Based Access**: Fine-grained permissions system
+- **BFF + Cookie Sessions**: Authorization Code + PKCE handled server-side; browser holds HttpOnly, Secure, SameSite cookies only
+- **OWASP Coverage**: Input validation, output encoding, dependency hygiene
+- **XSS Protection**: Strict CSP and Angular template hygiene
+- **CSRF Protection**: SameSite cookies; anti-CSRF token where cross-site is required
+- **Role-Based Access**: Fine-grained permissions with server re-checks
 
 ### Technical Features
 - **Modern Angular 20**: Latest Angular features and standalone components
@@ -65,11 +64,11 @@ src/
 9. **Components with Vulnerabilities**: Regular dependency updates
 10. **Insufficient Logging**: Comprehensive audit trail
 
-### Security Headers
-- Content Security Policy (CSP)
-- X-Frame-Options: DENY
+### Security Headers (server/CDN)
+- Content Security Policy (strict; no inline scripts)
+- X-Frame-Options / frame-ancestors
 - X-Content-Type-Options: nosniff
-- X-XSS-Protection: 1; mode=block
+- Referrer-Policy: no-referrer
 - Strict-Transport-Security
 
 ## 🚦 Getting Started
@@ -94,7 +93,7 @@ src/
 
 3. **Start development server**
    ```bash
-   ng serve
+   npm start
    ```
 
 4. **Open your browser**
@@ -148,11 +147,20 @@ npm run format
 
 ## 🎨 Design System
 
-- **Color Palette**: Material Design color scheme
-- **Typography**: Roboto font family
+- **Color Palette**: Centralized tokens (CSS variables) under `src/styles/theme.scss`
+- **Typography**: Inter font family via `--font-family` (overrideable)
 - **Components**: Angular Material components
 - **Responsive**: Mobile-first responsive design
 - **Accessibility**: WCAG 2.1 AA compliant
+
+## 🎛️ Theming and Customization
+
+- Single source of truth: `src/styles/theme.scss`
+   - Update `--primary-color`, `--accent-color`, surface/text tokens, radii, and shadows.
+   - Change `--font-family` to rebrand typography.
+- Themes are applied by `GlobalStateService` toggling classes on `<body>`.
+- Add a theme: add a class in `theme.scss` and an entry in `DEFAULT_THEMES` (`src/app/core/models/global-state.model.ts`).
+- Avoid hardcoded colors; use tokens in components. See `docs/standards.md` for the checklist.
 
 ## 🔐 Authentication & Authorization
 
@@ -162,12 +170,11 @@ npm run format
 - **Analyst**: Read/write access to securities
 - **Viewer**: Read-only access
 
-### Authentication Flow
-1. User submits credentials
-2. Server validates and returns JWT token
-3. Token stored securely in localStorage (encrypted)
-4. Token included in all API requests
-5. Auto-logout on token expiration
+### Authentication Flow (BFF pattern)
+1. User signs in; the BFF completes OIDC (Authorization Code + PKCE) server-side.
+2. Server sets session cookies (HttpOnly, Secure, SameSite) on your domain.
+3. Angular calls your BFF/API with credentials automatically (withCredentials=true via interceptor).
+4. No tokens are stored in Web Storage; server enforces auth and CSRF defenses.
 
 ## 📊 Data Models
 
@@ -274,13 +281,13 @@ ng build --configuration production
 ### Docker Deployment
 ```dockerfile
 FROM nginx:alpine
-COPY dist/securities-app /usr/share/nginx/html
+COPY dist/ngnextstarter /usr/share/nginx/html
 EXPOSE 80
 ```
 
 ### Environment Variables
 ```bash
-API_URL=https://api.securities-app.com
+API_URL=https://api.your-bff.example
 JWT_SECRET=your-secret-key
 SESSION_TIMEOUT=1800000
 ```

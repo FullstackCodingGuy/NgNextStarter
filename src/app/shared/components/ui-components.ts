@@ -31,7 +31,7 @@ import { MatIconModule } from '@angular/material/icon';
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(255, 255, 255, 0.8);
+  background: color-mix(in srgb, var(--background-color) 80%, transparent);
       z-index: 9999;
     }
 
@@ -42,15 +42,15 @@ import { MatIconModule } from '@angular/material/icon';
     .spinner {
       width: 40px;
       height: 40px;
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid #3498db;
+      border: 4px solid var(--border-color);
+      border-top: 4px solid var(--primary-color);
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
 
     .loading-message {
       margin-top: 10px;
-      color: #666;
+      color: var(--text-secondary);
       font-size: 14px;
     }
 
@@ -109,11 +109,11 @@ export class ConfirmationDialogComponent {
       display: flex;
       align-items: center;
       padding: 12px 16px;
-      background-color: #ffebee;
-      color: #c62828;
+      background-color: color-mix(in srgb, var(--error-color) 10%, #fff);
+      color: var(--error-color);
       border-radius: 4px;
       margin: 8px 0;
-      border-left: 4px solid #c62828;
+      border-left: 4px solid var(--error-color);
     }
 
     .error-message mat-icon:first-child {

@@ -355,8 +355,9 @@ export class GlobalStateService implements StateActions {
     document.body.classList.add(theme.cssClass);
     
     // Update CSS custom properties for dynamic theming
-    document.documentElement.style.setProperty('--primary-color', theme.primary);
-    document.documentElement.style.setProperty('--accent-color', theme.accent);
+  document.documentElement.style.setProperty('--primary-color', theme.primary);
+  document.documentElement.style.setProperty('--accent-color', theme.accent);
+  // Text/background are controlled by theme classes via CSS variables.
     
     // Update theme-color meta tag for PWA support
     const themeColorMeta = document.querySelector('meta[name="theme-color"]');

@@ -120,6 +120,7 @@ import { ErrorMessageComponent } from '../../../shared/components/ui-components'
       max-width: 400px;
       margin: 0 auto;
       padding: 20px;
+  font-family: var(--font-family);
     }
 
     .full-width {
@@ -142,7 +143,7 @@ import { ErrorMessageComponent } from '../../../shared/components/ui-components'
     }
 
     .form-footer a {
-      color: #3f51b5;
+      color: var(--primary-color);
       text-decoration: none;
     }
 
@@ -156,24 +157,24 @@ import { ErrorMessageComponent } from '../../../shared/components/ui-components'
     }
 
     .error {
-      border-color: #f44336 !important;
+      border-color: var(--error-color) !important;
     }
 
     .demo-card {
       margin-top: 24px;
-      background-color: #f8f9fa;
-      border: 1px solid #e9ecef;
+      background-color: var(--surface-color);
+      border: 1px solid var(--border-color);
     }
 
     .demo-card h4 {
       margin: 0 0 12px 0;
-      color: #495057;
+      color: var(--text-primary);
     }
 
     .demo-card p {
       margin: 4px 0;
       font-size: 14px;
-      color: #6c757d;
+      color: var(--text-secondary);
     }
   `]
 })

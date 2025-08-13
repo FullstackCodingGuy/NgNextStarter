@@ -181,6 +181,7 @@ import { LoadingSpinnerComponent } from '../../shared/components/ui-components';
   styles: [`
     .dashboard-container {
       padding: 24px;
+  font-family: var(--font-family);
     }
 
     .dashboard-header {
@@ -195,7 +196,7 @@ import { LoadingSpinnerComponent } from '../../shared/components/ui-components';
 
     .dashboard-header p {
       margin: 0;
-      color: #666;
+      color: var(--text-secondary);
       font-size: 16px;
     }
 
@@ -224,14 +225,14 @@ import { LoadingSpinnerComponent } from '../../shared/components/ui-components';
 
     .card-header mat-icon {
       margin-right: 8px;
-      color: #666;
+      color: var(--text-secondary);
     }
 
     .card-header h3 {
       margin: 0;
       font-size: 14px;
       font-weight: 500;
-      color: #666;
+      color: var(--text-secondary);
     }
 
     .card-value {
@@ -246,16 +247,16 @@ import { LoadingSpinnerComponent } from '../../shared/components/ui-components';
     }
 
     .card-change.positive {
-      color: #4caf50;
+      color: var(--success-color);
     }
 
     .card-change.negative {
-      color: #f44336;
+      color: var(--error-color);
     }
 
     .card-subtitle {
       font-size: 12px;
-      color: #666;
+      color: var(--text-secondary);
     }
 
     .performance-card {
@@ -277,16 +278,16 @@ import { LoadingSpinnerComponent } from '../../shared/components/ui-components';
 
     .security-name {
       font-size: 12px;
-      color: #666;
+      color: var(--text-secondary);
     }
 
     .positive {
-      color: #4caf50;
+      color: var(--success-color);
       font-weight: 500;
     }
 
     .negative {
-      color: #f44336;
+      color: var(--error-color);
       font-weight: 500;
     }
 
@@ -313,25 +314,25 @@ import { LoadingSpinnerComponent } from '../../shared/components/ui-components';
     }
 
     .sector-percentage {
-      color: #666;
+      color: var(--text-secondary);
     }
 
     .allocation-bar {
       height: 8px;
-      background-color: #e0e0e0;
+      background-color: var(--border-color);
       border-radius: 4px;
       overflow: hidden;
     }
 
     .allocation-fill {
       height: 100%;
-      background: linear-gradient(90deg, #3f51b5, #2196f3);
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
       transition: width 0.3s ease;
     }
 
     .allocation-value {
       font-size: 12px;
-      color: #666;
+      color: var(--text-secondary);
     }
 
     .action-buttons {

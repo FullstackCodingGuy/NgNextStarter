@@ -45,8 +45,19 @@ export interface Theme {
   name: string;
   displayName: string;
   isDark: boolean;
+
+  // Core brand colors
   primary: string;
   accent: string;
+
+  // Surface and text system (used as CSS variables)
+  background: string;
+  surface: string;
+  textPrimary: string;
+  textSecondary: string;
+  border: string;
+
+  // CSS class to toggle
   cssClass: string;
 }
 
@@ -76,14 +87,20 @@ export const DEFAULT_LANGUAGES: Language[] = [
   { code: 'ar', name: 'Arabic', nativeName: 'العربية', isRTL: true }
 ];
 
+// Centralized, easy-to-edit theme presets
 export const DEFAULT_THEMES: Theme[] = [
   {
     id: 'light',
     name: 'light',
     displayName: 'Light',
     isDark: false,
-    primary: '#1976d2',
-    accent: '#ff4081',
+    primary: '#0f62fe',
+    accent: '#8a3ffc',
+    background: '#f7f7f9',
+    surface: '#ffffff',
+    textPrimary: '#101828',
+    textSecondary: '#667085',
+    border: '#e4e7ec',
     cssClass: 'light-theme'
   },
   {
@@ -91,8 +108,13 @@ export const DEFAULT_THEMES: Theme[] = [
     name: 'dark',
     displayName: 'Dark',
     isDark: true,
-    primary: '#90caf9',
-    accent: '#f48fb1',
+    primary: '#8ab4ff',
+    accent: '#c3a6ff',
+    background: '#0b0f17',
+    surface: '#121826',
+    textPrimary: '#f2f4f7',
+    textSecondary: '#98a2b3',
+    border: '#243041',
     cssClass: 'dark-theme'
   },
   {
@@ -100,8 +122,13 @@ export const DEFAULT_THEMES: Theme[] = [
     name: 'blue',
     displayName: 'Blue',
     isDark: false,
-    primary: '#2196f3',
-    accent: '#ff5722',
+    primary: '#0f62fe',
+    accent: '#ff6a3d',
+    background: '#f3f8ff',
+    surface: '#ffffff',
+    textPrimary: '#102a43',
+    textSecondary: '#486581',
+    border: '#dce6f2',
     cssClass: 'blue-theme'
   },
   {
@@ -109,8 +136,13 @@ export const DEFAULT_THEMES: Theme[] = [
     name: 'purple',
     displayName: 'Purple',
     isDark: false,
-    primary: '#673ab7',
-    accent: '#cddc39',
+    primary: '#8a3ffc',
+    accent: '#12b76a',
+    background: '#f8f5ff',
+    surface: '#ffffff',
+    textPrimary: '#3d2c8d',
+    textSecondary: '#6e59a5',
+    border: '#e8e4f8',
     cssClass: 'purple-theme'
   }
 ];

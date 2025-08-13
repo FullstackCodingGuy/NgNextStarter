@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   apiUrl: 'https://api.securities-app.com/api',
-  appName: 'Securities Position Keeping System',
+  appName: 'ngNextStarter',
   version: '1.0.0',
   features: {
     enableAdvancedReports: true,

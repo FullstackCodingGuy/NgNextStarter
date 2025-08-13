@@ -1,16 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../core/services/auth.service';
-import { User } from '../../core/models/user.model';
-import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { Observable } from 'rxjs';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSidenavModule, MatSidenav } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatDividerModule } from '@angular/material/divider';
+import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { AuthService } from '../../core/services/auth.service';
+import { User } from '../../core/models/user.model';
 
 @Component({
   selector: 'app-main-layout',
@@ -21,47 +22,51 @@ import { MatMenuModule } from '@angular/material/menu';
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
-    MatIconModule,
     MatButtonModule,
-    MatMenuModule
+    MatMenuModule,
+    MatDividerModule
   ],
   template: `
     <div class="layout-container">
       <!-- Top Navigation Bar -->
       <mat-toolbar color="primary" class="top-nav">
-        <button 
-          mat-icon-button 
+        <button
+          mat-icon-button
           (click)="toggleSidenav()"
-          class="menu-button">
-          <mat-icon>menu</mat-icon>
+          class="menu-button"
+          aria-label="Open navigation">
+          <span class="fa-solid fa-bars" aria-hidden="true"></span>
         </button>
-        
-        <span class="app-title">Securities Position Keeping System</span>
-        
+
+        <span class="brand">
+          <span class="fa-solid fa-shield" aria-hidden="true"></span>
+          <span class="app-title">ngNextStarter</span>
+        </span>
+
         <span class="spacer"></span>
-        
+
         <!-- User Menu -->
         <div class="user-menu">
-          <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">
-            <mat-icon>account_circle</mat-icon>
+          <button mat-button [matMenuTriggerFor]="userMenu" class="user-button" aria-label="User menu">
+            <span class="fa-regular fa-circle-user" aria-hidden="true"></span>
             <span *ngIf="currentUser$ | async as user">
               {{ user.firstName }} {{ user.lastName }}
             </span>
-            <mat-icon>arrow_drop_down</mat-icon>
+            <span class="fa-solid fa-chevron-down" aria-hidden="true"></span>
           </button>
-          
+
           <mat-menu #userMenu="matMenu">
             <button mat-menu-item (click)="viewProfile()">
-              <mat-icon>person</mat-icon>
+              <span class="fa-solid fa-user" aria-hidden="true"></span>
               <span>Profile</span>
             </button>
             <button mat-menu-item (click)="viewSettings()">
-              <mat-icon>settings</mat-icon>
+              <span class="fa-solid fa-gear" aria-hidden="true"></span>
               <span>Settings</span>
             </button>
             <mat-divider></mat-divider>
             <button mat-menu-item (click)="logout()">
-              <mat-icon>logout</mat-icon>
+              <span class="fa-solid fa-right-from-bracket" aria-hidden="true"></span>
               <span>Logout</span>
             </button>
           </mat-menu>
@@ -70,42 +75,43 @@ import { MatMenuModule } from '@angular/material/menu';
 
       <!-- Side Navigation -->
       <mat-sidenav-container class="sidenav-container">
-        <mat-sidenav 
-          #sidenav 
-          mode="side" 
-          opened="true" 
+        <mat-sidenav
+          #sidenav
+          [mode]="sidenavMode"
+          [opened]="sidenavOpened"
           class="sidenav"
-          fixedInViewport="true">
-          
+          fixedInViewport="true"
+          role="navigation"
+          aria-label="Primary">
           <mat-nav-list>
             <a mat-list-item routerLink="/dashboard" routerLinkActive="active">
-              <mat-icon matListItemIcon>dashboard</mat-icon>
+              <span matListItemIcon class="fa-solid fa-gauge" aria-hidden="true"></span>
               <span matListItemTitle>Dashboard</span>
             </a>
-            
+
             <a mat-list-item routerLink="/securities" routerLinkActive="active">
-              <mat-icon matListItemIcon>account_balance</mat-icon>
+              <span matListItemIcon class="fa-solid fa-landmark" aria-hidden="true"></span>
               <span matListItemTitle>Securities</span>
             </a>
-            
-            <a mat-list-item 
-               routerLink="/users" 
+
+            <a mat-list-item
+               routerLink="/users"
                routerLinkActive="active"
                *ngIf="hasUserManagementAccess()">
-              <mat-icon matListItemIcon>people</mat-icon>
+              <span matListItemIcon class="fa-solid fa-users" aria-hidden="true"></span>
               <span matListItemTitle>User Management</span>
             </a>
-            
+
             <mat-divider></mat-divider>
-            
+
             <h3 matSubheader>Reports</h3>
             <a mat-list-item routerLink="/reports/portfolio" routerLinkActive="active">
-              <mat-icon matListItemIcon>assessment</mat-icon>
+              <span matListItemIcon class="fa-solid fa-chart-pie" aria-hidden="true"></span>
               <span matListItemTitle>Portfolio Analysis</span>
             </a>
-            
+
             <a mat-list-item routerLink="/reports/performance" routerLinkActive="active">
-              <mat-icon matListItemIcon>trending_up</mat-icon>
+              <span matListItemIcon class="fa-solid fa-chart-line" aria-hidden="true"></span>
               <span matListItemTitle>Performance</span>
             </a>
           </mat-nav-list>
@@ -121,10 +127,15 @@ import { MatMenuModule } from '@angular/material/menu';
     </div>
   `,
   styles: [`
+    :host { --header-h: 64px; }
+    @media (max-width: 599.98px) { :host { --header-h: 56px; } }
+
     .layout-container {
       height: 100vh;
       display: flex;
       flex-direction: column;
+      background: var(--background-color);
+  font-family: var(--font-family);
     }
 
     .top-nav {
@@ -134,15 +145,25 @@ import { MatMenuModule } from '@angular/material/menu';
       right: 0;
       z-index: 1000;
       height: 64px;
+      display: flex;
+      align-items: center;
+      backdrop-filter: saturate(1.2) blur(6px);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .menu-button {
-      margin-right: 16px;
+      margin-right: 12px;
     }
 
     .app-title {
-      font-size: 20px;
-      font-weight: 500;
+      font-size: clamp(18px, 1.2vw + 12px, 20px);
+      font-weight: 600;
+      letter-spacing: -0.01em;
     }
 
     .spacer {
@@ -155,57 +176,99 @@ import { MatMenuModule } from '@angular/material/menu';
     }
 
     .user-button {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 8px;
+      font-weight: 500;
     }
 
     .sidenav-container {
       flex: 1;
-      margin-top: 64px;
+      margin-top: var(--header-h);
+      background: var(--background-color);
     }
 
     .sidenav {
-      width: 250px;
-      padding: 16px 0;
+      width: 260px;
+      padding: 8px 0 16px;
+      border-right: 1px solid var(--border-color);
+      background: var(--surface-color);
     }
 
     .main-content {
-      background-color: #fafafa;
+      background-color: var(--background-color);
     }
 
     .content-wrapper {
-      padding: 24px;
+      padding: clamp(16px, 1.5vw, 24px);
       min-height: calc(100vh - 64px);
     }
 
-    .active {
-      background-color: rgba(0, 0, 0, 0.1) !important;
-    }
+  .active { background: color-mix(in srgb, var(--primary-color) 18%, transparent) !important; }
 
     .mat-mdc-list-item {
       margin-bottom: 4px;
+      border-radius: var(--radius-sm);
     }
 
+  .mat-mdc-list-item:hover { background: color-mix(in srgb, var(--primary-color) 8%, transparent); }
+
     h3[matSubheader] {
-      color: #666;
-      font-weight: 500;
-      margin-top: 16px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      margin: 8px 16px 4px;
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+    }
+
+    /* Size Font Awesome icons in list to align with Material */
+    [matListItemIcon].fa-solid,
+    [matListItemIcon].fa-regular,
+    [matListItemIcon] .fa-solid,
+    [matListItemIcon] .fa-regular {
+      font-size: 18px;
+      width: 24px;
+      text-align: center;
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 959.98px) {
+      .sidenav {
+        width: 78vw;
+        max-width: 320px;
+      }
     }
   `]
 })
 export class MainLayoutComponent {
   currentUser$: Observable<User | null>;
 
+  sidenavMode: 'over' | 'side' = 'side';
+  sidenavOpened = true;
+
+  @ViewChild('sidenav') sidenav?: MatSidenav;
+
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private breakpointObserver: BreakpointObserver
   ) {
     this.currentUser$ = this.authService.currentUser$;
+
+    this.breakpointObserver
+      .observe([Breakpoints.Handset, Breakpoints.Tablet])
+      .subscribe((state: BreakpointState) => {
+        const isSmall = state.matches;
+        this.sidenavMode = isSmall ? 'over' : 'side';
+        this.sidenavOpened = !isSmall;
+      });
   }
 
   toggleSidenav(): void {
-    // This will be handled by the sidenav reference
+    if (this.sidenav) {
+      this.sidenav.toggle();
+    }
   }
 
   hasUserManagementAccess(): boolean {

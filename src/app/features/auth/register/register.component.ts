@@ -46,7 +46,7 @@ function passwordMatchValidator(control: AbstractControl): {[key: string]: any} 
       <mat-card>
         <mat-card-header>
           <mat-card-title>Create Account</mat-card-title>
-          <mat-card-subtitle>Join our securities platform</mat-card-subtitle>
+          <mat-card-subtitle>Join our application</mat-card-subtitle>
         </mat-card-header>
 
         <mat-card-content>
@@ -184,6 +184,7 @@ function passwordMatchValidator(control: AbstractControl): {[key: string]: any} 
       max-width: 500px;
       margin: 0 auto;
       padding: 20px;
+  font-family: var(--font-family);
     }
 
     .name-row {
@@ -204,8 +205,9 @@ function passwordMatchValidator(control: AbstractControl): {[key: string]: any} 
     .password-requirements {
       margin: 16px 0;
       padding: 16px;
-      background-color: #f5f5f5;
+      background-color: var(--surface-color);
       border-radius: 4px;
+      border: 1px solid var(--border-color);
     }
 
     .password-requirements h4 {
@@ -222,11 +224,11 @@ function passwordMatchValidator(control: AbstractControl): {[key: string]: any} 
 
     .password-requirements li {
       margin: 4px 0;
-      color: #666;
+      color: var(--text-secondary);
     }
 
     .password-requirements li.met {
-      color: #4caf50;
+      color: var(--success-color);
       font-weight: 500;
     }
 
@@ -245,7 +247,7 @@ function passwordMatchValidator(control: AbstractControl): {[key: string]: any} 
     }
 
     .form-footer a {
-      color: #3f51b5;
+      color: var(--primary-color);
       text-decoration: none;
     }
 
@@ -259,7 +261,7 @@ function passwordMatchValidator(control: AbstractControl): {[key: string]: any} 
     }
 
     .error {
-      border-color: #f44336 !important;
+      border-color: var(--error-color) !important;
     }
   `]
 })

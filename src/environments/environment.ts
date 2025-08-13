@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:3000/api',
-  appName: 'Securities Position Keeping System',
+  appName: 'ngNextStarter',
   version: '1.0.0',
   features: {
     enableAdvancedReports: true,
