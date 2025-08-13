@@ -29,7 +29,7 @@ import { User } from '../../core/models/user.model';
   template: `
     <div class="layout-container">
       <!-- Top Navigation Bar -->
-      <mat-toolbar color="primary" class="top-nav">
+      <mat-toolbar color="primary" class="top-nav elegant-nav">
         <button
           mat-icon-button
           (click)="toggleSidenav()"
@@ -47,9 +47,11 @@ import { User } from '../../core/models/user.model';
 
         <!-- User Menu -->
         <div class="user-menu">
-          <button mat-button [matMenuTriggerFor]="userMenu" class="user-button" aria-label="User menu">
-            <span class="fa-regular fa-circle-user" aria-hidden="true"></span>
-            <span *ngIf="currentUser$ | async as user">
+          <button mat-button [matMenuTriggerFor]="userMenu" class="user-button avatar-button" aria-label="User menu">
+            <span class="user-avatar" *ngIf="currentUser$ | async as user">
+              {{ user.firstName.charAt(0) }}{{ user.lastName.charAt(0) }}
+            </span>
+            <span class="user-name" *ngIf="currentUser$ | async as user">
               {{ user.firstName }} {{ user.lastName }}
             </span>
             <span class="fa-solid fa-chevron-down" aria-hidden="true"></span>
@@ -148,6 +150,51 @@ import { User } from '../../core/models/user.model';
       display: flex;
       align-items: center;
       backdrop-filter: saturate(1.2) blur(6px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      border-bottom: 1px solid var(--border-color);
+      background: linear-gradient(90deg, var(--primary-color) 80%, var(--accent-color) 100%);
+    }
+
+    .elegant-nav .brand {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: #fff;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    }
+
+    .avatar-button {
+      padding: 0 12px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.08);
+      transition: background 0.2s;
+    }
+    .avatar-button:hover {
+      background: rgba(255,255,255,0.18);
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-color) 60%, var(--primary-color) 100%);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 600;
+      margin-right: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      border: 2px solid rgba(255,255,255,0.18);
+    }
+
+    .user-name {
+      font-size: 16px;
+      font-weight: 500;
+      color: #fff;
+      margin-right: 8px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.08);
     }
 
     .brand {

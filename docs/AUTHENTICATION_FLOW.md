@@ -1,4 +1,31 @@
+
 # Secure User Authentication with OIDC Authorization Code + PKCE on the Server (BFF)
+
+```mermaid
+sequenceDiagram
+   participant User
+   participant Frontend
+   participant BFF
+   participant AuthorizationServer
+   participant ResourceServer
+
+   User->>Frontend: Clicks "Login" button
+   Frontend->>BFF: Redirects to /bff/login (initiate login)
+   Note over BFF: Generate code_verifier & code_challenge
+   BFF->>AuthorizationServer: Redirects with code_challenge (Browser-based)
+   AuthorizationServer->>User: Displays login/consent screen
+   User->>AuthorizationServer: Authenticates and grants consent
+   AuthorizationServer->>BFF: Redirects with authorization_code (Browser-based)
+   BFF->>AuthorizationServer: Exchange authorization_code + code_verifier for tokens (Back-channel)
+   AuthorizationServer->>BFF: Returns id_token, access_token, refresh_token
+   Note over BFF: Stores tokens securely (e.g., in session/cache)
+   BFF->>Frontend: Sets session cookie (HttpOnly, Secure) and redirects to Frontend app
+   Frontend->>BFF: Makes API request with session cookie
+   Note over BFF: Uses access_token from store to call ResourceServer
+   BFF->>ResourceServer: Proxies API request with access_token
+   ResourceServer->>BFF: Returns requested data
+   BFF->>Frontend: Returns data to Frontend
+```
 
 Using the OpenID Connect (OIDC) Authorization Code Flow with Proof Key for Code Exchange (PKCE) in a Backend for Frontend (BFF) architecture is a highly recommended and secure approach for authenticating users in modern web and mobile applications.
 
@@ -9,6 +36,9 @@ Using the OpenID Connect (OIDC) Authorization Code Flow with Proof Key for Code 
 - Proof Key for Code Exchange (PKCE): An extension to the Authorization Code Flow designed to protect against authorization code interception attacks, especially relevant for public clients (like SPAs and mobile apps) that cannot securely store a client secret.
 
 - Backend for Frontend (BFF): A dedicated backend service for each frontend client, responsible for handling OIDC authentication, managing tokens, and proxying API requests securely on the server-side.
+
+
+
 
 ## How it works
 
