@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DestroyRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { AccountsFacade } from '../../state/accounts.facade';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BankAccount } from '../../data/models';
 
 @Component({
@@ -44,10 +45,11 @@ export class AccountsListComponent implements OnInit {
   displayedColumns = ['name', 'type', 'balance', 'available'];
   vm: { items: BankAccount[]; total: number; page: number; pageSize: number } | null = null;
 
+  private destroyRef = inject(DestroyRef);
   constructor(private facade: AccountsFacade){}
 
   ngOnInit(): void {
-    this.facade.accounts$.subscribe(v => this.vm = v);
+  this.facade.accounts$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(v => this.vm = v);
     this.facade.load();
   }
 

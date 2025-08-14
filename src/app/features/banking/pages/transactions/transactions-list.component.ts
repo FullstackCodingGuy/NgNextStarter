@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DestroyRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
@@ -14,6 +14,7 @@ import { TransactionsFacade } from '../../state/transactions.facade';
 import { Transaction, TransactionFilter } from '../../data/models';
 import { Router } from '@angular/router';
 import { PermissionService } from '../../../../core/services/permission.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-transactions-list',
@@ -71,8 +72,9 @@ import { PermissionService } from '../../../../core/services/permission.service'
         </div>
       </form>
 
-      <div class="table-responsive" *ngIf="vm as v">
-        <table mat-table [dataSource]="v.items" class="mat-elevation-z0" aria-label="Transactions table">
+      @if (vm; as v) {
+        <div class="table-responsive">
+          <table mat-table [dataSource]="v.items" class="mat-elevation-z0" aria-label="Transactions table">
           <ng-container matColumnDef="date">
             <th mat-header-cell *matHeaderCellDef>Date</th>
             <td mat-cell *matCellDef="let t">{{ t.date | date:'mediumDate' }}</td>
@@ -93,9 +95,10 @@ import { PermissionService } from '../../../../core/services/permission.service'
           </ng-container>
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-        <mat-paginator [length]="v.total" [pageSize]="v.pageSize" [pageIndex]="v.page - 1" (page)="onPage($event)"></mat-paginator>
-      </div>
+          </table>
+          <mat-paginator [length]="v.total" [pageSize]="v.pageSize" [pageIndex]="v.page - 1" (page)="onPage($event)"></mat-paginator>
+        </div>
+      }
     </mat-card>
   `,
   styles: [`
@@ -112,10 +115,11 @@ export class TransactionsListComponent implements OnInit {
 
   dateFrom?: Date; dateTo?: Date; type?: 'debit' | 'credit'; status?: 'pending' | 'posted' | 'failed'; minAmount?: number; maxAmount?: number;
 
+  private destroyRef = inject(DestroyRef);
   constructor(private facade: TransactionsFacade, private router: Router, private perms: PermissionService){}
 
   ngOnInit(): void {
-    this.facade.transactions$.subscribe(v => this.vm = v);
+  this.facade.transactions$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(v => this.vm = v);
     this.facade.load();
   }
 

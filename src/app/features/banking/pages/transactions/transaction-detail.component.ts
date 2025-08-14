@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DestroyRef, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { Inject } from '@angular/core';
 import { BANKING_GATEWAY, BankingGateway } from '../../data/tokens';
 import { Transaction } from '../../data/models';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-transaction-detail',
@@ -24,13 +25,15 @@ import { Transaction } from '../../data/models';
       </div>
     </mat-card>
   `,
-  styles: [`.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-2)}`]
+  styles: [`.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-2)}`],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TransactionDetailComponent implements OnInit {
   tx?: Transaction;
+  private destroyRef = inject(DestroyRef);
   constructor(private route: ActivatedRoute, @Inject(BANKING_GATEWAY) private gateway: BankingGateway){}
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id')!;
-    this.gateway.getTransaction(id).subscribe(v => this.tx = v);
+    this.gateway.getTransaction(id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(v => this.tx = v);
   }
 }

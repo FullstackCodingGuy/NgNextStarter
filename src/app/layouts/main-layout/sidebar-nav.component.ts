@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -25,7 +25,7 @@ export type NavItem = {
 @Component({
     selector: 'app-sidebar-nav',
     standalone: true,
-    imports: [CommonModule, RouterModule, MatListModule, MatExpansionModule],
+  imports: [CommonModule, RouterModule, MatListModule, MatExpansionModule],
     template: `
     <nav class="sidebar" aria-label="Primary">
       <div class="section" *ngFor="let item of filteredItems() ; trackBy: trackByLabel">
@@ -45,11 +45,12 @@ export type NavItem = {
               <span class="chevron fa-solid fa-chevron-down" aria-hidden="true"></span>
             </mat-expansion-panel-header>
             <mat-nav-list class="child-list">
-              <a mat-list-item
+          <a mat-list-item
                  class="child-link"
                  *ngFor="let child of item.children; trackBy: trackByLabel"
                  [routerLink]="child.route"
                  routerLinkActive="active"
+            [attr.aria-current]="(activeUrl().startsWith(child.route||'')) ? 'page' : null"
                  [routerLinkActiveOptions]="{ exact: childExact(child) }"
                  [attr.aria-label]="child.label">
                 <span class="icon ui-icon" *ngIf="child.icon"><span [class]="child.icon" aria-hidden="true"></span></span>
@@ -61,9 +62,10 @@ export type NavItem = {
 
         <!-- Leaf without children -->
         <ng-template #leafLink>
-          <a mat-list-item class="root-link"
+       <a mat-list-item class="root-link"
              [routerLink]="item.route"
              routerLinkActive="active"
+         [attr.aria-current]="(activeUrl()===item.route) ? 'page' : null"
              [routerLinkActiveOptions]="{ exact: true }"
              [attr.aria-label]="item.label">
             <span class="icon ui-icon" *ngIf="item.icon"><span [class]="item.icon" aria-hidden="true"></span></span>
@@ -132,7 +134,8 @@ export type NavItem = {
       overflow: hidden;
       text-overflow: ellipsis;
     }
-  `]
+  `],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SidebarNavComponent implements OnInit, OnDestroy {
     private router = inject(Router);

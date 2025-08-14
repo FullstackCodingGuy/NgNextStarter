@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DestroyRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { BalancesFacade } from '../../state/balances.facade';
 import { BalanceSummary } from '../../data/models';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-balances',
@@ -25,9 +26,10 @@ import { BalanceSummary } from '../../data/models';
 })
 export class BalancesComponent implements OnInit {
   balances: BalanceSummary[] = [];
+  private destroyRef = inject(DestroyRef);
   constructor(private facade: BalancesFacade){}
   ngOnInit(): void {
-    this.facade.balances$.subscribe(v => this.balances = v);
+    this.facade.balances$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(v => this.balances = v);
     this.facade.load();
   }
 }

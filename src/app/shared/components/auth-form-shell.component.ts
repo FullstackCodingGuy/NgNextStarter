@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -42,7 +42,8 @@ import { CommonModule } from '@angular/common';
   .links { display: flex; justify-content: center; align-items: center; gap: var(--space-2); margin-top: var(--space-1); font-size: 14px; color: var(--text-secondary); }
     .links a { color: var(--text-secondary); text-decoration: none; }
     .links a:hover { color: var(--text-primary); text-decoration: underline; }
-  `]
+  `],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AuthFormShellComponent {
   @Input() title = '';

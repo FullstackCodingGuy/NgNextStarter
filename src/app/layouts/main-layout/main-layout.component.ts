@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy, DestroyRef, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -12,8 +12,9 @@ import { MatDividerModule } from '@angular/material/divider';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { AuthService } from '../../core/services/auth.service';
 import { PermissionService } from '../../core/services/permission.service';
-import { User } from '../../core/models/user.model';
+import { User, UserRole } from '../../core/models/user.model';
 import { SidebarNavComponent } from './sidebar-nav.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-main-layout',
@@ -260,6 +261,8 @@ import { SidebarNavComponent } from './sidebar-nav.component';
       }
     }
   `]
+  ,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MainLayoutComponent {
   currentUser$: Observable<User | null>;
@@ -268,6 +271,7 @@ export class MainLayoutComponent {
   sidenavOpened = true;
 
   @ViewChild('sidenav') sidenav?: MatSidenav;
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private authService: AuthService,
@@ -279,6 +283,7 @@ export class MainLayoutComponent {
 
     this.breakpointObserver
       .observe([Breakpoints.Handset, Breakpoints.Tablet])
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((state: BreakpointState) => {
         const isSmall = state.matches;
         this.sidenavMode = isSmall ? 'over' : 'side';
@@ -293,7 +298,7 @@ export class MainLayoutComponent {
   }
 
   hasUserManagementAccess(): boolean {
-    return this.authService.hasAnyRole(['admin', 'manager'] as any);
+    return this.authService.hasAnyRole([UserRole.ADMIN, UserRole.MANAGER]);
   }
 
   viewProfile(): void {

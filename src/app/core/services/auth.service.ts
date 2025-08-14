@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, map, catchError, throwError } from 'rxjs';
 import { User, AuthResponse, LoginRequest, RegisterRequest, UserRole } from '../models/user.model';
 import { ApiResponse } from '../models/common.model';
@@ -9,7 +9,7 @@ import * as CryptoJS from 'crypto-js';
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly API_URL = 'http://localhost:3000/api/auth';
+  private readonly API_URL = 'http://localhost:3000/api/auth'; // TODO: move to environment
   private readonly TOKEN_KEY = 'auth_token';
   private readonly REFRESH_TOKEN_KEY = 'refresh_token';
   private readonly USER_KEY = 'current_user';
@@ -213,14 +213,14 @@ export class AuthService {
   }
 
   private generateMockToken(user: User): string {
-    const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
-    const payload = btoa(JSON.stringify({
+  const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
+  const payload = btoa(JSON.stringify({
       sub: user.id,
       email: user.email,
       role: user.role,
       exp: Math.floor(Date.now() / 1000) + 3600
     }));
-    const signature = btoa('mock-signature');
+  const signature = btoa('mock-signature');
     return `${header}.${payload}.${signature}`;
   }
 }

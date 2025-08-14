@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -6,13 +6,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Inject } from '@angular/core';
 import { BANKING_GATEWAY, BankingGateway } from '../../data/tokens';
 
 @Component({
   selector: 'app-transaction-new',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule],
+  imports: [CommonModule, FormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatSnackBarModule],
   template: `
     <mat-card>
       <mat-card-title>New Transaction</mat-card-title>
@@ -35,16 +36,18 @@ import { BANKING_GATEWAY, BankingGateway } from '../../data/tokens';
         <button mat-flat-button color="primary" type="submit" [disabled]="f.invalid">Create</button>
       </form>
     </mat-card>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TransactionNewComponent {
   description = '';
   amount: number | null = null;
   direction: 'debit' | 'credit' = 'debit';
 
-  constructor(@Inject(BANKING_GATEWAY) private gateway: BankingGateway){}
+  constructor(@Inject(BANKING_GATEWAY) private gateway: BankingGateway, private snack: MatSnackBar){}
 
   save() {
-    this.gateway.createTransaction?.({ description: this.description, amount: this.amount || 0, direction: this.direction, currency: 'USD' }).subscribe();
+    this.gateway.createTransaction?.({ description: this.description, amount: this.amount || 0, direction: this.direction, currency: 'USD' })
+      .subscribe({ next: () => this.snack.open('Transaction created', 'Close', { duration: 2000 }) });
   }
 }
