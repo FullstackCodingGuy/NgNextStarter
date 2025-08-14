@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Optional, Inject } from '@angular/core';
 import { AuthService } from './auth.service';
 import { UserRole } from '../models/user.model';
+import { FEATURE_PERMISSIONS } from '../tokens/permissions.token';
 
 /**
  * Centralized permission service.
@@ -9,6 +10,8 @@ import { UserRole } from '../models/user.model';
  */
 @Injectable({ providedIn: 'root' })
 export class PermissionService {
+  constructor(private auth: AuthService, @Optional() @Inject(FEATURE_PERMISSIONS) private _features?: ReadonlyArray<string>) {}
+
   // Permission keys follow a simple namespace convention: domain.action
   // These can be externalized to config later.
   private readonly ROLE_PERMISSIONS: Record<UserRole, readonly string[]> = {
@@ -27,8 +30,6 @@ export class PermissionService {
       'banking.read'
     ],
   } as const;
-
-  constructor(private auth: AuthService) {}
 
   getPermissions(): readonly string[] {
     const user = this.auth.getCurrentUser();

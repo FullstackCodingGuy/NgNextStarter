@@ -84,9 +84,8 @@ export class GlobalStateService implements StateActions {
     if (typeof inject !== 'undefined') {
       try {
         this.setupEffects();
-      } catch (error) {
-        // In test environment, effects might not work - that's ok
-        console.warn('Effects not available in current context:', error);
+      } catch {
+        // In some test environments, effects may not be available. Fail silently.
       }
     }
   }
