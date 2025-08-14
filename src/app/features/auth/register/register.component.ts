@@ -162,23 +162,23 @@ function passwordMatchValidator(control: AbstractControl): {[key: string]: any} 
   `,
   styles: [`
     :host { display: block; font-family: var(--font-family); }
-    .auth-form { display: grid; gap: 16px; }
-    .form-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .auth-form { display: grid; gap: var(--space-4); }
+  .form-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
     .title h2 { margin: 0; font-size: clamp(18px, 1.2vw + 14px, 22px); letter-spacing: -0.01em; }
-    .title p { margin: 4px 0 0 0; color: var(--text-secondary); font-size: 13px; }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .title p { margin: var(--space-1) 0 0 0; color: var(--text-secondary); font-size: 13px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
     @media (max-width: 480px) { .grid { grid-template-columns: 1fr; } }
     .full-width { width: 100%; }
     ::ng-deep .mat-mdc-form-field { --mdc-filled-text-field-container-color: var(--surface-color); }
-    .cta-btn { margin-top: 4px; }
-    .links { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 8px; font-size: 14px; }
+  .cta-btn { margin-top: var(--space-1); }
+  .links { display: flex; justify-content: center; align-items: center; gap: var(--space-2); margin-top: var(--space-2); font-size: 14px; }
     .links a { color: var(--text-secondary); text-decoration: none; }
     .links a:hover { color: var(--text-primary); text-decoration: underline; }
-    .inline-spinner { display: inline-block; margin-right: 8px; }
-    .loading { display: inline-flex; align-items: center; gap: 8px; }
+  .inline-spinner { display: inline-block; margin-right: var(--space-2); }
+  .loading { display: inline-flex; align-items: center; gap: var(--space-2); }
     .error { border-color: var(--error-color) !important; }
-    .strength { display: flex; align-items: center; gap: 8px; margin: -4px 0 8px; }
-    .strength .bar { flex: 1; height: 6px; border-radius: 999px; background: #eaeef3; position: relative; overflow: hidden; }
+  .strength { display: flex; align-items: center; gap: var(--space-2); margin: calc(var(--space-1) * -1) 0 var(--space-2); }
+  .strength .bar { flex: 1; height: 6px; border-radius: 999px; background: color-mix(in srgb, var(--border-color) 60%, var(--surface-color)); position: relative; overflow: hidden; }
     .strength .bar::after { content: ""; position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: var(--error-color); transition: width .25s ease, background .25s ease; }
     .strength .bar.level-1::after { width: 33%; background: var(--error-color); }
     .strength .bar.level-2::after { width: 66%; background: #f79009; }

@@ -33,7 +33,7 @@ import { RouterModule } from '@angular/router';
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: clamp(16px, 3vw, 32px);
+  padding: clamp(var(--space-4), 3vw, var(--space-8));
     }
 
     .auth-container {
@@ -48,16 +48,16 @@ import { RouterModule } from '@angular/router';
     .auth-header {
       background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
       color: #fff;
-      padding: 28px 22px;
+      padding: var(--space-6) var(--space-5);
       text-align: center;
     }
 
     .brand {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: var(--space-3);
       justify-content: center;
-      margin-bottom: 6px;
+      margin-bottom: var(--space-2);
     }
 
     .brand .fa-solid {
@@ -72,19 +72,19 @@ import { RouterModule } from '@angular/router';
     }
 
     .auth-header p {
-      margin: 4px 0 0 0;
+      margin: var(--space-1) 0 0 0;
       opacity: 0.95;
       font-size: 13px;
       font-weight: 500;
     }
 
     .auth-form-container {
-      padding: clamp(18px, 2.2vw, 24px);
+      padding: clamp(var(--space-4), 2.2vw, var(--space-6));
     }
 
     .auth-footer {
       background: var(--surface-color);
-      padding: 14px 22px;
+      padding: var(--space-3) var(--space-5);
       text-align: center;
       font-size: 12px;
       color: var(--text-secondary);

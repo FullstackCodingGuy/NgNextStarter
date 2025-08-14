@@ -26,7 +26,7 @@ import { MatCardModule } from '@angular/material/card';
   `,
   styles: [`
     .dashboard-container {
-      padding: 24px;
+  padding: var(--space-6);
       font-family: var(--font-family);
       display: flex;
       justify-content: center;
@@ -42,12 +42,12 @@ import { MatCardModule } from '@angular/material/card';
       font-weight: 500;
     }
     mat-card-content ul {
-      margin: 16px 0 0 0;
-      padding-left: 20px;
+      margin: var(--space-4) 0 0 0;
+      padding-left: var(--space-5);
     }
     mat-card-content li {
       font-size: 16px;
-      margin-bottom: 8px;
+      margin-bottom: var(--space-2);
     }
   `]
 })

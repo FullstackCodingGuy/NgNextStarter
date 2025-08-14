@@ -13,6 +13,7 @@ import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/l
 import { AuthService } from '../../core/services/auth.service';
 import { PermissionService } from '../../core/services/permission.service';
 import { User } from '../../core/models/user.model';
+import { SidebarNavComponent } from './sidebar-nav.component';
 
 @Component({
   selector: 'app-main-layout',
@@ -25,7 +26,8 @@ import { User } from '../../core/models/user.model';
     MatListModule,
     MatButtonModule,
     MatMenuModule,
-    MatDividerModule
+  MatDividerModule,
+  SidebarNavComponent
   ],
   template: `
     <div class="layout-container">
@@ -78,33 +80,14 @@ import { User } from '../../core/models/user.model';
 
       <!-- Side Navigation -->
       <mat-sidenav-container class="sidenav-container">
-        <mat-sidenav
+  <mat-sidenav
           #sidenav
           [mode]="sidenavMode"
           [opened]="sidenavOpened"
           class="sidenav"
-          fixedInViewport="true"
           role="navigation"
           aria-label="Primary">
-          <mat-nav-list>
-            <a mat-list-item routerLink="/global-state-demo" routerLinkActive="active">
-              <span matListItemIcon class="fa-solid fa-gauge" aria-hidden="true"></span>
-              <span matListItemTitle>Dashboard</span>
-            </a>
-
-            <a mat-list-item routerLink="/global-state-demo" routerLinkActive="active">
-              <span matListItemIcon class="fa-solid fa-landmark" aria-hidden="true"></span>
-              <span matListItemTitle>Demo</span>
-            </a>
-
-            <mat-divider></mat-divider>
-
-            <a *ngIf="canViewBanking()" mat-list-item routerLink="/banking" routerLinkActive="active">
-              <span matListItemIcon class="fa-solid fa-building-columns" aria-hidden="true"></span>
-              <span matListItemTitle>Banking</span>
-            </a>
-
-          </mat-nav-list>
+          <app-sidebar-nav></app-sidebar-nav>
         </mat-sidenav>
 
         <!-- Main Content -->
@@ -141,6 +124,7 @@ import { User } from '../../core/models/user.model';
       box-shadow: 0 2px 8px rgba(0,0,0,0.04);
       border-bottom: 1px solid var(--border-color);
       background: linear-gradient(90deg, var(--primary-color) 80%, var(--accent-color) 100%);
+  overflow-x: hidden;
     }
 
     .elegant-nav .brand {
@@ -152,7 +136,7 @@ import { User } from '../../core/models/user.model';
     }
 
     .avatar-button {
-      padding: 0 12px;
+      padding: 0 var(--space-3);
       border-radius: 24px;
       background: rgba(255,255,255,0.08);
       transition: background 0.2s;
@@ -172,7 +156,7 @@ import { User } from '../../core/models/user.model';
       justify-content: center;
       font-size: 16px;
       font-weight: 600;
-      margin-right: 10px;
+  margin-right: var(--space-3);
       box-shadow: 0 1px 4px rgba(0,0,0,0.08);
       border: 2px solid rgba(255,255,255,0.18);
     }
@@ -181,18 +165,18 @@ import { User } from '../../core/models/user.model';
       font-size: 16px;
       font-weight: 500;
       color: #fff;
-      margin-right: 8px;
+      margin-right: var(--space-2);
       text-shadow: 0 1px 2px rgba(0,0,0,0.08);
     }
 
     .brand {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: var(--space-3);
     }
 
     .menu-button {
-      margin-right: 12px;
+      margin-right: var(--space-3);
     }
 
     .app-title {
@@ -213,7 +197,7 @@ import { User } from '../../core/models/user.model';
     .user-button {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: var(--space-2);
       font-weight: 500;
     }
 
@@ -221,11 +205,12 @@ import { User } from '../../core/models/user.model';
       flex: 1;
       margin-top: var(--header-h);
       background: var(--background-color);
+      overflow-x: hidden; /* Prevent horizontal scrollbar */
     }
 
     .sidenav {
       width: 260px;
-      padding: 8px 0 16px;
+      padding: var(--space-2) 0 var(--space-4);
       border-right: 1px solid var(--border-color);
       background: var(--surface-color);
     }
@@ -235,7 +220,7 @@ import { User } from '../../core/models/user.model';
     }
 
     .content-wrapper {
-      padding: clamp(16px, 1.5vw, 24px);
+      padding: clamp(var(--space-4), 1.5vw, var(--space-6));
       min-height: calc(100vh - 64px);
     }
 

@@ -30,10 +30,10 @@ import { AuthFormShellComponent } from '../../../shared/components/auth-form-she
   `,
   styles: [`
     :host { display: block; font-family: var(--font-family); }
-    .auth-form { display: grid; gap: 16px; }
-    .form-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .auth-form { display: grid; gap: var(--space-4); }
+  .form-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
     .title h2 { margin: 0; font-size: clamp(18px, 1.2vw + 14px, 22px); letter-spacing: -0.01em; }
-    .title p { margin: 4px 0 0 0; color: var(--text-secondary); font-size: 13px; }
+  .title p { margin: var(--space-1) 0 0 0; color: var(--text-secondary); font-size: 13px; }
     .full-width { width: 100%; }
   `]
 })

@@ -99,11 +99,11 @@ import { PermissionService } from '../../../../core/services/permission.service'
     </mat-card>
   `,
   styles: [`
-  .filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:12px;align-items:end}
-  .actions{display:flex;gap:8px}
+  .filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--space-3);margin-bottom:var(--space-3);align-items:end}
+  .actions{display:flex;gap:var(--space-2)}
     .table-responsive{overflow:auto}
-    td.debit{color:#b71c1c}
-    td.credit{color:#1b5e20}
+    td.debit{color:color-mix(in srgb, var(--error-color) 85%, black)}
+    td.credit{color:color-mix(in srgb, var(--success-color) 85%, black)}
   `]
 })
 export class TransactionsListComponent implements OnInit {

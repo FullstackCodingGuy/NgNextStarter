@@ -28,18 +28,18 @@ import { CommonModule } from '@angular/common';
   `,
   styles: [`
     :host { display: block; font-family: var(--font-family); }
-    .auth-form { display: grid; gap: var(--auth-gap, 16px); }
-    .auth-form.compact { --auth-gap: 12px; }
+  .auth-form { display: grid; gap: var(--auth-gap, var(--space-4)); }
+  .auth-form.compact { --auth-gap: var(--space-3); }
 
-    .form-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .form-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
     .form-header .action:empty { display: none; }
 
     .title h2 { margin: 0; font-size: clamp(18px, 1.2vw + 14px, 22px); letter-spacing: -0.01em; font-weight: 600; }
-    .title p { margin: 4px 0 0 0; color: var(--text-secondary); font-size: 13px; }
+  .title p { margin: var(--space-1) 0 0 0; color: var(--text-secondary); font-size: 13px; }
 
-    .content { display: grid; gap: 12px; }
+  .content { display: grid; gap: var(--space-3); }
 
-    .links { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 4px; font-size: 14px; color: var(--text-secondary); }
+  .links { display: flex; justify-content: center; align-items: center; gap: var(--space-2); margin-top: var(--space-1); font-size: 14px; color: var(--text-secondary); }
     .links a { color: var(--text-secondary); text-decoration: none; }
     .links a:hover { color: var(--text-primary); text-decoration: underline; }
   `]

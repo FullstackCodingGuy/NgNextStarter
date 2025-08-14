@@ -206,10 +206,10 @@ import { GlobalStateService } from '../../core/services/global-state.service';
     }
     
     .demo-content {
-      padding: 20px;
+      padding: var(--space-5);
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-      gap: 20px;
+      gap: var(--space-5);
       max-width: 1200px;
       margin: 0 auto;
     }
@@ -219,41 +219,41 @@ import { GlobalStateService } from '../../core/services/global-state.service';
     }
     
     .demo-card mat-card-header {
-      margin-bottom: 16px;
+      margin-bottom: var(--space-4);
     }
     
     .demo-card mat-card-title {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: var(--space-2);
     }
     
     .session-info, .language-info, .theme-info {
-      margin-bottom: 16px;
+      margin-bottom: var(--space-4);
     }
     
     .permissions-section {
-      margin-top: 16px;
+      margin-top: var(--space-4);
     }
     
     .permissions-section h4 {
-      margin-bottom: 8px;
+      margin-bottom: var(--space-2);
     }
     
     .theme-controls {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: var(--space-4);
     }
     
     .state-controls {
       display: flex;
-      gap: 16px;
-      margin-bottom: 16px;
+      gap: var(--space-4);
+      margin-bottom: var(--space-4);
     }
     
     .exported-state {
-      margin-top: 16px;
+      margin-top: var(--space-4);
     }
     
     .exported-state pre {

@@ -22,7 +22,7 @@ import { MatIconModule } from '@angular/material/icon';
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px;
+  padding: var(--space-5);
     }
 
     .loading-spinner.overlay {
@@ -32,12 +32,10 @@ import { MatIconModule } from '@angular/material/icon';
       width: 100%;
       height: 100%;
   background: color-mix(in srgb, var(--background-color) 80%, transparent);
-      z-index: 9999;
+  z-index: 9999;
     }
 
-    .spinner-container {
-      text-align: center;
-    }
+    .spinner-container { text-align: center; }
 
     .spinner {
       width: 40px;
@@ -49,7 +47,7 @@ import { MatIconModule } from '@angular/material/icon';
     }
 
     .loading-message {
-      margin-top: 10px;
+      margin-top: var(--space-3);
       color: var(--text-secondary);
       font-size: 14px;
     }
@@ -108,16 +106,16 @@ export class ConfirmationDialogComponent {
     .error-message {
       display: flex;
       align-items: center;
-      padding: 12px 16px;
-      background-color: color-mix(in srgb, var(--error-color) 10%, #fff);
+  padding: var(--space-3) var(--space-4);
+  background-color: color-mix(in srgb, var(--error-color) 10%, var(--surface-color));
       color: var(--error-color);
-      border-radius: 4px;
-      margin: 8px 0;
+  border-radius: var(--radius-sm);
+  margin: var(--space-2) 0;
       border-left: 4px solid var(--error-color);
     }
 
     .error-message mat-icon:first-child {
-      margin-right: 8px;
+  margin-right: var(--space-2);
     }
 
     .error-message span {

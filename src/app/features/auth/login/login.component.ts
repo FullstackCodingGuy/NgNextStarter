@@ -109,14 +109,14 @@ import { environment } from '../../../../environments/environment';
 
     .auth-form {
       display: grid;
-      gap: 16px;
+  gap: var(--space-4);
     }
 
     .form-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+  gap: var(--space-3);
     }
 
     .title h2 {
@@ -126,7 +126,7 @@ import { environment } from '../../../../environments/environment';
     }
 
     .title p {
-      margin: 4px 0 0 0;
+  margin: var(--space-1) 0 0 0;
       color: var(--text-secondary);
       font-size: 13px;
     }
@@ -134,11 +134,11 @@ import { environment } from '../../../../environments/environment';
     .ghost-btn {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+  gap: var(--space-2);
       border: 1px solid var(--border-color);
       background: transparent;
       color: var(--text-primary);
-      padding: 6px 10px;
+  padding: var(--space-2) var(--space-3);
       border-radius: var(--radius-sm);
       cursor: pointer;
       transition: background 0.2s ease, border-color 0.2s ease;
@@ -154,27 +154,27 @@ import { environment } from '../../../../environments/environment';
       --mdc-filled-text-field-container-color: var(--surface-color);
     }
 
-    .cta-btn { margin-top: 4px; }
+  .cta-btn { margin-top: var(--space-1); }
 
     .links {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 8px;
-      margin-top: 8px;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
       font-size: 14px;
     }
     .links a { color: var(--text-secondary); text-decoration: none; }
     .links a:hover { color: var(--text-primary); text-decoration: underline; }
     .links .divider { color: var(--border-color); }
 
-    .inline-spinner { display: inline-block; margin-right: 8px; }
-    .loading { display: inline-flex; align-items: center; gap: 8px; }
+  .inline-spinner { display: inline-block; margin-right: var(--space-2); }
+  .loading { display: inline-flex; align-items: center; gap: var(--space-2); }
 
     .error { border-color: var(--error-color) !important; }
 
     .microcopy {
-      margin: 6px 0 0 0;
+  margin: var(--space-2) 0 0 0;
       color: var(--text-secondary);
       font-size: 12px;
       text-align: center;

@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-unauthorized',
   standalone: true,
+  imports: [RouterModule],
   template: `
     <div class="unauth-wrapper">
       <h1>Access Denied</h1>
@@ -13,7 +15,7 @@ import { Component } from '@angular/core';
   styles: [`
     .unauth-wrapper {
       text-align: center;
-      padding: 50px;
+      padding: var(--space-10);
       font-family: var(--font-family);
       color: var(--text-primary);
     }

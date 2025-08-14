@@ -1,6 +1,7 @@
 // Angular Material theming
 @use '@angular/material' as mat;
 @use 'styles/theme';
+@use 'styles/utilities';
 @import '@fontsource/inter/300.css';
 @import '@fontsource/inter/400.css';
 @import '@fontsource/inter/500.css';
@@ -133,6 +134,8 @@ a:hover, a:focus {
 * { box-sizing: border-box; }
 
 // Theme classes moved to styles/theme.scss and imported above
+
+// Utilities imported from styles/_utilities.scss via @use above
 
 // Component polish for layout
 .mat-toolbar.top-nav {

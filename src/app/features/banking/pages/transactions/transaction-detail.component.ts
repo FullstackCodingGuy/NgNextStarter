@@ -24,7 +24,7 @@ import { Transaction } from '../../data/models';
       </div>
     </mat-card>
   `,
-  styles: [`.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}`]
+  styles: [`.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-2)}`]
 })
 export class TransactionDetailComponent implements OnInit {
   tx?: Transaction;

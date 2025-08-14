@@ -38,7 +38,7 @@ import { BankAccount } from '../../data/models';
       </div>
     </mat-card>
   `,
-  styles: [`.table-responsive { overflow: auto; } .muted{color:var(--text-secondary)}`]
+  styles: [`.table-responsive { overflow: auto; } .muted{color:var(--text-secondary)} .table-responsive{padding:var(--space-2)}`]
 })
 export class AccountsListComponent implements OnInit {
   displayedColumns = ['name', 'type', 'balance', 'available'];
