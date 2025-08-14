@@ -215,13 +215,17 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       margin-top: var(--header-h);
       background: var(--background-color);
       overflow-x: hidden; /* Prevent horizontal scrollbar */
+      display: flex;
+    }
+    .sidenav-container > .sidenav + .main-content {
+      margin-left: 1rem;
     }
 
     .sidenav {
       width: 260px;
       padding: var(--space-2) 0 var(--space-4);
       border-right: 1px solid var(--border-color);
-      background: var(--surface-color);
+      background: linear-gradient(120deg, #e3e8f7 0%, #c7d0ea 60%, #b0b9d6 100%);
       border-radius: 0;
     }
 
