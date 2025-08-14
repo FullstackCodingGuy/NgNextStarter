@@ -222,6 +222,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       padding: var(--space-2) 0 var(--space-4);
       border-right: 1px solid var(--border-color);
       background: var(--surface-color);
+      border-radius: 0;
     }
 
     .main-content {
@@ -232,8 +233,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
     /* Page shell: centers content and constrains width for a professional layout */
     .content-wrapper {
-      padding: clamp(var(--space-4), 1.5vw, var(--space-6));
-  min-height: calc(100vh - var(--header-h));
+      // min-height: calc(100vh - var(--header-h));
       display: flex;
       flex-direction: column;
       align-items: center; /* center the page container */

@@ -23,16 +23,23 @@ import { GlobalStateService } from '../../core/services/global-state.service';
     MatToolbarModule
   ],
   template: `
-    <div class="demo-container">
-      <mat-toolbar color="primary">
-        <span>Global State Manager Demo</span>
-        <span class="spacer"></span>
-        <span>{{ globalState.userDisplayName() || 'Not Authenticated' }}</span>
-      </mat-toolbar>
+    <div class="page-container">
+      <div class="page-header mb-4">
+        <div>
+          <h1 class="h1">Global State Manager Demo</h1>
+          <div class="page-subtitle">Live session, theme, language, and permission controls</div>
+        </div>
+        <div class="user-summary">
+          <span class="user-chip">
+            <mat-icon>person</mat-icon>
+            {{ globalState.userDisplayName() || 'Not Authenticated' }}
+          </span>
+        </div>
+      </div>
 
       <div class="demo-content">
-        <!-- User Session Card -->
-        <mat-card class="demo-card">
+  <!-- User Session Card -->
+  <div class="page-card demo-card">
           <mat-card-header>
             <mat-card-title>
               <mat-icon>person</mat-icon>
@@ -67,10 +74,10 @@ import { GlobalStateService } from '../../core/services/global-state.service';
               Clear Session
             </button>
           </mat-card-actions>
-        </mat-card>
+  </div>
 
-        <!-- Language Selection Card -->
-        <mat-card class="demo-card">
+  <!-- Language Selection Card -->
+  <div class="page-card demo-card">
           <mat-card-header>
             <mat-card-title>
               <mat-icon>language</mat-icon>
@@ -97,10 +104,10 @@ import { GlobalStateService } from '../../core/services/global-state.service';
               </mat-form-field>
             </div>
           </mat-card-content>
-        </mat-card>
+  </div>
 
-        <!-- Theme Selection Card -->
-        <mat-card class="demo-card">
+  <!-- Theme Selection Card -->
+  <div class="page-card demo-card">
           <mat-card-header>
             <mat-card-title>
               <mat-icon>palette</mat-icon>
@@ -146,10 +153,10 @@ import { GlobalStateService } from '../../core/services/global-state.service';
               </div>
             </div>
           </mat-card-content>
-        </mat-card>
+  </div>
 
-        <!-- State Export/Import Card -->
-        <mat-card class="demo-card">
+  <!-- State Export/Import Card -->
+  <div class="page-card demo-card">
           <mat-card-header>
             <mat-card-title>
               <mat-icon>import_export</mat-icon>
@@ -173,10 +180,10 @@ import { GlobalStateService } from '../../core/services/global-state.service';
               </div>
             }
           </mat-card-content>
-        </mat-card>
+  </div>
 
-        <!-- Permission Testing Card -->
-        <mat-card class="demo-card">
+  <!-- Permission Testing Card -->
+  <div class="page-card demo-card">
           <mat-card-header>
             <mat-card-title>
               <mat-icon>security</mat-icon>
@@ -191,86 +198,124 @@ import { GlobalStateService } from '../../core/services/global-state.service';
               <p><strong>Has all ['read', 'write']:</strong> {{ globalState.hasAllPermissions(['read', 'write']) ? 'Yes' : 'No' }}</p>
             </div>
           </mat-card-content>
-        </mat-card>
+  </div>
       </div>
     </div>
   `,
   styles: [`
-    .demo-container {
-      min-height: 100vh;
-      background-color: var(--background-color);
-    }
-    
-    .spacer {
-      flex: 1 1 auto;
-    }
-    
-    .demo-content {
-      padding: var(--space-5);
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-      gap: var(--space-5);
+    :host { display: block; }
+    .mb-4 { margin-bottom: var(--space-4); }
+    .page-header {
+      margin-top: var(--space-6);
+      padding-left: var(--space-5);
+      padding-right: var(--space-5);
       max-width: 1200px;
-      margin: 0 auto;
+      margin-left: auto;
+      margin-right: auto;
     }
-    
-    .demo-card {
-      height: fit-content;
-    }
-    
-    .demo-card mat-card-header {
-      margin-bottom: var(--space-4);
-    }
-    
-    .demo-card mat-card-title {
+    .user-summary {
       display: flex;
       align-items: center;
       gap: var(--space-2);
     }
-    
-    .session-info, .language-info, .theme-info {
+    .user-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      background: color-mix(in srgb, var(--primary-color) 10%, var(--surface-color));
+      color: var(--primary-color);
+      border-radius: 16px;
+      padding: 4px 12px;
+      font-weight: 500;
+      font-size: 15px;
+    }
+    .demo-content {
+      padding: var(--space-5);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: var(--space-5);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .page-card.demo-card {
+      height: fit-content;
+      box-shadow: var(--shadow-md);
+      border-radius: var(--radius-md);
+      transition: box-shadow 160ms, transform 160ms;
+      will-change: box-shadow, transform;
+      padding: var(--space-4) var(--space-5);
+      background: color-mix(in srgb, var(--surface-color) 98%, var(--background-color));
+    }
+    .page-card.demo-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+    .demo-card mat-card-header {
       margin-bottom: var(--space-4);
     }
-    
+    .demo-card mat-card-title {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: var(--h3-size);
+      font-weight: var(--font-weight-medium);
+    }
+    .session-info, .language-info, .theme-info {
+      margin-bottom: var(--space-4);
+      font-size: 15px;
+      line-height: var(--body-line-height);
+    }
     .permissions-section {
       margin-top: var(--space-4);
     }
-    
     .permissions-section h4 {
       margin-bottom: var(--space-2);
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-weight: var(--font-weight-medium);
     }
-    
     .theme-controls {
       display: flex;
       flex-direction: column;
       gap: var(--space-4);
     }
-    
     .state-controls {
       display: flex;
       gap: var(--space-4);
       margin-bottom: var(--space-4);
     }
-    
     .exported-state {
       margin-top: var(--space-4);
     }
-    
     .exported-state pre {
       background-color: var(--surface-color);
       padding: 16px;
-      border-radius: 4px;
+      border-radius: 8px;
       overflow-x: auto;
       max-height: 300px;
-      font-size: 12px;
+      font-size: 13px;
+      color: var(--text-primary);
     }
-    
     .permission-tests p {
       margin-bottom: 8px;
+      font-size: 15px;
     }
-    
     mat-form-field {
       width: 100%;
+    }
+    button:focus-visible {
+      box-shadow: 0 0 0 4px var(--focus-ring-color);
+      outline: none;
+      border-radius: 8px;
+    }
+    @media (max-width: 599.98px) {
+      .demo-content { grid-template-columns: 1fr; padding: var(--space-3); }
+      .page-card.demo-card { padding: var(--space-3) var(--space-3); }
+      .page-header {
+        margin-top: var(--space-4);
+        padding-left: var(--space-3);
+        padding-right: var(--space-3);
+      }
     }
   `]
 })
