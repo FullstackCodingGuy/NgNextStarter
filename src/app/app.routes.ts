@@ -3,6 +3,8 @@ import { AuthGuard, NoAuthGuard } from './core/guards/auth.guard';
 import { UserRole } from './core/models/user.model';
 import { UnauthorizedComponent } from './shared/components/unauthorized.component';
 import { GlobalStateDemoComponent } from './shared/components/global-state-demo.component';
+import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
+import { PermissionGuard } from './core/guards/permission.guard';
 
 export const routes: Routes = [
   {
@@ -34,7 +36,16 @@ export const routes: Routes = [
   {
     path: 'global-state-demo',
     canActivate: [AuthGuard],
-    component: GlobalStateDemoComponent
+    component: MainLayoutComponent,
+    children: [
+      { path: '', component: GlobalStateDemoComponent }
+    ]
+  },
+  {
+    path: 'banking',
+    canActivate: [AuthGuard, PermissionGuard],
+    data: { permissionsAll: ['banking.read'] },
+    loadChildren: () => import('./features/banking/banking.module').then(m => m.BankingModule)
   },
   {
     path: 'unauthorized',

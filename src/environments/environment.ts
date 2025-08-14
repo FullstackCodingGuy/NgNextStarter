@@ -7,8 +7,10 @@ export const environment = {
     enableAdvancedReports: true,
     enableNotifications: true,
     enableAuditLog: true,
-    enableBulkOperations: true,
-    developerMode: true
+  enableBulkOperations: true,
+  developerMode: true,
+  enableBanking: true,
+  bankingUseMock: true
   },
   security: {
     jwtSecretKey: 'dev-secret-key-change-in-production',

@@ -11,6 +11,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { AuthService } from '../../core/services/auth.service';
+import { PermissionService } from '../../core/services/permission.service';
 import { User } from '../../core/models/user.model';
 
 @Component({
@@ -97,6 +98,11 @@ import { User } from '../../core/models/user.model';
             </a>
 
             <mat-divider></mat-divider>
+
+            <a *ngIf="canViewBanking()" mat-list-item routerLink="/banking" routerLinkActive="active">
+              <span matListItemIcon class="fa-solid fa-building-columns" aria-hidden="true"></span>
+              <span matListItemTitle>Banking</span>
+            </a>
 
           </mat-nav-list>
         </mat-sidenav>
@@ -281,7 +287,8 @@ export class MainLayoutComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private permissions: PermissionService
   ) {
     this.currentUser$ = this.authService.currentUser$;
 
@@ -315,5 +322,9 @@ export class MainLayoutComponent {
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/auth/login']);
+  }
+
+  canViewBanking(): boolean {
+    return this.permissions.hasPermission('banking.read');
   }
 }
