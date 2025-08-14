@@ -7,7 +7,8 @@ export const environment = {
     enableAdvancedReports: true,
     enableNotifications: true,
     enableAuditLog: true,
-    enableBulkOperations: true
+    enableBulkOperations: true,
+    developerMode: false
   },
   security: {
     jwtSecretKey: '', // Set via environment variable in production

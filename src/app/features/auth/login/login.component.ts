@@ -13,6 +13,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterModule } from '@angular/router';
 import { ErrorMessageComponent } from '../../../shared/components/ui-components';
 import { AuthFormShellComponent } from '../../../shared/components/auth-form-shell.component';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -31,7 +32,7 @@ import { AuthFormShellComponent } from '../../../shared/components/auth-form-she
   ],
   template: `
     <app-auth-form-shell title="Welcome back" subtitle="Sign in to your account to continue">
-      <button type="button" action class="ghost-btn" (click)="prefillDemo()" aria-label="Prefill demo credentials">
+      <button *ngIf="developerMode" type="button" action class="ghost-btn" (click)="prefillDemo()" aria-label="Prefill demo credentials">
         <mat-icon>bolt</mat-icon>
         Use demo
       </button>
@@ -99,7 +100,7 @@ import { AuthFormShellComponent } from '../../../shared/components/auth-form-she
           <a routerLink="/auth/register">Create account</a>
         </div>
 
-        <p class="microcopy">Tip: you can use <strong>admin@securities.com</strong> / <strong>Admin123!</strong></p>
+  <p *ngIf="developerMode" class="microcopy">Tip: you can use <strong>admin@securities.com</strong> / <strong>Admin123!</strong></p>
       </form>
     </app-auth-form-shell>
   `,
@@ -186,6 +187,7 @@ export class LoginComponent implements OnInit {
   isLoading = false;
   errorMessage = '';
   returnUrl = '';
+  developerMode = environment.features.developerMode;
 
   constructor(
     private formBuilder: FormBuilder,
