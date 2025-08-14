@@ -5,7 +5,6 @@ import { AuthService } from '../../../core/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -21,7 +20,6 @@ import { ErrorMessageComponent } from '../../../shared/components/ui-components'
     CommonModule,
     ReactiveFormsModule,
     RouterModule,
-    MatCardModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
@@ -30,151 +28,159 @@ import { ErrorMessageComponent } from '../../../shared/components/ui-components'
     ErrorMessageComponent
   ],
   template: `
-    <div class="login-container">
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>Sign In</mat-card-title>
-          <mat-card-subtitle>Access your account</mat-card-subtitle>
-        </mat-card-header>
+    <div class="auth-form">
+      <header class="form-header">
+        <div class="title">
+          <h2>Welcome back</h2>
+          <p>Sign in to your account to continue</p>
+        </div>
+        <button type="button" class="ghost-btn" (click)="prefillDemo()" aria-label="Prefill demo credentials">
+          <mat-icon>bolt</mat-icon>
+          Use demo
+        </button>
+      </header>
 
-        <mat-card-content>
-          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Email Address</mat-label>
-              <input 
-                matInput 
-                type="email" 
-                formControlName="email"
-                autocomplete="email"
-                [class.error]="isFieldInvalid('email')">
-              <mat-icon matSuffix>email</mat-icon>
-              <mat-error *ngIf="isFieldInvalid('email')">
-                <span *ngIf="loginForm.get('email')?.errors?.['required']">Email is required</span>
-                <span *ngIf="loginForm.get('email')?.errors?.['email']">Please enter a valid email</span>
-              </mat-error>
-            </mat-form-field>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            type="email"
+            formControlName="email"
+            autocomplete="email"
+            [class.error]="isFieldInvalid('email')"
+            placeholder="you@example.com">
+          <mat-icon matPrefix>mail</mat-icon>
+          <mat-error *ngIf="isFieldInvalid('email')">
+            <span *ngIf="loginForm.get('email')?.errors?.['required']">Email is required</span>
+            <span *ngIf="loginForm.get('email')?.errors?.['email']">Enter a valid email</span>
+          </mat-error>
+        </mat-form-field>
 
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Password</mat-label>
-              <input 
-                matInput 
-                [type]="hidePassword ? 'password' : 'text'" 
-                formControlName="password"
-                autocomplete="current-password"
-                [class.error]="isFieldInvalid('password')">
-              <button 
-                mat-icon-button 
-                matSuffix 
-                type="button"
-                (click)="hidePassword = !hidePassword"
-                [attr.aria-label]="'Hide password'"
-                [attr.aria-pressed]="hidePassword">
-                <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-              </button>
-              <mat-error *ngIf="isFieldInvalid('password')">
-                <span *ngIf="loginForm.get('password')?.errors?.['required']">Password is required</span>
-                <span *ngIf="loginForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters</span>
-              </mat-error>
-            </mat-form-field>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            [type]="hidePassword ? 'password' : 'text'"
+            formControlName="password"
+            autocomplete="current-password"
+            [class.error]="isFieldInvalid('password')"
+            placeholder="••••••••">
+          <mat-icon matPrefix>lock</mat-icon>
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hidePassword = !hidePassword"
+            [attr.aria-label]="hidePassword ? 'Show password' : 'Hide password'"
+            [attr.aria-pressed]="!hidePassword">
+            <mat-icon>{{ hidePassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="isFieldInvalid('password')">
+            <span *ngIf="loginForm.get('password')?.errors?.['required']">Password is required</span>
+            <span *ngIf="loginForm.get('password')?.errors?.['minlength']">Minimum 6 characters</span>
+          </mat-error>
+        </mat-form-field>
 
-            <app-error-message 
-              [error]="errorMessage" 
-              (clear)="clearError()">
-            </app-error-message>
+        <app-error-message [error]="errorMessage" (clear)="clearError()"></app-error-message>
 
-            <div class="form-actions">
-              <button 
-                mat-raised-button 
-                color="primary" 
-                type="submit"
-                [disabled]="loginForm.invalid || isLoading"
-                class="full-width">
-                <span *ngIf="!isLoading">Sign In</span>
-                <span *ngIf="isLoading">
-                  <mat-spinner diameter="20" class="inline-spinner"></mat-spinner>
-                  Signing In...
-                </span>
-              </button>
-            </div>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          class="cta-btn full-width"
+          [disabled]="loginForm.invalid || isLoading">
+          <span *ngIf="!isLoading">Sign In</span>
+          <span *ngIf="isLoading" class="loading">
+            <mat-spinner diameter="18" class="inline-spinner"></mat-spinner>
+            Signing in…
+          </span>
+        </button>
 
-            <div class="form-footer">
-              <p>Don't have an account? <a routerLink="/auth/register">Sign up here</a></p>
-              <p><a routerLink="/auth/forgot-password">Forgot your password?</a></p>
-            </div>
-          </form>
+        <div class="links">
+          <a routerLink="/auth/forgot-password">Forgot password?</a>
+          <span class="divider">•</span>
+          <a routerLink="/auth/register">Create account</a>
+        </div>
 
-          <!-- Demo Credentials -->
-          <mat-card class="demo-card">
-            <mat-card-content>
-              <h4>Demo Credentials</h4>
-              <p><strong>Email:</strong> admin@securities.com</p>
-              <p><strong>Password:</strong> Admin123!</p>
-            </mat-card-content>
-          </mat-card>
-        </mat-card-content>
-      </mat-card>
+        <p class="microcopy">Tip: you can use <strong>admin@securities.com</strong> / <strong>Admin123!</strong></p>
+      </form>
     </div>
   `,
   styles: [`
-    .login-container {
-      max-width: 400px;
-      margin: 0 auto;
-      padding: 20px;
-  font-family: var(--font-family);
+    :host { display: block; font-family: var(--font-family); }
+
+    .auth-form {
+      display: grid;
+      gap: 16px;
     }
 
-    .full-width {
-      width: 100%;
-      margin-bottom: 16px;
+    .form-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
     }
 
-    .form-actions {
-      margin: 24px 0 16px 0;
+    .title h2 {
+      margin: 0;
+      font-size: clamp(18px, 1.2vw + 14px, 22px);
+      letter-spacing: -0.01em;
     }
 
-    .form-footer {
-      text-align: center;
-      margin-top: 16px;
-    }
-
-    .form-footer p {
-      margin: 8px 0;
-      font-size: 14px;
-    }
-
-    .form-footer a {
-      color: var(--primary-color);
-      text-decoration: none;
-    }
-
-    .form-footer a:hover {
-      text-decoration: underline;
-    }
-
-    .inline-spinner {
-      display: inline-block;
-      margin-right: 8px;
-    }
-
-    .error {
-      border-color: var(--error-color) !important;
-    }
-
-    .demo-card {
-      margin-top: 24px;
-      background-color: var(--surface-color);
-      border: 1px solid var(--border-color);
-    }
-
-    .demo-card h4 {
-      margin: 0 0 12px 0;
-      color: var(--text-primary);
-    }
-
-    .demo-card p {
-      margin: 4px 0;
-      font-size: 14px;
+    .title p {
+      margin: 4px 0 0 0;
       color: var(--text-secondary);
+      font-size: 13px;
+    }
+
+    .ghost-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid var(--border-color);
+      background: transparent;
+      color: var(--text-primary);
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+    .ghost-btn:hover {
+      background: color-mix(in srgb, var(--primary-color) 6%, transparent);
+      border-color: color-mix(in srgb, var(--primary-color) 30%, var(--border-color));
+    }
+
+    .full-width { width: 100%; }
+
+    ::ng-deep .mat-mdc-form-field {
+      --mdc-filled-text-field-container-color: var(--surface-color);
+    }
+
+    .cta-btn { margin-top: 4px; }
+
+    .links {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+    .links a { color: var(--text-secondary); text-decoration: none; }
+    .links a:hover { color: var(--text-primary); text-decoration: underline; }
+    .links .divider { color: var(--border-color); }
+
+    .inline-spinner { display: inline-block; margin-right: 8px; }
+    .loading { display: inline-flex; align-items: center; gap: 8px; }
+
+    .error { border-color: var(--error-color) !important; }
+
+    .microcopy {
+      margin: 6px 0 0 0;
+      color: var(--text-secondary);
+      font-size: 12px;
+      text-align: center;
     }
   `]
 })
@@ -236,6 +242,13 @@ export class LoginComponent implements OnInit {
 
   clearError(): void {
     this.errorMessage = '';
+  }
+
+  prefillDemo(): void {
+    this.loginForm.patchValue({
+      email: 'admin@securities.com',
+      password: 'Admin123!'
+    });
   }
 
   private markFormGroupTouched(): void {

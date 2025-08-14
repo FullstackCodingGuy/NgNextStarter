@@ -5,7 +5,6 @@ import { AuthService } from '../../../core/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -33,7 +32,6 @@ function passwordMatchValidator(control: AbstractControl): {[key: string]: any} 
     CommonModule,
     ReactiveFormsModule,
     RouterModule,
-    MatCardModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
@@ -42,227 +40,155 @@ function passwordMatchValidator(control: AbstractControl): {[key: string]: any} 
     ErrorMessageComponent
   ],
   template: `
-    <div class="register-container">
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>Create Account</mat-card-title>
-          <mat-card-subtitle>Join our application</mat-card-subtitle>
-        </mat-card-header>
+    <div class="auth-form">
+      <header class="form-header">
+        <div class="title">
+          <h2>Create your account</h2>
+          <p>Join us and get started in minutes</p>
+        </div>
+      </header>
 
-        <mat-card-content>
-          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-            <div class="name-row">
-              <mat-form-field appearance="outline" class="half-width">
-                <mat-label>First Name</mat-label>
-                <input 
-                  matInput 
-                  formControlName="firstName"
-                  autocomplete="given-name"
-                  [class.error]="isFieldInvalid('firstName')">
-                <mat-icon matSuffix>person</mat-icon>
-                <mat-error *ngIf="isFieldInvalid('firstName')">
-                  First name is required
-                </mat-error>
-              </mat-form-field>
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
+        <div class="grid">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>First name</mat-label>
+            <input
+              matInput
+              formControlName="firstName"
+              autocomplete="given-name"
+              [class.error]="isFieldInvalid('firstName')"
+              placeholder="Jane">
+            <mat-icon matPrefix>person</mat-icon>
+            <mat-error *ngIf="isFieldInvalid('firstName')">First name is required</mat-error>
+          </mat-form-field>
 
-              <mat-form-field appearance="outline" class="half-width">
-                <mat-label>Last Name</mat-label>
-                <input 
-                  matInput 
-                  formControlName="lastName"
-                  autocomplete="family-name"
-                  [class.error]="isFieldInvalid('lastName')">
-                <mat-icon matSuffix>person</mat-icon>
-                <mat-error *ngIf="isFieldInvalid('lastName')">
-                  Last name is required
-                </mat-error>
-              </mat-form-field>
-            </div>
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Last name</mat-label>
+            <input
+              matInput
+              formControlName="lastName"
+              autocomplete="family-name"
+              [class.error]="isFieldInvalid('lastName')"
+              placeholder="Doe">
+            <mat-icon matPrefix>person</mat-icon>
+            <mat-error *ngIf="isFieldInvalid('lastName')">Last name is required</mat-error>
+          </mat-form-field>
+        </div>
 
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Email Address</mat-label>
-              <input 
-                matInput 
-                type="email" 
-                formControlName="email"
-                autocomplete="email"
-                [class.error]="isFieldInvalid('email')">
-              <mat-icon matSuffix>email</mat-icon>
-              <mat-error *ngIf="isFieldInvalid('email')">
-                <span *ngIf="registerForm.get('email')?.errors?.['required']">Email is required</span>
-                <span *ngIf="registerForm.get('email')?.errors?.['email']">Please enter a valid email</span>
-              </mat-error>
-            </mat-form-field>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            type="email"
+            formControlName="email"
+            autocomplete="email"
+            [class.error]="isFieldInvalid('email')"
+            placeholder="you@example.com">
+          <mat-icon matPrefix>mail</mat-icon>
+          <mat-error *ngIf="isFieldInvalid('email')">
+            <span *ngIf="registerForm.get('email')?.errors?.['required']">Email is required</span>
+            <span *ngIf="registerForm.get('email')?.errors?.['email']">Enter a valid email</span>
+          </mat-error>
+        </mat-form-field>
 
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Password</mat-label>
-              <input 
-                matInput 
-                [type]="hidePassword ? 'password' : 'text'" 
-                formControlName="password"
-                autocomplete="new-password"
-                [class.error]="isFieldInvalid('password')">
-              <button 
-                mat-icon-button 
-                matSuffix 
-                type="button"
-                (click)="hidePassword = !hidePassword">
-                <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-              </button>
-              <mat-error *ngIf="isFieldInvalid('password')">
-                <span *ngIf="registerForm.get('password')?.errors?.['required']">Password is required</span>
-                <span *ngIf="registerForm.get('password')?.errors?.['minlength']">Password must be at least 8 characters</span>
-                <span *ngIf="registerForm.get('password')?.errors?.['pattern']">Password must contain uppercase, lowercase, number, and special character</span>
-              </mat-error>
-            </mat-form-field>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            [type]="hidePassword ? 'password' : 'text'"
+            formControlName="password"
+            autocomplete="new-password"
+            [class.error]="isFieldInvalid('password')"
+            placeholder="At least 8 characters">
+          <mat-icon matPrefix>lock</mat-icon>
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hidePassword = !hidePassword">
+            <mat-icon>{{ hidePassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="isFieldInvalid('password')">
+            <span *ngIf="registerForm.get('password')?.errors?.['required']">Password is required</span>
+            <span *ngIf="registerForm.get('password')?.errors?.['minlength']">Minimum 8 characters</span>
+            <span *ngIf="registerForm.get('password')?.errors?.['pattern']">Include upper, lower, number, and symbol</span>
+          </mat-error>
+        </mat-form-field>
 
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Confirm Password</mat-label>
-              <input 
-                matInput 
-                [type]="hideConfirmPassword ? 'password' : 'text'" 
-                formControlName="confirmPassword"
-                autocomplete="new-password"
-                [class.error]="isFieldInvalid('confirmPassword') || registerForm.errors?.['passwordMismatch']">
-              <button 
-                mat-icon-button 
-                matSuffix 
-                type="button"
-                (click)="hideConfirmPassword = !hideConfirmPassword">
-                <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-              </button>
-              <mat-error *ngIf="isFieldInvalid('confirmPassword')">
-                <span *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">Please confirm your password</span>
-              </mat-error>
-              <mat-error *ngIf="registerForm.errors?.['passwordMismatch'] && registerForm.get('confirmPassword')?.touched">
-                Passwords do not match
-              </mat-error>
-            </mat-form-field>
+        <div class="strength">
+          <div class="bar" [class.level-1]="strengthLevel >= 1" [class.level-2]="strengthLevel >= 2" [class.level-3]="strengthLevel >= 3"></div>
+          <span class="label">{{ strengthLabel }}</span>
+        </div>
 
-            <!-- Password Requirements -->
-            <div class="password-requirements">
-              <h4>Password Requirements:</h4>
-              <ul>
-                <li [class.met]="hasUppercase">At least one uppercase letter</li>
-                <li [class.met]="hasLowercase">At least one lowercase letter</li>
-                <li [class.met]="hasNumber">At least one number</li>
-                <li [class.met]="hasSpecialChar">At least one special character</li>
-                <li [class.met]="hasMinLength">At least 8 characters long</li>
-              </ul>
-            </div>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Confirm password</mat-label>
+          <input
+            matInput
+            [type]="hideConfirmPassword ? 'password' : 'text'"
+            formControlName="confirmPassword"
+            autocomplete="new-password"
+            [class.error]="isFieldInvalid('confirmPassword') || registerForm.errors?.['passwordMismatch']"
+            placeholder="Re-enter password">
+          <mat-icon matPrefix>lock</mat-icon>
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hideConfirmPassword = !hideConfirmPassword">
+            <mat-icon>{{ hideConfirmPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="isFieldInvalid('confirmPassword')">Please confirm your password</mat-error>
+          <mat-error *ngIf="registerForm.errors?.['passwordMismatch'] && registerForm.get('confirmPassword')?.touched">
+            Passwords do not match
+          </mat-error>
+        </mat-form-field>
 
-            <app-error-message 
-              [error]="errorMessage" 
-              (clear)="clearError()">
-            </app-error-message>
+        <app-error-message [error]="errorMessage" (clear)="clearError()"></app-error-message>
 
-            <div class="form-actions">
-              <button 
-                mat-raised-button 
-                color="primary" 
-                type="submit"
-                [disabled]="registerForm.invalid || isLoading"
-                class="full-width">
-                <span *ngIf="!isLoading">Create Account</span>
-                <span *ngIf="isLoading">
-                  <mat-spinner diameter="20" class="inline-spinner"></mat-spinner>
-                  Creating Account...
-                </span>
-              </button>
-            </div>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          class="cta-btn full-width"
+          [disabled]="registerForm.invalid || isLoading">
+          <span *ngIf="!isLoading">Create account</span>
+          <span *ngIf="isLoading" class="loading">
+            <mat-spinner diameter="18" class="inline-spinner"></mat-spinner>
+            Creating…
+          </span>
+        </button>
 
-            <div class="form-footer">
-              <p>Already have an account? <a routerLink="/auth/login">Sign in here</a></p>
-            </div>
-          </form>
-        </mat-card-content>
-      </mat-card>
+        <div class="links">
+          <span>Already have an account?</span>
+          <a routerLink="/auth/login">Sign in</a>
+        </div>
+      </form>
     </div>
   `,
   styles: [`
-    .register-container {
-      max-width: 500px;
-      margin: 0 auto;
-      padding: 20px;
-  font-family: var(--font-family);
-    }
-
-    .name-row {
-      display: flex;
-      gap: 16px;
-    }
-
-    .half-width {
-      flex: 1;
-      margin-bottom: 16px;
-    }
-
-    .full-width {
-      width: 100%;
-      margin-bottom: 16px;
-    }
-
-    .password-requirements {
-      margin: 16px 0;
-      padding: 16px;
-      background-color: var(--surface-color);
-      border-radius: 4px;
-      border: 1px solid var(--border-color);
-    }
-
-    .password-requirements h4 {
-      margin: 0 0 8px 0;
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    .password-requirements ul {
-      margin: 0;
-      padding-left: 20px;
-      font-size: 12px;
-    }
-
-    .password-requirements li {
-      margin: 4px 0;
-      color: var(--text-secondary);
-    }
-
-    .password-requirements li.met {
-      color: var(--success-color);
-      font-weight: 500;
-    }
-
-    .form-actions {
-      margin: 24px 0 16px 0;
-    }
-
-    .form-footer {
-      text-align: center;
-      margin-top: 16px;
-    }
-
-    .form-footer p {
-      margin: 8px 0;
-      font-size: 14px;
-    }
-
-    .form-footer a {
-      color: var(--primary-color);
-      text-decoration: none;
-    }
-
-    .form-footer a:hover {
-      text-decoration: underline;
-    }
-
-    .inline-spinner {
-      display: inline-block;
-      margin-right: 8px;
-    }
-
-    .error {
-      border-color: var(--error-color) !important;
-    }
+    :host { display: block; font-family: var(--font-family); }
+    .auth-form { display: grid; gap: 16px; }
+    .form-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .title h2 { margin: 0; font-size: clamp(18px, 1.2vw + 14px, 22px); letter-spacing: -0.01em; }
+    .title p { margin: 4px 0 0 0; color: var(--text-secondary); font-size: 13px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 480px) { .grid { grid-template-columns: 1fr; } }
+    .full-width { width: 100%; }
+    ::ng-deep .mat-mdc-form-field { --mdc-filled-text-field-container-color: var(--surface-color); }
+    .cta-btn { margin-top: 4px; }
+    .links { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 8px; font-size: 14px; }
+    .links a { color: var(--text-secondary); text-decoration: none; }
+    .links a:hover { color: var(--text-primary); text-decoration: underline; }
+    .inline-spinner { display: inline-block; margin-right: 8px; }
+    .loading { display: inline-flex; align-items: center; gap: 8px; }
+    .error { border-color: var(--error-color) !important; }
+    .strength { display: flex; align-items: center; gap: 8px; margin: -4px 0 8px; }
+    .strength .bar { flex: 1; height: 6px; border-radius: 999px; background: #eaeef3; position: relative; overflow: hidden; }
+    .strength .bar::after { content: ""; position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: var(--error-color); transition: width .25s ease, background .25s ease; }
+    .strength .bar.level-1::after { width: 33%; background: var(--error-color); }
+    .strength .bar.level-2::after { width: 66%; background: #f79009; }
+    .strength .bar.level-3::after { width: 100%; background: var(--success-color); }
+    .strength .label { min-width: 64px; text-align: right; color: var(--text-secondary); font-size: 12px; }
   `]
 })
 export class RegisterComponent {
@@ -278,6 +204,8 @@ export class RegisterComponent {
   hasNumber = false;
   hasSpecialChar = false;
   hasMinLength = false;
+  strengthLevel = 0;
+  strengthLabel = 'Weak';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -296,9 +224,10 @@ export class RegisterComponent {
       confirmPassword: ['', Validators.required]
     }, { validators: passwordMatchValidator });
 
-    // Watch password changes to update requirements
+    // Watch password changes to update requirements and strength meter
     this.registerForm.get('password')?.valueChanges.subscribe(password => {
       this.updatePasswordRequirements(password);
+      this.updateStrength(password || '');
     });
   }
 
@@ -343,6 +272,15 @@ export class RegisterComponent {
     this.hasNumber = /\d/.test(password);
     this.hasSpecialChar = /[@$!%*?&]/.test(password);
     this.hasMinLength = password.length >= 8;
+  }
+
+  private updateStrength(password: string): void {
+    let score = 0;
+    if (this.hasMinLength) score++;
+    if (this.hasUppercase && this.hasLowercase) score++;
+    if (this.hasNumber && this.hasSpecialChar) score++;
+    this.strengthLevel = score; // 0-3
+    this.strengthLabel = ['Weak', 'Fair', 'Good', 'Strong'][score] || 'Weak';
   }
 
   private markFormGroupTouched(): void {
