@@ -14,6 +14,9 @@ export const environment = {
   },
   security: {
     jwtSecretKey: 'dev-secret-key-change-in-production',
+  // Used to encrypt small bits of data locally (e.g., cached user profile)
+  // In production, set this via environment variables or build-time replacement.
+  localEncryptionKey: 'dev-local-encryption-key',
     sessionTimeout: 3600000, // 1 hour in milliseconds
     passwordMinLength: 8,
     passwordRequireSpecialChars: true,

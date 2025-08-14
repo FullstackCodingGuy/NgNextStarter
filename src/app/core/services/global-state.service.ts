@@ -13,6 +13,7 @@ import {
   DEFAULT_THEMES
 } from '../models/global-state.model';
 import { AuthService } from './auth.service';
+import { PermissionService } from './permission.service';
 import { User } from '../models/user.model';
 
 @Injectable({
@@ -75,7 +76,7 @@ export class GlobalStateService implements StateActions {
     return themeState.current;
   });
 
-  constructor(authService?: AuthService) {
+  constructor(authService?: AuthService, private permissionService?: PermissionService) {
     this.authService = authService || inject(AuthService);
     this.initializeState();
     this.setupAuthIntegration();
@@ -323,7 +324,7 @@ export class GlobalStateService implements StateActions {
         this.setUserSession({
           isAuthenticated: true,
           user: userInfo,
-          permissions: this.getUserPermissions(user),
+          permissions: this.permissionService ? [...this.permissionService.getPermissionsForUser(user)] : this.getUserPermissions(user),
           lastActivity: new Date()
         });
       } else {
@@ -333,15 +334,14 @@ export class GlobalStateService implements StateActions {
   }
 
   private getUserPermissions(user: User): string[] {
-    // Map user roles to permissions
+    // Fallback mapping in case PermissionService isn't injected
     const rolePermissions: { [key: string]: string[] } = {
-      'admin': ['read', 'write', 'delete', 'admin', 'manage_users', 'manage_settings'],
-      'manager': ['read', 'write', 'delete', 'manage_team'],
-      'analyst': ['read', 'write', 'analyze'],
-      'viewer': ['read']
+      'admin': ['banking.read', 'banking.write', 'users.manage', 'settings.manage'],
+      'manager': ['banking.read', 'banking.write'],
+      'analyst': ['banking.read'],
+      'viewer': ['banking.read']
     };
-
-    return rolePermissions[user.role] || ['read'];
+    return rolePermissions[user.role] || ['banking.read'];
   }
 
   private applyThemeToDocument(theme: Theme): void {

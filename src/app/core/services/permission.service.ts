@@ -16,25 +16,35 @@ export class PermissionService {
   // These can be externalized to config later.
   private readonly ROLE_PERMISSIONS: Record<UserRole, readonly string[]> = {
     [UserRole.ADMIN]: [
-      'banking.read',
-      'banking.write'
+      'read', 'write', 'delete', 'admin', 'manage_users', 'manage_settings',
+      'banking.read', 'banking.write'
     ],
     [UserRole.MANAGER]: [
-      'banking.read',
-      'banking.write'
+      'read', 'write', 'delete', 'manage_team',
+      'banking.read', 'banking.write'
     ],
     [UserRole.ANALYST]: [
+      'read', 'write', 'analyze',
       'banking.read'
     ],
     [UserRole.VIEWER]: [
+      'read',
       'banking.read'
     ],
   } as const;
 
   getPermissions(): readonly string[] {
-    const user = this.auth.getCurrentUser();
+    const user = this.tryGetCurrentUser();
     if (!user) return [];
     return this.ROLE_PERMISSIONS[user.role] ?? [];
+  }
+
+  getPermissionsForUser(user: { role: UserRole }): readonly string[] {
+    return this.ROLE_PERMISSIONS[user.role] ?? [];
+  }
+
+  getPermissionsMutable(): string[] {
+    return [...this.getPermissions()];
   }
 
   hasPermission(permission: string): boolean {
@@ -49,5 +59,17 @@ export class PermissionService {
   hasAny(permissions: readonly string[] = []): boolean {
     const set = new Set(this.getPermissions());
     return permissions.some(p => set.has(p));
+  }
+
+  private tryGetCurrentUser(): { role: UserRole } | null {
+    const maybeFn = (this.auth as any)?.getCurrentUser;
+    if (typeof maybeFn === 'function') {
+      try { return maybeFn.call(this.auth); } catch { /* noop */ }
+    }
+    try {
+      const raw = localStorage.getItem('current_user');
+      if (raw) return JSON.parse(raw);
+    } catch { /* noop */ }
+    return null;
   }
 }

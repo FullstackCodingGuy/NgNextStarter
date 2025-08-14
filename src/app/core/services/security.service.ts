@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of, delay, map } from 'rxjs';
 import { SecurityPosition, Portfolio, CreateSecurityPositionRequest, UpdateSecurityPositionRequest, SecurityType } from '../models/security.model';
 import { ApiResponse, PaginatedResponse, PaginationParams } from '../models/common.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SecurityService {
-  private readonly API_URL = 'http://localhost:3000/api/securities';
+  private readonly API_URL = `${environment.apiUrl}/securities`;
   
   // Mock data for demonstration
   private mockPositions: SecurityPosition[] = [

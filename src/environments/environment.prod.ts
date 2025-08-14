@@ -14,6 +14,7 @@ export const environment = {
   },
   security: {
     jwtSecretKey: '', // Set via environment variable in production
+  localEncryptionKey: '', // Set via environment variable or build secret in production
     sessionTimeout: 1800000, // 30 minutes in milliseconds
     passwordMinLength: 8,
     passwordRequireSpecialChars: true,

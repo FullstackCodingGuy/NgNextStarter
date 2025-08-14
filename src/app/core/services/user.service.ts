@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of, delay, map } from 'rxjs';
 import { User, UserRole } from '../models/user.model';
 import { PaginatedResponse, PaginationParams } from '../models/common.model';
+import { environment } from '../../../environments/environment';
 
 export interface CreateUserRequest {
   email: string;
@@ -23,7 +24,7 @@ export interface UpdateUserRequest {
   providedIn: 'root'
 })
 export class UserService {
-  private readonly API_URL = 'http://localhost:3000/api/users';
+  private readonly API_URL = `${environment.apiUrl}/users`;
   
   // Mock data for demonstration
   private mockUsers: User[] = [

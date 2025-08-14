@@ -3,17 +3,19 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, map, catchError, throwError } from 'rxjs';
 import { User, AuthResponse, LoginRequest, RegisterRequest, UserRole } from '../models/user.model';
 import { ApiResponse } from '../models/common.model';
-import * as CryptoJS from 'crypto-js';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly API_URL = 'http://localhost:3000/api/auth'; // TODO: move to environment
+  private readonly API_URL = `${environment.apiUrl}/auth`;
   private readonly TOKEN_KEY = 'auth_token';
   private readonly REFRESH_TOKEN_KEY = 'refresh_token';
   private readonly USER_KEY = 'current_user';
-  private readonly CRYPTO_SECRET = 'securities-app-secret'; // In production, use environment variable
+  private readonly SECURE_USER_KEY = 'current_user_secure';
+  // Use environment-provided key material for local storage encryption
+  private readonly CRYPTO_SECRET = environment.security.localEncryptionKey || 'dev-key';
 
   private currentUserSubject = new BehaviorSubject<User | null>(this.getCurrentUser());
   public currentUser$ = this.currentUserSubject.asObservable();
@@ -67,6 +69,7 @@ export class AuthService {
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.REFRESH_TOKEN_KEY);
     localStorage.removeItem(this.USER_KEY);
+  localStorage.removeItem(this.SECURE_USER_KEY);
     this.currentUserSubject.next(null);
   }
 
@@ -79,8 +82,7 @@ export class AuthService {
     const userData = localStorage.getItem(this.USER_KEY);
     if (userData) {
       try {
-        const decrypted = CryptoJS.AES.decrypt(userData, this.CRYPTO_SECRET).toString(CryptoJS.enc.Utf8);
-        return JSON.parse(decrypted);
+  return JSON.parse(userData) as User;
       } catch {
         return null;
       }
@@ -106,9 +108,12 @@ export class AuthService {
     localStorage.setItem(this.TOKEN_KEY, authData.token);
     localStorage.setItem(this.REFRESH_TOKEN_KEY, authData.refreshToken);
     
-    // Encrypt user data before storing
-    const encrypted = CryptoJS.AES.encrypt(JSON.stringify(authData.user), this.CRYPTO_SECRET).toString();
-    localStorage.setItem(this.USER_KEY, encrypted);
+    // Store plaintext for synchronous access
+    localStorage.setItem(this.USER_KEY, JSON.stringify(authData.user));
+    // Additionally store an encrypted mirror (non-blocking)
+    this.encryptUser(JSON.stringify(authData.user))
+      .then(payload => localStorage.setItem(this.SECURE_USER_KEY, JSON.stringify(payload)))
+      .catch(() => void 0);
   }
 
   private isTokenExpired(token: string): boolean {
@@ -222,5 +227,54 @@ export class AuthService {
     }));
   const signature = btoa('mock-signature');
     return `${header}.${payload}.${signature}`;
+  }
+
+  // --- Web Crypto helpers for local encryption (AES-GCM) ---
+  private async getKey(): Promise<CryptoKey> {
+    // Derive a key from the provided secret using SHA-256
+    const enc = new TextEncoder();
+    const secretBytes = enc.encode(this.CRYPTO_SECRET);
+    const hash = await crypto.subtle.digest('SHA-256', secretBytes);
+    return crypto.subtle.importKey(
+      'raw',
+      hash,
+      { name: 'AES-GCM' },
+      false,
+      ['encrypt', 'decrypt']
+    );
+  }
+
+  private async encryptUser(plaintext: string): Promise<{ iv: string; data: string }> {
+    const key = await this.getKey();
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const encoded = new TextEncoder().encode(plaintext);
+    const cipher = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, encoded);
+    return {
+      iv: this.bufToB64(iv),
+      data: this.bufToB64(new Uint8Array(cipher))
+    };
+  }
+
+  private async decryptUser(payload: { iv: string; data: string }): Promise<string> {
+    const key = await this.getKey();
+    const ivArr = this.b64ToBuf(payload.iv);
+    const dataArr = this.b64ToBuf(payload.data);
+    const iv = ivArr.buffer.slice(ivArr.byteOffset, ivArr.byteOffset + ivArr.byteLength) as ArrayBuffer;
+    const data = dataArr.buffer.slice(dataArr.byteOffset, dataArr.byteOffset + dataArr.byteLength) as ArrayBuffer;
+    const plainBuf = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, data);
+    return new TextDecoder().decode(plainBuf);
+  }
+
+  private bufToB64(buf: Uint8Array): string {
+    let binary = '';
+    buf.forEach(b => binary += String.fromCharCode(b));
+    return btoa(binary);
+  }
+
+  private b64ToBuf(b64: string): Uint8Array {
+    const binary = atob(b64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return bytes;
   }
 }
