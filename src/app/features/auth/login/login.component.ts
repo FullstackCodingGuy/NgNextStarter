@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterModule } from '@angular/router';
 import { ErrorMessageComponent } from '../../../shared/components/ui-components';
+import { AuthFormShellComponent } from '../../../shared/components/auth-form-shell.component';
 
 @Component({
   selector: 'app-login',
@@ -25,20 +26,15 @@ import { ErrorMessageComponent } from '../../../shared/components/ui-components'
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    ErrorMessageComponent
+    ErrorMessageComponent,
+    AuthFormShellComponent
   ],
   template: `
-    <div class="auth-form">
-      <header class="form-header">
-        <div class="title">
-          <h2>Welcome back</h2>
-          <p>Sign in to your account to continue</p>
-        </div>
-        <button type="button" class="ghost-btn" (click)="prefillDemo()" aria-label="Prefill demo credentials">
-          <mat-icon>bolt</mat-icon>
-          Use demo
-        </button>
-      </header>
+    <app-auth-form-shell title="Welcome back" subtitle="Sign in to your account to continue">
+      <button type="button" action class="ghost-btn" (click)="prefillDemo()" aria-label="Prefill demo credentials">
+        <mat-icon>bolt</mat-icon>
+        Use demo
+      </button>
 
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
         <mat-form-field appearance="fill" class="full-width">
@@ -97,7 +93,7 @@ import { ErrorMessageComponent } from '../../../shared/components/ui-components'
           </span>
         </button>
 
-        <div class="links">
+        <div links class="links">
           <a routerLink="/auth/forgot-password">Forgot password?</a>
           <span class="divider">•</span>
           <a routerLink="/auth/register">Create account</a>
@@ -105,7 +101,7 @@ import { ErrorMessageComponent } from '../../../shared/components/ui-components'
 
         <p class="microcopy">Tip: you can use <strong>admin@securities.com</strong> / <strong>Admin123!</strong></p>
       </form>
-    </div>
+    </app-auth-form-shell>
   `,
   styles: [`
     :host { display: block; font-family: var(--font-family); }

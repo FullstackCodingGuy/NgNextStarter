@@ -6,20 +6,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthFormShellComponent } from '../../../shared/components/auth-form-shell.component';
 
 @Component({
   selector: 'app-forgot-password',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, AuthFormShellComponent],
   template: `
-    <div class="auth-form">
-      <header class="form-header">
-        <div class="title">
-          <h2>Reset your password</h2>
-          <p>We’ll email you a link to reset it</p>
-        </div>
-      </header>
-
+    <app-auth-form-shell title="Reset your password" subtitle="We’ll email you a link to reset it" [compact]="true">
       <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Email</mat-label>
@@ -32,7 +26,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
           <span *ngIf="loading">Sending…</span>
         </button>
       </form>
-    </div>
+    </app-auth-form-shell>
   `,
   styles: [`
     :host { display: block; font-family: var(--font-family); }

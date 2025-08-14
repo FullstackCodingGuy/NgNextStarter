@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterModule } from '@angular/router';
 import { ErrorMessageComponent } from '../../../shared/components/ui-components';
+import { AuthFormShellComponent } from '../../../shared/components/auth-form-shell.component';
 
 // Custom validator for password confirmation
 function passwordMatchValidator(control: AbstractControl): {[key: string]: any} | null {
@@ -37,17 +38,11 @@ function passwordMatchValidator(control: AbstractControl): {[key: string]: any} 
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    ErrorMessageComponent
+    ErrorMessageComponent,
+    AuthFormShellComponent
   ],
   template: `
-    <div class="auth-form">
-      <header class="form-header">
-        <div class="title">
-          <h2>Create your account</h2>
-          <p>Join us and get started in minutes</p>
-        </div>
-      </header>
-
+    <app-auth-form-shell title="Create your account" subtitle="Join us and get started in minutes">
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
         <div class="grid">
           <mat-form-field appearance="fill" class="full-width">
@@ -158,12 +153,12 @@ function passwordMatchValidator(control: AbstractControl): {[key: string]: any} 
           </span>
         </button>
 
-        <div class="links">
+        <div links class="links">
           <span>Already have an account?</span>
           <a routerLink="/auth/login">Sign in</a>
         </div>
       </form>
-    </div>
+    </app-auth-form-shell>
   `,
   styles: [`
     :host { display: block; font-family: var(--font-family); }
