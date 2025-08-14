@@ -118,7 +118,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       left: 0;
       right: 0;
       z-index: 1000;
-      height: 64px;
+  height: var(--header-h);
       display: flex;
       align-items: center;
       backdrop-filter: saturate(1.2) blur(6px);
@@ -141,6 +141,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       border-radius: 24px;
       background: rgba(255,255,255,0.08);
       transition: background 0.2s;
+    }
+    .menu-button, .avatar-button {
+      transition: transform 120ms ease, box-shadow 120ms ease;
+    }
+    .menu-button:focus-visible, .avatar-button:focus-visible {
+      box-shadow: 0 0 0 4px var(--focus-ring-color);
+      outline: none;
+      border-radius: 8px;
     }
     .avatar-button:hover {
       background: rgba(255,255,255,0.18);
@@ -218,11 +226,63 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
     .main-content {
       background-color: var(--background-color);
+      /* subtle layered background to give depth */
+      background-image: linear-gradient(180deg, transparent 0%, rgba(16,24,40,0.015) 100%);
     }
 
+    /* Page shell: centers content and constrains width for a professional layout */
     .content-wrapper {
       padding: clamp(var(--space-4), 1.5vw, var(--space-6));
-      min-height: calc(100vh - 64px);
+  min-height: calc(100vh - var(--header-h));
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* center the page container */
+      gap: var(--space-6);
+      overflow-y: auto;
+    }
+
+    /* Constrained content area used by pages */
+    .page-container {
+      width: 100%;
+      max-width: 1200px; /* comfortable reading width */
+      display: block;
+    }
+
+    /* A clean, elevated card used as the primary content surface */
+    .page-card {
+      background: color-mix(in srgb, var(--surface-color) 94%, var(--background-color));
+      border-radius: var(--radius-md);
+      padding: clamp(var(--space-4), 1.2vw, var(--space-5));
+      box-shadow: var(--shadow-md);
+      border: 1px solid color-mix(in srgb, var(--border-color) 60%, transparent);
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    .page-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Page header inside the page container */
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      margin-bottom: var(--space-4);
+    }
+
+    .page-title {
+      font-size: clamp(18px, 1.4vw, 22px);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .page-subtitle {
+      color: var(--text-secondary);
+      font-size: 13px;
+      margin-top: 4px;
     }
 
   .active { background: color-mix(in srgb, var(--primary-color) 18%, transparent) !important; }

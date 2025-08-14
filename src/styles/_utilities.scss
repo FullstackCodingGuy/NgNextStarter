@@ -67,3 +67,49 @@
 /* Overflow helpers */
 .no-x-scroll { overflow-x: hidden !important; }
 .no-y-scroll { overflow-y: hidden !important; }
+
+/* Page layout utilities for consistent application pages */
+.page-container {
+	width: 100%;
+	max-width: 1200px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.page-card {
+	background: color-mix(in srgb, var(--surface-color) 96%, var(--background-color));
+	border-radius: var(--radius-md);
+	padding: clamp(var(--space-3), 1vw, var(--space-5));
+	box-shadow: var(--shadow-md);
+	border: 1px solid color-mix(in srgb, var(--border-color) 60%, transparent);
+	transition: transform 180ms cubic-bezier(.2,.9,.2,1), box-shadow 180ms ease;
+	will-change: transform, box-shadow;
+}
+
+.page-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-4);
+}
+
+/* Focus states for interactive elements */
+:where(button, a, [role="button"]) :focus {
+	outline: none;
+}
+:where(button, a, [role="button"]).focus-visible, :where(button, a, [role="button"]):focus-visible {
+	box-shadow: 0 0 0 4px var(--focus-ring-color);
+	border-radius: 8px;
+}
+
+/* Typography helpers */
+.h1 { font-size: var(--h1-size); line-height: var(--lead-line-height); font-weight: var(--font-weight-semibold); }
+.h2 { font-size: var(--h2-size); line-height: var(--lead-line-height); font-weight: var(--font-weight-semibold); }
+.h3 { font-size: var(--h3-size); line-height: var(--body-line-height); font-weight: var(--font-weight-medium); }
+
+@media (max-width: 599.98px) {
+	.page-card { padding: var(--space-4); }
+}
+
+/* small helper for compact page rows */
+.row { display: flex; gap: var(--space-4); align-items: center; }
