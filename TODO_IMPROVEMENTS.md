@@ -22,27 +22,32 @@ Purpose: single source of truth for the prioritized improvements and coding-stan
    - Latest progress: Analysis complete; `AuthService` currently stores access & refresh tokens and a client-side encrypted user mirror. Recommend BFF or cookie-based sessions.
 
 2. Remove client-side setting of response security headers (they belong on server)
-   - Status: Not started
+   - Status: Done (merged)
    - Assignee: TBD
-   - PR: TBD
-   - Latest progress: Identified `AuthInterceptor` sets `X-Frame-Options`, `X-Content-Type-Options`. Mark for removal and add TODO comment referencing server config.
+   - PR: feat/safe-sanitizer (merged)
+   - Latest progress: `AuthInterceptor` no longer sets response-security headers in the request pipeline; a TODO comment was added to remind that these headers must come from the server or CDN/BFF. This change was merged in branch `feat/safe-sanitizer`.
 
 3. Replace naive request-body sanitization with a safer approach
-    - Status: In progress
+    - Status: Done (merged)
     - Assignee: TBD (recommended: frontend-security or platform-owner)
-    - PR: TBD
-    - Latest progress: Replaced fragile regex-based sanitization in `SecurityInterceptor` with conservative HTML-escaping for request-body string fields (escape &, <, >, ", '). Added guidance to use server-side validation and DOMPurify for any HTML rendered into the DOM.
-    - Remaining subtasks:
-       1. Preserve original `HttpErrorResponse` on error augmentation (done)
-       2. Add/extend unit tests to cover retry behavior and error augmentation (done)
-       3. Decide on sanitizer policy (whitelist vs blanket) and document in `docs/SANITIZATION_POLICY.md` (pending)
-       4. Implement optional whitelist/field-config to avoid mutating binary/blob fields (pending)
-       5. Add performance safeguards for very large payloads (pending)
-       6. Coordinate with backend to avoid double-escaping and establish server policy (pending)
+    - PR: feat/safe-sanitizer (merged)
+    - Latest progress: Implemented an opt-in, conservative client-side sanitizer in `SecurityInterceptor`. Key changes merged in `feat/safe-sanitizer`:
+       - Replaced fragile regex-based sanitization with conservative HTML-escaping for string fields (escapes: &, <, >, \", ').
+       - Added `environment.sanitizer` configuration (dev/prod toggle) and whitelist/blacklist support for fields.
+       - Hardened `randomId()` to fall back to a timestamp+random hex for SSR/test environments.
+       - Added `src/app/core/constants/headers.ts` (`X_REQUEST_ID`) and attached correlation IDs to requests.
+       - Preserved the original `HttpErrorResponse` instance when augmenting errors with `safeMessage` and `correlationId`.
+       - Added unit tests: `src/app/core/interceptors/security.interceptor.spec.ts`.
+       - Added documentation: `docs/SANITIZATION_POLICY.md`.
+    - Remaining subtasks (post-merge):
+       1. Runtime-config for the whitelist (move from static environment to runtime-config or admin UI) — Partial (implementation supports whitelist, but runtime/config management is pending).
+       2. Performance safeguards for very large payloads (pending) — add size checks and opt-out for binary/blob fields.
+       3. Backend coordination to avoid double-escaping and to agree on server-side validation/escaping policy (pending).
+       4. Add integration/E2E tests to ensure no double-escaping or encoding mismatches between client and server (pending).
     - Next recommended actions (short-term):
-       - Create `docs/SANITIZATION_POLICY.md` and finalize which fields should be sanitized by the client.
-       - Move sanitizer whitelist into runtime-config (environment / global state) and make it opt-in.
-       - Run full test suite and CI to confirm behavior across environments.
+       - Finalize policy with backend owners and decide which fields are client-sanitized vs server-validated.
+       - Add size-limits and skip rules for binary content fields before sanitizing.
+       - Run CI in single-run headless mode and add a note to the PR describing how to reproduce the test run locally.
 
 4. Implement token refresh / retry flow in interceptor
    - Status: Not started
@@ -58,7 +63,7 @@ Purpose: single source of truth for the prioritized improvements and coding-stan
    - Status: In progress
    - Assignee: TBD
    - PR: TBD
-   - Latest progress: `GlobalStateService` uses `window.matchMedia` and `document` operations; flagged. Add platform checks (isPlatformBrowser) or guard code paths.
+   - Latest progress: `GlobalStateService` uses `window.matchMedia` and `document` operations; flagged. Add platform checks (`isPlatformBrowser`) or guard code paths.
 
 6. Remove or gracefully degrade WebCrypto-dependent flows
    - Status: Not started
