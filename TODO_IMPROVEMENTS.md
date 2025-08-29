@@ -29,6 +29,18 @@ Purpose: single source of truth for the prioritized improvements and coding-stan
    - PR: TBD
    - Latest progress: Current interceptors call `logout()` on 401. Recommend queueing requests and performing refresh token exchange before forcing logout.
 
+3. Conservative request-body sanitizer and safer interceptor
+   - Status: Done
+   - Assignee: Core team
+   - PR: feat/safe-sanitizer (pushed)
+   - Latest progress: Replaced naive client-side sanitizer with conservative allow-listing in `security.interceptor.ts`. Unit tests added and green. Feature branch was pushed as `feat/safe-sanitizer` and merged into main earlier in the audit workflow.
+
+4. SSR & WebCrypto runtime hardening
+   - Status: Done
+   - Assignee: Core team
+   - PR: (local changes committed)
+   - Latest progress: Guarded DOM and `localStorage` access in `GlobalStateService`; added `isBrowser`/`webCrypto` checks in `AuthService` and degraded crypto usage when not available.
+
 ---
 
 ## Priority: Medium (Robustness / correctness)
@@ -92,17 +104,21 @@ Purpose: single source of truth for the prioritized improvements and coding-stan
 Goal: modernize the app's look-and-feel with a minimal-risk, staged approach that preserves existing UX flows, improves accessibility, and provides a reusable design system for future work.
 
 How we'll proceed (checklist):
-- [ ] Deep analysis and token consolidation (theme, spacing, motion, elevation).
-- [ ] Implement Quick Wins (non-breaking style tokens + base elements).
-- [ ] Add component primitives (buttons, forms, cards, skeletons) as a small CSS/SCSS library.
-- [ ] Add a responsive layout/grid and refine page containers.
-- [ ] Add accessibility improvements and reduced-motion support.
+- [x] Deep analysis and token consolidation (theme, spacing, motion, elevation).
+- [x] Implement Quick Wins (non-breaking style tokens + base elements).
+- [x] Add component primitives (buttons, forms, cards, skeletons) as a small CSS/SCSS library.
+- [x] Add a responsive layout/grid and refine page containers.
+- [x] Add accessibility improvements and reduced-motion support.
 - [ ] Add visual regression via Storybook + CI (optional, recommended).
 - [ ] Rollout plan: incremental PRs with smoke tests and QA signoff.
 
 Priority breakdown & tasks
 
 Completed UI items (removed): PR-A, PR-B, PR-C, PR-D, PR-E, PR-F — these were implemented (tokens, base styles, component primitives, cards & skeletons, layout, and sidebar/topbar polish).
+
+Site-wide page shell standardization
+- Status: Done
+- Latest progress: Most pages and placeholders were updated to use the `page-container` / `page-card` shell; auth/register templates were fixed for template nesting. Unit tests run and are green after the standardization edits.
 
 Remaining priority tasks
 
@@ -151,7 +167,8 @@ Acceptance criteria (definition of done)
 - A short style-doc (`src/styles/README.md`) explains tokens, breakpoints, and how to add components.
 
 Notes and next immediate action
-- Next immediate step: I can implement PR-A (token consolidation + motion tokens + reduced-motion support) and create a tidy branch and PR with a short description and acceptance checklist. This is low risk and will make subsequent component work safer.
+- Completed: M1–M3 implemented (tokens, base styles, component primitives, layout, and accessibility helpers).
+- Next immediate step: implement PR-G (Storybook + visual regression) and PR-H (CI accessibility checks); these require additional infra and slightly higher effort. I can open feature branches for either and provide a short plan and acceptance checklist.
 
 
 ## Notes and references
