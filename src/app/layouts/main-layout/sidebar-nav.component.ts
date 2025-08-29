@@ -36,8 +36,9 @@ export type NavItem = {
               [class.active]="isParentActive(item)"
               [class.expanded]="isParentActive(item) || isExpanded(item)"
               (click)="toggleExpansion(item)"
+              (keydown)="onGroupKeydown($event, item)"
               [attr.aria-expanded]="isParentActive(item) || isExpanded(item)"
-              [attr.aria-controls]="'nav-group-' + item.label">
+              [attr.aria-controls]="'nav-group-' + safeId(item.label)">
               <div class="nav-group-content">
                 <span class="nav-icon" *ngIf="item.icon">
                   <i [class]="item.icon" aria-hidden="true"></i>
@@ -52,7 +53,7 @@ export type NavItem = {
             <div 
               class="nav-group-children"
               [class.expanded]="isParentActive(item) || isExpanded(item)"
-              [id]="'nav-group-' + item.label">
+              [id]="'nav-group-' + safeId(item.label)">
               <a 
                 *ngFor="let child of item.children; trackBy: trackByLabel"
                 class="nav-child-link"
@@ -76,7 +77,8 @@ export type NavItem = {
             routerLinkActive="active"
             [attr.aria-current]="(activeUrl()===item.route) ? 'page' : null"
             [routerLinkActiveOptions]="{ exact: true }"
-            [attr.aria-label]="item.label">
+            [attr.aria-label]="item.label"
+            role="menuitem">
             <span class="nav-icon" *ngIf="item.icon">
               <i [class]="item.icon" aria-hidden="true"></i>
             </span>
@@ -352,6 +354,24 @@ export class SidebarNavComponent implements OnInit, OnDestroy {
     }
 
     trackByLabel = (_: number, item: NavItem) => item.label;
+
+  // Sanitize label to safe ID (alphanumeric and dashes)
+  safeId(label: string): string {
+    return label.replace(/[^a-z0-9\-]+/gi, '-').toLowerCase();
+  }
+
+  onGroupKeydown(event: KeyboardEvent, item: NavItem) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this.toggleExpansion(item);
+    } else if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      this.expand(item);
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      this.collapse(item);
+    }
+  }
 
     childExact(child: NavItem): boolean {
         // Exact match for routes without nested subroutes under same path segment

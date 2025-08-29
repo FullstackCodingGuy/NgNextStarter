@@ -33,12 +33,17 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   template: `
     <div class="layout-container">
       <!-- Top Navigation Bar -->
+      <!-- Skip link for screen readers -->
+      <a class="sr-only-focusable" href="#main-content">Skip to content</a>
+
       <mat-toolbar color="primary" class="top-nav elegant-nav">
         <button
           mat-icon-button
           (click)="toggleSidenav()"
           class="menu-button"
-          aria-label="Open navigation">
+          aria-label="Toggle navigation"
+          [attr.aria-expanded]="sidenavOpened"
+          aria-controls="main-sidenav">
           <span class="fa-solid fa-bars" aria-hidden="true"></span>
         </button>
 
@@ -81,8 +86,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
       <!-- Side Navigation -->
       <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav
+        <mat-sidenav
           #sidenav
+          id="main-sidenav"
           [mode]="sidenavMode"
           [opened]="sidenavOpened"
           class="sidenav"
@@ -92,7 +98,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
         </mat-sidenav>
 
         <!-- Main Content -->
-        <mat-sidenav-content class="main-content">
+        <mat-sidenav-content id="main-content" class="main-content">
           <div class="content-wrapper">
             <router-outlet></router-outlet>
           </div>
@@ -144,6 +150,25 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     }
     .menu-button, .avatar-button {
       transition: transform 120ms ease, box-shadow 120ms ease;
+    }
+    .sr-only-focusable {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .sr-only-focusable:focus, .sr-only-focusable:active {
+      position: static;
+      width: auto;
+      height: auto;
+      margin: var(--space-2);
+      padding: var(--space-2);
+      background: var(--surface-color);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-sm);
+      z-index: 2000;
     }
     .menu-button:focus-visible, .avatar-button:focus-visible {
       box-shadow: 0 0 0 4px var(--focus-ring-color);
