@@ -13,22 +13,20 @@ import { BankAccount } from '../../data/models';
   imports: [CommonModule, MatCardModule, MatTableModule, MatPaginatorModule],
   template: `
   <div class="page-container">
-    <!-- Header full width -->
-    <div class="page-card">
-      <header class="page-header">
-        <div>
-          <nav class="breadcrumb" aria-label="Breadcrumb">
-            <a routerLink="/dashboard">Dashboard</a>
-            <span class="sep">/</span>
-            <a routerLink="/banking">Banking</a>
-            <span class="sep">/</span>
-            <span aria-current="page">Accounts</span>
-          </nav>
-          <h1 class="page-title">Accounts</h1>
-          <p class="page-subtitle">Overview of your accounts and balances</p>
-        </div>
-      </header>
-    </div>
+    <!-- Header full width (not inside page-card) -->
+    <header class="page-header">
+      <div>
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a routerLink="/dashboard">Dashboard</a>
+          <span class="sep">/</span>
+          <a routerLink="/banking">Banking</a>
+          <span class="sep">/</span>
+          <span aria-current="page">Accounts</span>
+        </nav>
+        <h1 class="page-title">Accounts</h1>
+        <p class="page-subtitle">Overview of your accounts and balances</p>
+      </div>
+    </header>
 
     <!-- Table occupies full width -->
     <div>

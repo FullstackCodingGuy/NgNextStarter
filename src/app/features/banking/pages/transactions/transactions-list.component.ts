@@ -26,24 +26,23 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   ],
   template: `
   <div class="page-container">
-    <div class="page-card">
-      <header class="page-header">
-        <div>
-          <nav class="breadcrumb" aria-label="Breadcrumb">
-            <a routerLink="/dashboard">Dashboard</a>
-            <span class="sep">/</span>
-            <a routerLink="/banking">Banking</a>
-            <span class="sep">/</span>
-            <span aria-current="page">Transactions</span>
-          </nav>
-          <h1 class="page-title">Transactions</h1>
-          <p class="page-subtitle">Filter and review recent transactions</p>
-        </div>
-        <div class="header-actions">
-          <button *ngIf="canCreate" mat-flat-button color="accent" (click)="goNew()">New Transaction</button>
-        </div>
-      </header>
-    </div>
+    <!-- Header outside of page-card -->
+    <header class="page-header">
+      <div>
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a routerLink="/dashboard">Dashboard</a>
+          <span class="sep">/</span>
+          <a routerLink="/banking">Banking</a>
+          <span class="sep">/</span>
+          <span aria-current="page">Transactions</span>
+        </nav>
+        <h1 class="page-title">Transactions</h1>
+        <p class="page-subtitle">Filter and review recent transactions</p>
+      </div>
+      <div class="header-actions">
+        <button *ngIf="canCreate" mat-flat-button color="accent" (click)="goNew()">New Transaction</button>
+      </div>
+    </header>
 
     <!-- Filters (stacked above table) -->
     <div>

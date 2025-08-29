@@ -12,21 +12,20 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   imports: [CommonModule, MatCardModule, MatListModule],
   template: `
   <div class="page-container">
-    <div class="page-card">
-      <header class="page-header">
-        <div>
-          <nav class="breadcrumb" aria-label="Breadcrumb">
-            <a routerLink="/dashboard">Dashboard</a>
-            <span class="sep">/</span>
-            <a routerLink="/banking">Banking</a>
-            <span class="sep">/</span>
-            <span aria-current="page">Balances</span>
-          </nav>
-          <h1 class="page-title">Balances</h1>
-          <p class="page-subtitle">Current and available balances across your accounts</p>
-        </div>
-      </header>
-    </div>
+    <!-- Header not inside page-card -->
+    <header class="page-header">
+      <div>
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a routerLink="/dashboard">Dashboard</a>
+          <span class="sep">/</span>
+          <a routerLink="/banking">Banking</a>
+          <span class="sep">/</span>
+          <span aria-current="page">Balances</span>
+        </nav>
+        <h1 class="page-title">Balances</h1>
+        <p class="page-subtitle">Current and available balances across your accounts</p>
+      </div>
+    </header>
 
     <div>
       <div class="page-card">
