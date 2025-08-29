@@ -12,9 +12,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   standalone: true,
   imports: [CommonModule, MatCardModule],
   template: `
-  <div class="page-container grid-12">
-    <div class="col-span-2"></div>
-    <div class="col-span-8">
+  <div class="page-container">
+    <div style="max-width:920px;margin-left:auto;margin-right:auto;">
       <div class="page-card">
         <mat-card *ngIf="tx">
           <mat-card-title>Transaction Details</mat-card-title>
@@ -29,8 +28,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
           </div>
         </mat-card>
       </div>
-    </div>
-    <div class="col-span-2"></div>
+  </div>
   </div>
   `,
   styles: [`.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-2)}`],

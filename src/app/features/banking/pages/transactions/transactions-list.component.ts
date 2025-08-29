@@ -25,8 +25,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     MatDatepickerModule, MatNativeDateModule, MatButtonModule, MatPaginatorModule
   ],
   template: `
-  <div class="page-container grid-12">
-    <div class="page-card col-span-12">
+  <div class="page-container">
+    <div class="page-card">
       <header class="page-header">
         <div>
           <nav class="breadcrumb" aria-label="Breadcrumb">
@@ -45,8 +45,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       </header>
     </div>
 
-    <!-- Filters column -->
-    <div class="col-span-3">
+    <!-- Filters (stacked above table) -->
+    <div>
       <div class="page-card">
         <mat-card>
           <form class="filters flat" (ngSubmit)="applyFilters()" aria-label="Transaction filters">
@@ -102,8 +102,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       </div>
     </div>
 
-    <!-- Table column -->
-    <div class="col-span-9">
+    <!-- Table -->
+    <div>
       <div class="page-card">
         <mat-card>
           <ng-container *ngIf="vm as v">

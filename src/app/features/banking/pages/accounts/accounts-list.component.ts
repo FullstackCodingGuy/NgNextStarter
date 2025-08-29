@@ -12,9 +12,9 @@ import { BankAccount } from '../../data/models';
   standalone: true,
   imports: [CommonModule, MatCardModule, MatTableModule, MatPaginatorModule],
   template: `
-  <div class="page-container grid-12">
+  <div class="page-container">
     <!-- Header full width -->
-    <div class="page-card col-span-12">
+    <div class="page-card">
       <header class="page-header">
         <div>
           <nav class="breadcrumb" aria-label="Breadcrumb">
@@ -30,8 +30,8 @@ import { BankAccount } from '../../data/models';
       </header>
     </div>
 
-    <!-- Table occupies full width (can be changed to col-span-8 for narrower layouts) -->
-    <div class="col-span-12">
+    <!-- Table occupies full width -->
+    <div>
       <div class="page-card">
         <mat-card>
           <div class="table-responsive" *ngIf="vm as v">

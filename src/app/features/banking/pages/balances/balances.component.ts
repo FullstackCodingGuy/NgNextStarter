@@ -11,8 +11,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   standalone: true,
   imports: [CommonModule, MatCardModule, MatListModule],
   template: `
-  <div class="page-container grid-12">
-    <div class="page-card col-span-12">
+  <div class="page-container">
+    <div class="page-card">
       <header class="page-header">
         <div>
           <nav class="breadcrumb" aria-label="Breadcrumb">
@@ -28,7 +28,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       </header>
     </div>
 
-    <div class="col-span-8">
+    <div>
       <div class="page-card">
         <mat-card>
           <mat-list role="list" class="balances-list">
@@ -47,7 +47,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       </div>
     </div>
 
-    <div class="col-span-4">
+    <div>
       <!-- Reserved for an account summary or quick actions (future) -->
       <div class="page-card">
         <mat-card>
