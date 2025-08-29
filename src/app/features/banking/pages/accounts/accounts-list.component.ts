@@ -12,24 +12,30 @@ import { BankAccount } from '../../data/models';
   standalone: true,
   imports: [CommonModule, MatCardModule, MatTableModule, MatPaginatorModule],
   template: `
-    <div class="page-container">
+  <div class="page-container grid-12">
+    <!-- Header full width -->
+    <div class="page-card col-span-12">
+      <header class="page-header">
+        <div>
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a routerLink="/dashboard">Dashboard</a>
+            <span class="sep">/</span>
+            <a routerLink="/banking">Banking</a>
+            <span class="sep">/</span>
+            <span aria-current="page">Accounts</span>
+          </nav>
+          <h1 class="page-title">Accounts</h1>
+          <p class="page-subtitle">Overview of your accounts and balances</p>
+        </div>
+      </header>
+    </div>
+
+    <!-- Table occupies full width (can be changed to col-span-8 for narrower layouts) -->
+    <div class="col-span-12">
       <div class="page-card">
-        <header class="page-header">
-          <div>
-            <nav class="breadcrumb" aria-label="Breadcrumb">
-              <a routerLink="/dashboard">Dashboard</a>
-              <span class="sep">/</span>
-              <a routerLink="/banking">Banking</a>
-              <span class="sep">/</span>
-              <span aria-current="page">Accounts</span>
-            </nav>
-            <h1 class="page-title">Accounts</h1>
-            <p class="page-subtitle">Overview of your accounts and balances</p>
-          </div>
-        </header>
         <mat-card>
           <div class="table-responsive" *ngIf="vm as v">
-        <table mat-table [dataSource]="v.items" class="mat-elevation-z0 accounts-table" aria-label="Accounts table">
+            <table mat-table [dataSource]="v.items" class="mat-elevation-z0 accounts-table" aria-label="Accounts table">
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>Account</th>
             <td mat-cell *matCellDef="let a">{{ a.name }} <small class="muted">({{ a.maskedNumber }})</small></td>
@@ -49,11 +55,12 @@ import { BankAccount } from '../../data/models';
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
-        <mat-paginator [length]="v.total" [pageSize]="v.pageSize" [pageIndex]="v.page - 1" (page)="onPage($event)"></mat-paginator>
+            <mat-paginator [length]="v.total" [pageSize]="v.pageSize" [pageIndex]="v.page - 1" (page)="onPage($event)"></mat-paginator>
           </div>
         </mat-card>
       </div>
     </div>
+  </div>
   `,
   styles: [`
     :host { display: block; }

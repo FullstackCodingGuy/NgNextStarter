@@ -9,8 +9,9 @@ const routes: Routes = [
     component: MainLayoutComponent,
     children: [
       {
-        path: '',
-        component: DashboardComponent
+  path: '',
+  component: DashboardComponent,
+  data: { constrainedPage: true }
       }
     ]
   }

@@ -11,21 +11,25 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   standalone: true,
   imports: [CommonModule, MatCardModule, MatListModule],
   template: `
-    <div class="page-container">
+  <div class="page-container grid-12">
+    <div class="page-card col-span-12">
+      <header class="page-header">
+        <div>
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a routerLink="/dashboard">Dashboard</a>
+            <span class="sep">/</span>
+            <a routerLink="/banking">Banking</a>
+            <span class="sep">/</span>
+            <span aria-current="page">Balances</span>
+          </nav>
+          <h1 class="page-title">Balances</h1>
+          <p class="page-subtitle">Current and available balances across your accounts</p>
+        </div>
+      </header>
+    </div>
+
+    <div class="col-span-8">
       <div class="page-card">
-        <header class="page-header">
-          <div>
-            <nav class="breadcrumb" aria-label="Breadcrumb">
-              <a routerLink="/dashboard">Dashboard</a>
-              <span class="sep">/</span>
-              <a routerLink="/banking">Banking</a>
-              <span class="sep">/</span>
-              <span aria-current="page">Balances</span>
-            </nav>
-            <h1 class="page-title">Balances</h1>
-            <p class="page-subtitle">Current and available balances across your accounts</p>
-          </div>
-        </header>
         <mat-card>
           <mat-list role="list" class="balances-list">
             <mat-list-item role="listitem" *ngFor="let b of balances">
@@ -42,6 +46,17 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
         </mat-card>
       </div>
     </div>
+
+    <div class="col-span-4">
+      <!-- Reserved for an account summary or quick actions (future) -->
+      <div class="page-card">
+        <mat-card>
+          <h3>Summary</h3>
+          <p class="muted">Quick totals and actions can live here.</p>
+        </mat-card>
+      </div>
+    </div>
+  </div>
   `,
   styles: [`
     :host { display: block; }

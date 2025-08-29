@@ -13,31 +13,31 @@ const routes: Routes = [
       {
         path: 'accounts',
         canActivate: [PermissionGuard],
-        data: { permissionsAll: ['banking.read'] },
+  data: { permissionsAll: ['banking.read'], constrainedPage: true },
         loadComponent: () => import('./pages/accounts/accounts-list.component').then(m => m.AccountsListComponent)
       },
       {
         path: 'transactions',
         canActivate: [PermissionGuard],
-        data: { permissionsAll: ['banking.read'] },
+  data: { permissionsAll: ['banking.read'], overlaySidenav: true },
         loadComponent: () => import('./pages/transactions/transactions-list.component').then(m => m.TransactionsListComponent)
       },
       {
         path: 'transactions/new',
         canActivate: [PermissionGuard],
-        data: { permissionsAll: ['banking.read','banking.write'] },
+  data: { permissionsAll: ['banking.read','banking.write'], constrainedPage: true },
         loadComponent: () => import('./pages/transactions/transaction-new.component').then(m => m.TransactionNewComponent)
       },
       {
         path: 'transactions/:id',
         canActivate: [PermissionGuard],
-        data: { permissionsAll: ['banking.read'] },
+  data: { permissionsAll: ['banking.read'], overlaySidenav: true },
         loadComponent: () => import('./pages/transactions/transaction-detail.component').then(m => m.TransactionDetailComponent)
       },
       {
         path: 'balances',
         canActivate: [PermissionGuard],
-        data: { permissionsAll: ['banking.read'] },
+  data: { permissionsAll: ['banking.read'], constrainedPage: true },
         loadComponent: () => import('./pages/balances/balances.component').then(m => m.BalancesComponent)
       },
       { path: '', pathMatch: 'full', redirectTo: 'accounts' }

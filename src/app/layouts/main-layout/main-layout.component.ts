@@ -1,5 +1,5 @@
 import { Component, ViewChild, ChangeDetectionStrategy, DestroyRef, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -89,8 +89,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
         <mat-sidenav
           #sidenav
           id="main-sidenav"
-          [mode]="sidenavMode"
-          [opened]="sidenavOpened"
+          [mode]="effectiveSidenavMode"
+          [opened]="effectiveSidenavOpened"
           class="sidenav"
           role="navigation"
           aria-label="Primary">
@@ -99,7 +99,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
         <!-- Main Content -->
         <mat-sidenav-content id="main-content" class="main-content">
-          <div class="content-wrapper">
+          <div class="content-wrapper" [class.constrained-page]="constrainedPage">
             <router-outlet></router-outlet>
           </div>
         </mat-sidenav-content>
@@ -243,7 +243,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       display: flex;
     }
     .sidenav-container > .sidenav + .main-content {
-      margin-left: 1rem;
+      margin-left: 0 !important;
     }
 
     .sidenav {
@@ -266,6 +266,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       gap: var(--space-6);
       overflow-y: auto;
       width: 100%;
+      padding: 0 !important; /* remove extra gutters so child .page-container can span fully */
     }
 
     /* Content area now allows full-width pages; keep comfortable inner padding */
@@ -283,10 +284,17 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       max-width: none;
       background: color-mix(in srgb, var(--surface-color) 94%, var(--background-color));
       border-radius: var(--radius-md);
-      padding: clamp(var(--space-4), 1.2vw, var(--space-5));
+      /* slightly reduced padding for full-bleed layouts to improve rhythm */
+      padding: clamp(var(--space-3), 1vw, var(--space-4));
       box-shadow: var(--shadow-md);
       border: 1px solid color-mix(in srgb, var(--border-color) 60%, transparent);
       transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    /* When a page explicitly requests a constrained layout, restore comfortable padding */
+    .content-wrapper.constrained-page .page-card,
+    .page-container.constrained-page .page-card {
+      padding: clamp(var(--space-4), 1.2vw, var(--space-5));
     }
 
     .page-card:hover {
@@ -361,6 +369,14 @@ export class MainLayoutComponent {
   sidenavMode: 'over' | 'side' = 'side';
   sidenavOpened = true;
 
+  // effective values that may be overridden by per-route data
+  effectiveSidenavMode: 'over' | 'side' = 'side';
+  effectiveSidenavOpened = true;
+
+  // route-driven helpers
+  constrainedPage = false;
+  overlaySidenavForRoute = false;
+
   @ViewChild('sidenav') sidenav?: MatSidenav;
   private destroyRef = inject(DestroyRef);
 
@@ -372,6 +388,7 @@ export class MainLayoutComponent {
   ) {
     this.currentUser$ = this.authService.currentUser$;
 
+    // Observe breakpoints and navigation to compute effective sidenav behavior and per-route constraints
     this.breakpointObserver
       .observe([Breakpoints.Handset, Breakpoints.Tablet])
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -379,7 +396,36 @@ export class MainLayoutComponent {
         const isSmall = state.matches;
         this.sidenavMode = isSmall ? 'over' : 'side';
         this.sidenavOpened = !isSmall;
+        // default effective values mirror responsive defaults; navigation handler may override
+        this.applyEffectiveSidenav();
       });
+
+    // Watch navigation end to read route data flags `overlaySidenav` and `constrainedPage`
+    this.router.events
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((ev) => {
+        if (ev instanceof NavigationEnd) {
+          // read deepest activated route data
+          const current = this.router.routerState.root;
+          let snapshot = current;
+          while (snapshot.firstChild) { snapshot = snapshot.firstChild; }
+          const data = snapshot.snapshot ? snapshot.snapshot.data : {};
+          this.overlaySidenavForRoute = !!data?.['overlaySidenav'];
+          this.constrainedPage = !!data?.['constrainedPage'];
+          this.applyEffectiveSidenav();
+        }
+      });
+  }
+
+  private applyEffectiveSidenav() {
+    // If a route requests overlaySidenav, force sidenav to 'over' and close it on desktop as well
+    if (this.overlaySidenavForRoute) {
+      this.effectiveSidenavMode = 'over';
+      this.effectiveSidenavOpened = false;
+    } else {
+      this.effectiveSidenavMode = this.sidenavMode;
+      this.effectiveSidenavOpened = this.sidenavOpened;
+    }
   }
 
   toggleSidenav(): void {

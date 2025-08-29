@@ -15,7 +15,9 @@ import { BANKING_GATEWAY, BankingGateway } from '../../data/tokens';
   standalone: true,
   imports: [CommonModule, FormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatSnackBarModule],
   template: `
-    <div class="page-container">
+  <div class="page-container grid-12">
+    <div class="col-span-3"></div>
+    <div class="col-span-6">
       <div class="page-card">
         <mat-card>
           <mat-card-title>New Transaction</mat-card-title>
@@ -40,6 +42,8 @@ import { BANKING_GATEWAY, BankingGateway } from '../../data/tokens';
         </mat-card>
       </div>
     </div>
+    <div class="col-span-3"></div>
+  </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

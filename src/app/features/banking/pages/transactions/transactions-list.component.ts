@@ -25,25 +25,29 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     MatDatepickerModule, MatNativeDateModule, MatButtonModule, MatPaginatorModule
   ],
   template: `
-    <div class="page-container">
-      <div class="page-card">
-        <header class="page-header">
-          <div>
-            <nav class="breadcrumb" aria-label="Breadcrumb">
-              <a routerLink="/dashboard">Dashboard</a>
-              <span class="sep">/</span>
-              <a routerLink="/banking">Banking</a>
-              <span class="sep">/</span>
-              <span aria-current="page">Transactions</span>
-            </nav>
-            <h1 class="page-title">Transactions</h1>
-            <p class="page-subtitle">Filter and review recent transactions</p>
-          </div>
-          <div class="header-actions">
-            <button *ngIf="canCreate" mat-flat-button color="accent" (click)="goNew()">New Transaction</button>
-          </div>
-        </header>
+  <div class="page-container grid-12">
+    <div class="page-card col-span-12">
+      <header class="page-header">
+        <div>
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a routerLink="/dashboard">Dashboard</a>
+            <span class="sep">/</span>
+            <a routerLink="/banking">Banking</a>
+            <span class="sep">/</span>
+            <span aria-current="page">Transactions</span>
+          </nav>
+          <h1 class="page-title">Transactions</h1>
+          <p class="page-subtitle">Filter and review recent transactions</p>
+        </div>
+        <div class="header-actions">
+          <button *ngIf="canCreate" mat-flat-button color="accent" (click)="goNew()">New Transaction</button>
+        </div>
+      </header>
+    </div>
 
+    <!-- Filters column -->
+    <div class="col-span-3">
+      <div class="page-card">
         <mat-card>
           <form class="filters flat" (ngSubmit)="applyFilters()" aria-label="Transaction filters">
             <mat-form-field appearance="fill" class="input">
@@ -94,7 +98,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
               <button mat-stroked-button type="button" (click)="resetFilters()">Reset</button>
             </div>
           </form>
+        </mat-card>
+      </div>
+    </div>
 
+    <!-- Table column -->
+    <div class="col-span-9">
+      <div class="page-card">
+        <mat-card>
           <ng-container *ngIf="vm as v">
             <div class="table-responsive modern">
               <table mat-table [dataSource]="v.items" class="mat-elevation-z0 transactions-table" aria-label="Transactions table">
