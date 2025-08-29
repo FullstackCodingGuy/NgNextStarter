@@ -131,6 +131,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   border-bottom: 1px solid var(--border-color);
   background: var(--header-bg);
+  color: var(--header-foreground);
   overflow-x: hidden;
     }
 
@@ -199,7 +200,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     .user-name {
       font-size: 16px;
       font-weight: 500;
-      color: #fff;
+  color: var(--header-foreground);
       margin-right: var(--space-2);
       text-shadow: 0 1px 2px rgba(0,0,0,0.08);
     }
