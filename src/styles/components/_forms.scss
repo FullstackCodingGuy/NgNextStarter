@@ -8,7 +8,8 @@
   padding: 10px 12px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-color);
-  background: var(--surface-color);
+  /* Make custom inputs transparent by default to match material appearance */
+  background: transparent;
   color: var(--text-primary);
   transition: box-shadow var(--motion-fast) var(--motion-easing), border-color var(--motion-fast) var(--motion-easing);
 }
@@ -23,3 +24,25 @@
 .form-error { font-size: 12px; color: var(--error-color); }
 
 .form-row { display: flex; gap: var(--space-3); align-items: center; }
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: white !important;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: white !important;
+}
+
+// Manipulate background color on hover and focus
+.mat-mdc-form-field-focus-overlay {
+  background-color: transparent !important;
+}
+
+/* Force input/textarea/select native/backgrounds transparent where applicable */
+input.mat-input-element,
+textarea.mat-input-element,
+.mat-form-field-infix textarea,
+.mat-mdc-select .mat-mdc-select-trigger,
+.mat-select-trigger {
+  background: transparent !important;
+}
