@@ -25,9 +25,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     MatDatepickerModule, MatNativeDateModule, MatButtonModule, MatPaginatorModule
   ],
   template: `
-    <mat-card>
-      <mat-card-title>My Transactions</mat-card-title>
-  <form class="filters" (ngSubmit)="applyFilters()" aria-label="Transaction filters">
+    <div class="page-container">
+      <div class="page-card">
+        <mat-card>
+          <mat-card-title>My Transactions</mat-card-title>
+          <form class="filters" (ngSubmit)="applyFilters()" aria-label="Transaction filters">
         <mat-form-field appearance="outline">
           <mat-label>Date From</mat-label>
           <input matInput [matDatepicker]="pickerFrom" [(ngModel)]="dateFrom" name="dateFrom" aria-label="Date from">
@@ -71,9 +73,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
           <button *ngIf="canCreate" mat-stroked-button color="accent" type="button" (click)="goNew()">New Transaction</button>
         </div>
       </form>
-
-      @if (vm; as v) {
-        <div class="table-responsive">
+          
+          <ng-container *ngIf="vm as v">
+            <div class="table-responsive">
           <table mat-table [dataSource]="v.items" class="mat-elevation-z0" aria-label="Transactions table">
           <ng-container matColumnDef="date">
             <th mat-header-cell *matHeaderCellDef>Date</th>
@@ -97,9 +99,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
           </table>
           <mat-paginator [length]="v.total" [pageSize]="v.pageSize" [pageIndex]="v.page - 1" (page)="onPage($event)"></mat-paginator>
-        </div>
-      }
-    </mat-card>
+            </div>
+          </ng-container>
+        </mat-card>
+      </div>
+    </div>
   `,
   styles: [`
   .filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--space-3);margin-bottom:var(--space-3);align-items:end}

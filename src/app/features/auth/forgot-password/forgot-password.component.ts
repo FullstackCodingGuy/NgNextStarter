@@ -13,7 +13,9 @@ import { AuthFormShellComponent } from '../../../shared/components/auth-form-she
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatSnackBarModule, AuthFormShellComponent],
   template: `
-    <app-auth-form-shell title="Reset your password" subtitle="We’ll email you a link to reset it" [compact]="true">
+    <div class="page-container">
+      <div class="page-card">
+        <app-auth-form-shell title="Reset your password" subtitle="We’ll email you a link to reset it" [compact]="true">
       <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Email</mat-label>
@@ -26,7 +28,9 @@ import { AuthFormShellComponent } from '../../../shared/components/auth-form-she
           <span *ngIf="loading">Sending…</span>
         </button>
       </form>
-    </app-auth-form-shell>
+        </app-auth-form-shell>
+      </div>
+    </div>
   `,
   styles: [`
     :host { display: block; font-family: var(--font-family); }

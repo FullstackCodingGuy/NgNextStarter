@@ -32,7 +32,9 @@ import { environment } from '../../../../environments/environment';
     AuthFormShellComponent
   ],
   template: `
-    <app-auth-form-shell title="Welcome back" subtitle="Sign in to your account to continue">
+    <div class="page-container">
+      <div class="">
+        <app-auth-form-shell title="Welcome back" subtitle="Sign in to your account to continue">
       <button *ngIf="developerMode" type="button" action class="ghost-btn" (click)="prefillDemo()" aria-label="Prefill demo credentials">
         <mat-icon>bolt</mat-icon>
         Use demo
@@ -103,7 +105,9 @@ import { environment } from '../../../../environments/environment';
 
   <p *ngIf="developerMode" class="microcopy">Tip: you can use <strong>admin@securities.com</strong> / <strong>Admin123!</strong></p>
       </form>
-    </app-auth-form-shell>
+        </app-auth-form-shell>
+      </div>
+    </div>
   `,
   styles: [`
     :host { display: block; font-family: var(--font-family); }

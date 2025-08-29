@@ -15,27 +15,31 @@ import { BANKING_GATEWAY, BankingGateway } from '../../data/tokens';
   standalone: true,
   imports: [CommonModule, FormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatSnackBarModule],
   template: `
-    <mat-card>
-      <mat-card-title>New Transaction</mat-card-title>
-      <form (ngSubmit)="save()" #f="ngForm">
-        <mat-form-field appearance="outline">
-          <mat-label>Description</mat-label>
-          <input matInput name="description" [(ngModel)]="description" required>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Amount</mat-label>
-          <input matInput type="number" step="0.01" name="amount" [(ngModel)]="amount" required>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Type</mat-label>
-          <mat-select [(ngModel)]="direction" name="direction" required>
-            <mat-option value="debit">Debit</mat-option>
-            <mat-option value="credit">Credit</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <button mat-flat-button color="primary" type="submit" [disabled]="f.invalid">Create</button>
-      </form>
-    </mat-card>
+    <div class="page-container">
+      <div class="page-card">
+        <mat-card>
+          <mat-card-title>New Transaction</mat-card-title>
+          <form (ngSubmit)="save()" #f="ngForm">
+            <mat-form-field appearance="outline">
+              <mat-label>Description</mat-label>
+              <input matInput name="description" [(ngModel)]="description" required>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Amount</mat-label>
+              <input matInput type="number" step="0.01" name="amount" [(ngModel)]="amount" required>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Type</mat-label>
+              <mat-select [(ngModel)]="direction" name="direction" required>
+                <mat-option value="debit">Debit</mat-option>
+                <mat-option value="credit">Credit</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button mat-flat-button color="primary" type="submit" [disabled]="f.invalid">Create</button>
+          </form>
+        </mat-card>
+      </div>
+    </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

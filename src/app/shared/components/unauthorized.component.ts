@@ -6,10 +6,12 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [RouterModule],
   template: `
-    <div class="unauth-wrapper">
-      <h1>Access Denied</h1>
-      <p>You don't have permission to access this resource.</p>
-      <a routerLink="/dashboard" class="link">Go to Dashboard</a>
+    <div class="page-container">
+      <div class="page-card unauth-wrapper">
+        <h1>Access Denied</h1>
+        <p>You don't have permission to access this resource.</p>
+        <a routerLink="/dashboard" class="link">Go to Dashboard</a>
+      </div>
     </div>
   `,
   styles: [`

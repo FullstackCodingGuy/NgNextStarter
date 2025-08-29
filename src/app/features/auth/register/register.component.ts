@@ -43,7 +43,9 @@ function passwordMatchValidator(control: AbstractControl): {[key: string]: any} 
     AuthFormShellComponent
   ],
   template: `
-    <app-auth-form-shell title="Create your account" subtitle="Join us and get started in minutes">
+    <div class="page-container">
+      <div class="page-card">
+        <app-auth-form-shell title="Create your account" subtitle="Join us and get started in minutes">
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
         <div class="grid">
           <mat-form-field appearance="fill" class="full-width">
@@ -158,8 +160,10 @@ function passwordMatchValidator(control: AbstractControl): {[key: string]: any} 
           <span>Already have an account?</span>
           <a routerLink="/auth/login">Sign in</a>
         </div>
-      </form>
-    </app-auth-form-shell>
+        </form>
+        </app-auth-form-shell>
+      </div>
+    </div>
   `,
   styles: [`
     :host { display: block; font-family: var(--font-family); }

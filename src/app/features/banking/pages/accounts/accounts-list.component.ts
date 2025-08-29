@@ -12,9 +12,11 @@ import { BankAccount } from '../../data/models';
   standalone: true,
   imports: [CommonModule, MatCardModule, MatTableModule, MatPaginatorModule],
   template: `
-    <mat-card>
-      <mat-card-title>My Accounts</mat-card-title>
-      <div class="table-responsive" *ngIf="vm as v">
+    <div class="page-container">
+      <div class="page-card">
+        <mat-card>
+          <mat-card-title>My Accounts</mat-card-title>
+          <div class="table-responsive" *ngIf="vm as v">
         <table mat-table [dataSource]="v.items" class="mat-elevation-z0" aria-label="Accounts table">
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>Account</th>
@@ -36,8 +38,10 @@ import { BankAccount } from '../../data/models';
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
         <mat-paginator [length]="v.total" [pageSize]="v.pageSize" [pageIndex]="v.page - 1" (page)="onPage($event)"></mat-paginator>
+          </div>
+        </mat-card>
       </div>
-    </mat-card>
+    </div>
   `,
   styles: [`.table-responsive { overflow: auto; } .muted{color:var(--text-secondary)} .table-responsive{padding:var(--space-2)}`]
 })
