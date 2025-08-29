@@ -1,4 +1,5 @@
-import { Injectable, signal, computed, effect, inject } from '@angular/core';
+import { Injectable, signal, computed, effect, inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { 
   GlobalState, 
   UserSession, 
@@ -27,6 +28,7 @@ export class GlobalStateService implements StateActions {
   };
 
   private authService: AuthService;
+  private isBrowser = false;
 
   // Core state signals
   private userSessionState = signal<UserSession>(INITIAL_GLOBAL_STATE.userSession);
@@ -68,9 +70,9 @@ export class GlobalStateService implements StateActions {
   readonly effectiveTheme = computed(() => {
     const themeState = this.theme();
     if (themeState.systemPreference === 'auto') {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      return prefersDark ? 
-        themeState.available.find(t => t.isDark) || DEFAULT_THEMES[1] : 
+      const prefersDark = this.isBrowser ? window.matchMedia('(prefers-color-scheme: dark)').matches : false;
+      return prefersDark ?
+        themeState.available.find(t => t.isDark) || DEFAULT_THEMES[1] :
         themeState.available.find(t => !t.isDark) || DEFAULT_THEMES[0];
     }
     return themeState.current;
@@ -78,9 +80,18 @@ export class GlobalStateService implements StateActions {
 
   constructor(authService?: AuthService, private permissionService?: PermissionService) {
     this.authService = authService || inject(AuthService);
+
+    // detect browser platform; fall back to runtime checks
+    try {
+      const platformId = (typeof inject !== 'undefined') ? inject(PLATFORM_ID) : undefined;
+      this.isBrowser = platformId ? isPlatformBrowser(platformId) : (typeof window !== 'undefined' && typeof document !== 'undefined');
+    } catch {
+      this.isBrowser = (typeof window !== 'undefined' && typeof document !== 'undefined');
+    }
+
     this.initializeState();
     this.setupAuthIntegration();
-    
+
     // Only setup effects if running in a proper Angular injection context
     if (typeof inject !== 'undefined') {
       try {
@@ -121,15 +132,13 @@ export class GlobalStateService implements StateActions {
         current: language,
         isLoading: false
       }));
-      
-      // Persist language selection
-      localStorage.setItem(this.STORAGE_KEYS.LANGUAGE, language.code);
-      
-      // Update document language attribute
-      document.documentElement.lang = language.code;
-      
-      // Update document direction for RTL languages
-      document.documentElement.dir = language.isRTL ? 'rtl' : 'ltr';
+      if (this.isBrowser) {
+        try { localStorage.setItem(this.STORAGE_KEYS.LANGUAGE, language.code); } catch {}
+        try {
+          document.documentElement.lang = language.code;
+          document.documentElement.dir = language.isRTL ? 'rtl' : 'ltr';
+        } catch {}
+      }
     }, 100);
   }
 
@@ -148,11 +157,10 @@ export class GlobalStateService implements StateActions {
       isDark: theme.isDark
     }));
     
-    // Persist theme selection
-    localStorage.setItem(this.STORAGE_KEYS.THEME, theme.id);
-    
-    // Apply theme to document
-    this.applyThemeToDocument(theme);
+    if (this.isBrowser) {
+      try { localStorage.setItem(this.STORAGE_KEYS.THEME, theme.id); } catch {}
+      this.applyThemeToDocument(theme);
+    }
   }
 
   toggleDarkMode(): void {
@@ -176,13 +184,12 @@ export class GlobalStateService implements StateActions {
       systemPreference: preference
     }));
     
-    // Persist preference
-    localStorage.setItem(this.STORAGE_KEYS.THEME_PREFERENCE, preference);
-    
-    // Apply auto theme if selected
-    if (preference === 'auto') {
-      const effectiveTheme = this.effectiveTheme();
-      this.applyThemeToDocument(effectiveTheme);
+    if (this.isBrowser) {
+      try { localStorage.setItem(this.STORAGE_KEYS.THEME_PREFERENCE, preference); } catch {}
+      if (preference === 'auto') {
+        const effectiveTheme = this.effectiveTheme();
+        this.applyThemeToDocument(effectiveTheme);
+      }
     }
   }
 
@@ -202,10 +209,12 @@ export class GlobalStateService implements StateActions {
   }
 
   resetToDefaults(): void {
-    // Clear persisted data
-    Object.values(this.STORAGE_KEYS).forEach(key => {
-      localStorage.removeItem(key);
-    });
+    // Clear persisted data (guard for SSR)
+    if (this.isBrowser) {
+      Object.values(this.STORAGE_KEYS).forEach(key => {
+        try { localStorage.removeItem(key); } catch {}
+      });
+    }
     
     // Reset state
     this.languageState.set(INITIAL_GLOBAL_STATE.language);
@@ -238,40 +247,48 @@ export class GlobalStateService implements StateActions {
   }
 
   private initializeLanguage(): void {
-    const savedLanguageCode = localStorage.getItem(this.STORAGE_KEYS.LANGUAGE);
-    if (savedLanguageCode) {
-      const savedLanguage = DEFAULT_LANGUAGES.find(lang => lang.code === savedLanguageCode);
-      if (savedLanguage) {
-        this.languageState.update(current => ({
-          ...current,
-          current: savedLanguage
-        }));
-        document.documentElement.lang = savedLanguage.code;
-        document.documentElement.dir = savedLanguage.isRTL ? 'rtl' : 'ltr';
+    if (!this.isBrowser) return;
+    try {
+      const savedLanguageCode = localStorage.getItem(this.STORAGE_KEYS.LANGUAGE);
+      if (savedLanguageCode) {
+        const savedLanguage = DEFAULT_LANGUAGES.find(lang => lang.code === savedLanguageCode);
+        if (savedLanguage) {
+          this.languageState.update(current => ({
+            ...current,
+            current: savedLanguage
+          }));
+          try {
+            document.documentElement.lang = savedLanguage.code;
+            document.documentElement.dir = savedLanguage.isRTL ? 'rtl' : 'ltr';
+          } catch {}
+        }
       }
-    }
+    } catch {}
   }
 
   private initializeTheme(): void {
-    const savedThemeId = localStorage.getItem(this.STORAGE_KEYS.THEME);
-    const savedPreference = localStorage.getItem(this.STORAGE_KEYS.THEME_PREFERENCE) as 'light' | 'dark' | 'auto' || 'auto';
-    
-    this.themeState.update(current => ({
-      ...current,
-      systemPreference: savedPreference
-    }));
+    if (!this.isBrowser) return;
+    try {
+      const savedThemeId = localStorage.getItem(this.STORAGE_KEYS.THEME);
+      const savedPreference = (localStorage.getItem(this.STORAGE_KEYS.THEME_PREFERENCE) as 'light' | 'dark' | 'auto') || 'auto';
 
-    if (savedThemeId) {
-      const savedTheme = DEFAULT_THEMES.find(theme => theme.id === savedThemeId);
-      if (savedTheme) {
-        this.setTheme(savedTheme);
-        return;
+      this.themeState.update(current => ({
+        ...current,
+        systemPreference: savedPreference
+      }));
+
+      if (savedThemeId) {
+        const savedTheme = DEFAULT_THEMES.find(theme => theme.id === savedThemeId);
+        if (savedTheme) {
+          this.setTheme(savedTheme);
+          return;
+        }
       }
-    }
 
-    // Apply default theme based on system preference
-    const effectiveTheme = this.effectiveTheme();
-    this.applyThemeToDocument(effectiveTheme);
+      // Apply default theme based on system preference
+      const effectiveTheme = this.effectiveTheme();
+      this.applyThemeToDocument(effectiveTheme);
+    } catch {}
   }
 
   private setupEffects(): void {
@@ -285,17 +302,19 @@ export class GlobalStateService implements StateActions {
     // Listen for system theme changes when in auto mode
     effect(() => {
       if (this.systemThemePreference() === 'auto') {
+        if (!this.isBrowser) return;
+
         const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
         const handleChange = () => {
           const effectiveTheme = this.effectiveTheme();
           this.applyThemeToDocument(effectiveTheme);
         };
-        
+
         mediaQuery.addEventListener('change', handleChange);
-        
+
         // Cleanup function for effect disposal
         return () => {
-          mediaQuery.removeEventListener('change', handleChange);
+          try { mediaQuery.removeEventListener('change', handleChange); } catch {}
         };
       }
       return; // Explicit return for when condition is not met
@@ -345,23 +364,30 @@ export class GlobalStateService implements StateActions {
   }
 
   private applyThemeToDocument(theme: Theme): void {
-    // Remove all theme classes
-    DEFAULT_THEMES.forEach(t => {
-      document.body.classList.remove(t.cssClass);
-    });
-    
-    // Add current theme class
-    document.body.classList.add(theme.cssClass);
-    
-    // Update CSS custom properties for dynamic theming
-  document.documentElement.style.setProperty('--primary-color', theme.primary);
-  document.documentElement.style.setProperty('--accent-color', theme.accent);
-  // Text/background are controlled by theme classes via CSS variables.
-    
-    // Update theme-color meta tag for PWA support
-    const themeColorMeta = document.querySelector('meta[name="theme-color"]');
-    if (themeColorMeta) {
-      themeColorMeta.setAttribute('content', theme.primary);
-    }
+    if (!this.isBrowser) return;
+
+    try {
+      // Remove all theme classes
+      DEFAULT_THEMES.forEach(t => {
+        document.body.classList.remove(t.cssClass);
+      });
+
+      // Add current theme class
+      document.body.classList.add(theme.cssClass);
+
+      // Update CSS custom properties for dynamic theming
+      try {
+        document.documentElement.style.setProperty('--primary-color', theme.primary);
+        document.documentElement.style.setProperty('--accent-color', theme.accent);
+      } catch {}
+
+      // Update theme-color meta tag for PWA support
+      try {
+        const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+        if (themeColorMeta) {
+          themeColorMeta.setAttribute('content', theme.primary);
+        }
+      } catch {}
+    } catch {}
   }
 }

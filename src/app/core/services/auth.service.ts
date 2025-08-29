@@ -19,6 +19,15 @@ export class AuthService {
 
   private currentUserSubject = new BehaviorSubject<User | null>(this.getCurrentUser());
   public currentUser$ = this.currentUserSubject.asObservable();
+  private isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
+  private webCryptoAvailable: boolean = (() => {
+    try {
+      const w = (globalThis as any).crypto;
+      return !!(w && (w.subtle || w.webkitSubtle) && typeof w.getRandomValues === 'function');
+    } catch {
+      return false;
+    }
+  })();
 
   constructor(private http: HttpClient) {
     this.initializeAuth();
@@ -66,10 +75,12 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem(this.TOKEN_KEY);
-    localStorage.removeItem(this.REFRESH_TOKEN_KEY);
-    localStorage.removeItem(this.USER_KEY);
-  localStorage.removeItem(this.SECURE_USER_KEY);
+    if (this.isBrowser) {
+      try { localStorage.removeItem(this.TOKEN_KEY); } catch {}
+      try { localStorage.removeItem(this.REFRESH_TOKEN_KEY); } catch {}
+      try { localStorage.removeItem(this.USER_KEY); } catch {}
+      try { localStorage.removeItem(this.SECURE_USER_KEY); } catch {}
+    }
     this.currentUserSubject.next(null);
   }
 
@@ -79,7 +90,8 @@ export class AuthService {
   }
 
   getCurrentUser(): User | null {
-    const userData = localStorage.getItem(this.USER_KEY);
+  if (!this.isBrowser) return null;
+  const userData = localStorage.getItem(this.USER_KEY);
     if (userData) {
       try {
   return JSON.parse(userData) as User;
@@ -101,19 +113,25 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    return localStorage.getItem(this.TOKEN_KEY);
+  if (!this.isBrowser) return null;
+  return localStorage.getItem(this.TOKEN_KEY);
   }
 
   private setAuthData(authData: AuthResponse): void {
-    localStorage.setItem(this.TOKEN_KEY, authData.token);
-    localStorage.setItem(this.REFRESH_TOKEN_KEY, authData.refreshToken);
-    
-    // Store plaintext for synchronous access
-    localStorage.setItem(this.USER_KEY, JSON.stringify(authData.user));
-    // Additionally store an encrypted mirror (non-blocking)
-    this.encryptUser(JSON.stringify(authData.user))
-      .then(payload => localStorage.setItem(this.SECURE_USER_KEY, JSON.stringify(payload)))
-      .catch(() => void 0);
+    if (this.isBrowser) {
+      try { localStorage.setItem(this.TOKEN_KEY, authData.token); } catch {}
+      try { localStorage.setItem(this.REFRESH_TOKEN_KEY, authData.refreshToken); } catch {}
+
+      // Store plaintext for synchronous access
+      try { localStorage.setItem(this.USER_KEY, JSON.stringify(authData.user)); } catch {}
+
+      // Additionally store an encrypted mirror (non-blocking) only when Web Crypto is available
+      if (this.webCryptoAvailable) {
+        this.encryptUser(JSON.stringify(authData.user))
+          .then(payload => { try { localStorage.setItem(this.SECURE_USER_KEY, JSON.stringify(payload)); } catch {} })
+          .catch(() => void 0);
+      }
+    }
   }
 
   private isTokenExpired(token: string): boolean {
@@ -231,11 +249,13 @@ export class AuthService {
 
   // --- Web Crypto helpers for local encryption (AES-GCM) ---
   private async getKey(): Promise<CryptoKey> {
+    if (!this.webCryptoAvailable) throw new Error('Web Crypto not available');
     // Derive a key from the provided secret using SHA-256
     const enc = new TextEncoder();
     const secretBytes = enc.encode(this.CRYPTO_SECRET);
-    const hash = await crypto.subtle.digest('SHA-256', secretBytes);
-    return crypto.subtle.importKey(
+    const subtle = (globalThis.crypto as any).subtle || (globalThis.crypto as any).webkitSubtle;
+    const hash = await subtle.digest('SHA-256', secretBytes);
+    return subtle.importKey(
       'raw',
       hash,
       { name: 'AES-GCM' },
@@ -245,10 +265,12 @@ export class AuthService {
   }
 
   private async encryptUser(plaintext: string): Promise<{ iv: string; data: string }> {
+    if (!this.webCryptoAvailable) throw new Error('Web Crypto not available');
     const key = await this.getKey();
-    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const iv = (globalThis.crypto as any).getRandomValues(new Uint8Array(12));
     const encoded = new TextEncoder().encode(plaintext);
-    const cipher = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, encoded);
+    const subtle = (globalThis.crypto as any).subtle || (globalThis.crypto as any).webkitSubtle;
+    const cipher = await subtle.encrypt({ name: 'AES-GCM', iv }, key, encoded);
     return {
       iv: this.bufToB64(iv),
       data: this.bufToB64(new Uint8Array(cipher))
@@ -256,12 +278,14 @@ export class AuthService {
   }
 
   private async decryptUser(payload: { iv: string; data: string }): Promise<string> {
+    if (!this.webCryptoAvailable) throw new Error('Web Crypto not available');
     const key = await this.getKey();
     const ivArr = this.b64ToBuf(payload.iv);
     const dataArr = this.b64ToBuf(payload.data);
     const iv = ivArr.buffer.slice(ivArr.byteOffset, ivArr.byteOffset + ivArr.byteLength) as ArrayBuffer;
     const data = dataArr.buffer.slice(dataArr.byteOffset, dataArr.byteOffset + dataArr.byteLength) as ArrayBuffer;
-    const plainBuf = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, data);
+    const subtle = (globalThis.crypto as any).subtle || (globalThis.crypto as any).webkitSubtle;
+    const plainBuf = await subtle.decrypt({ name: 'AES-GCM', iv }, key, data);
     return new TextDecoder().decode(plainBuf);
   }
 

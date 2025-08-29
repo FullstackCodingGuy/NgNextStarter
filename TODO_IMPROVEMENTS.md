@@ -33,15 +33,7 @@ Purpose: single source of truth for the prioritized improvements and coding-stan
 
 ## Priority: Medium (Robustness / correctness)
 
-5. Guard `window` / `document` usage for SSR compatibility
-   - Status: In progress
-   - PR: TBD
-   - Latest progress: `GlobalStateService` uses `window.matchMedia` and `document` operations; flagged. Add platform checks (`isPlatformBrowser`) or guard code paths.
 
-6. Remove or gracefully degrade WebCrypto-dependent flows
-   - Status: Not started
-   - PR: TBD
-   - Latest progress: `AuthService` uses Web Crypto to encrypt a local mirror of the user. This is not reliable for security; mark as UX-only and fail-safe if crypto unavailable.
 
 7. Add a BFF/mock server integration toggle
    - Status: Not started
