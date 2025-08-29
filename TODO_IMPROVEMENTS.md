@@ -102,39 +102,18 @@ How we'll proceed (checklist):
 
 Priority breakdown & tasks
 
-1) Quick Wins (low risk, single PRs)
-- PR-A: Token consolidation & motion tokens
-   - Files: `src/styles/theme.scss`, `src/styles/_utilities.scss`
-   - Changes: centralize color/spacing/radius/shadow tokens; add motion tokens (`--motion-fast`, `--motion-medium`, `--motion-ease`) and `prefers-reduced-motion` fallback.
-   - Acceptance: no functional changes; visual diffs minimal; app compiles and unit tests remain green.
+Completed UI items (removed): PR-A, PR-B, PR-C, PR-D, PR-E, PR-F — these were implemented (tokens, base styles, component primitives, cards & skeletons, layout, and sidebar/topbar polish).
 
-- PR-B: Base global styles and accessibility
-   - Files: `src/app/app.scss`, import tokens and utilities
-   - Changes: base typography, anchor/button resets, focus-ring improvements, `.sr-only` utility, improved `.page-container` gutters.
-   - Acceptance: keyboard focus visible across interactive elements; contrast checks pass for primary text.
+Remaining priority tasks
 
-2) Component primitives (medium risk)
-- PR-C: Buttons & Form controls
-   - Files: `src/styles/components/_buttons.scss`, `src/styles/components/_forms.scss`, import in `app.scss`
-   - Changes: primary/secondary/ghost button variants; inputs with consistent heights, labels, error states; token-driven paddings.
-   - Acceptance: all existing forms and buttons keep behavior; visual QA on primary flows (login, register, forms).
+4) Tooling & Quality (higher effort)
+- PR-G: Storybook + visual regression (recommended)
+   - Purpose: host component stories, enable visual diffs per PR.
+   - Acceptance: storybook runs locally; CI posts visual diffs for component changes.
 
-- PR-D: Cards, Page headers, Skeletons
-   - Files: `src/styles/components/_cards.scss`, `_skeletons.scss`
-   - Changes: page-card refinement (elevation tokens), skeleton loader utility, page-header spacing.
-   - Acceptance: list and card UIs render consistently; skeletons used on data-loading places.
-
-3) Layout & Navigation (medium risk)
-- PR-E: Responsive Grid and Page containers
-   - Files: `src/styles/_utilities.scss` (or new `_layout.scss`)
-   - Changes: 12-column helpers or CSS Grid utilities, container widths, breakpoints, sidebar spacing rules.
-   - Acceptance: key pages adapt correctly across breakpoints; sidebar collapse behavior retained (if present).
-
-- PR-F: Sidebar & Topbar polish
-   - Files: `src/app/layouts/*` (main-layout, sidebar-nav), small template tweaks and ARIA attributes
-   - Changes: improved collapsed state visuals, hover/focus states, accessible toggles.
-   - Acceptance: navigation keyboard operable; aria-expanded toggles correctly.
-
+- PR-H: Accessibility tests in CI
+   - Tools: jest-axe or cypress-axe
+   - Acceptance: critical pages/tools pass basic axe checks; failures block merging.
 4) Tooling & Quality (higher effort)
 - PR-G: Storybook + visual regression (recommended)
    - Purpose: host component stories, enable visual diffs per PR.
@@ -160,9 +139,8 @@ Rollout strategy (how to avoid breaking change)
 - Feature flags: None required for pure CSS changes; if a risky layout change is needed, gate via runtime class (e.g., `body.new-ui`) so you can toggle on/off.
 
 Deliverables (per milestone)
-- M1 (Quick wins): tokens consolidated, app.scss added, reduced-motion applied, focus improvements.
-- M2 (Primitives): buttons, forms, cards, skeletons, all wired and documented in a short `README.md` under `src/styles/components`.
-- M3 (Layout): responsive grid, container rules, sidebar polish.
+Completed: M1–M3 have been implemented (tokens, base styles, primitives, layout and sidebar/topbar polish) and were removed from this list.
+
 - M4 (Quality): Storybook, visual regression, CI accessibility checks.
 
 Acceptance criteria (definition of done)
