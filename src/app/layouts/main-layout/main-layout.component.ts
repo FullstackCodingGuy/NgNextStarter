@@ -240,7 +240,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       margin-top: var(--header-h);
       background: var(--background-color);
       overflow-x: hidden; /* Prevent horizontal scrollbar */
-      display: flex;
     }
     .sidenav-container > .sidenav + .main-content {
       margin-left: 0 !important;
