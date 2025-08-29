@@ -96,6 +96,14 @@
 	gap: var(--space-4);
 }
 
+/* When the page header is placed outside of the .page-card, give it
+	 a little breathing room and a thin divider to match card rhythm. */
+.page-container > .page-header {
+	padding-bottom: var(--space-3);
+	margin-bottom: var(--space-4);
+	border-bottom: 1px solid color-mix(in srgb, var(--border-color) 80%, transparent);
+}
+
 /* Focus states for interactive elements */
 :where(button, a, [role="button"]) :focus {
 	outline: none;

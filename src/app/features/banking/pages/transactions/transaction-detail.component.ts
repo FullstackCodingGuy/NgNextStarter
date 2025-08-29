@@ -13,6 +13,20 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   imports: [CommonModule, MatCardModule],
   template: `
   <div class="page-container">
+    <!-- Header outside page-card -->
+    <header class="page-header">
+      <div>
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a routerLink="/dashboard">Dashboard</a>
+          <span class="sep">/</span>
+          <a routerLink="/banking">Banking</a>
+          <span class="sep">/</span>
+          <span aria-current="page">Transaction Details</span>
+        </nav>
+        <h1 class="page-title">Transaction Details</h1>
+        <p class="page-subtitle">Review the full transaction record</p>
+      </div>
+    </header>
     <div style="max-width:920px;margin-left:auto;margin-right:auto;">
       <div class="page-card">
         <mat-card *ngIf="tx">

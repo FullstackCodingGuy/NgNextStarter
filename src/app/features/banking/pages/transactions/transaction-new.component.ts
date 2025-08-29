@@ -16,6 +16,20 @@ import { BANKING_GATEWAY, BankingGateway } from '../../data/tokens';
   imports: [CommonModule, FormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatSnackBarModule],
   template: `
   <div class="page-container">
+    <!-- Header outside page-card -->
+    <header class="page-header">
+      <div>
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a routerLink="/dashboard">Dashboard</a>
+          <span class="sep">/</span>
+          <a routerLink="/banking">Banking</a>
+          <span class="sep">/</span>
+          <span aria-current="page">New Transaction</span>
+        </nav>
+        <h1 class="page-title">New Transaction</h1>
+        <p class="page-subtitle">Create a new transaction</p>
+      </div>
+    </header>
     <div style="max-width:720px;margin-left:auto;margin-right:auto;">
       <div class="page-card">
         <mat-card>
