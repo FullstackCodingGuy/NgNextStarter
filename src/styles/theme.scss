@@ -52,6 +52,12 @@
   --space-10: 40px;
   /* Accessible focus ring */
   --focus-ring-color: color-mix(in srgb, var(--primary-color) 70%, white 30%);
+  
+  /* Motion tokens */
+  --motion-fast: 180ms;
+  --motion-medium: 280ms;
+  --motion-slow: 420ms;
+  --motion-easing: cubic-bezier(.2,.9,.2,1);
 }
 
 // Theme classes toggle the variables for easy switching
@@ -105,4 +111,14 @@
   color-scheme: light;
   background-color: var(--background-color);
   color: var(--text-primary);
+}
+
+/* Respect user reduced motion preference by zeroing motion tokens */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-fast: 0ms;
+    --motion-medium: 0ms;
+    --motion-slow: 0ms;
+    --motion-easing: linear;
+  }
 }

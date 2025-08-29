@@ -74,6 +74,9 @@
 	max-width: 1200px;
 	margin-left: auto;
 	margin-right: auto;
+	/* page horizontal gutters; can be overridden by layout-specific containers */
+	padding-left: var(--space-4);
+	padding-right: var(--space-4);
 }
 
 .page-card {
@@ -82,7 +85,7 @@
 	padding: clamp(var(--space-3), 1vw, var(--space-5));
 	box-shadow: var(--shadow-md);
 	border: 1px solid color-mix(in srgb, var(--border-color) 60%, transparent);
-	transition: transform 180ms cubic-bezier(.2,.9,.2,1), box-shadow 180ms ease;
+	transition: transform var(--motion-fast) var(--motion-easing), box-shadow var(--motion-fast) ease;
 	will-change: transform, box-shadow;
 }
 
@@ -100,6 +103,7 @@
 :where(button, a, [role="button"]).focus-visible, :where(button, a, [role="button"]):focus-visible {
 	box-shadow: 0 0 0 4px var(--focus-ring-color);
 	border-radius: 8px;
+	transition: box-shadow var(--motion-fast) var(--motion-easing);
 }
 
 /* Typography helpers */

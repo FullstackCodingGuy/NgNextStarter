@@ -87,6 +87,95 @@ Purpose: single source of truth for the prioritized improvements and coding-stan
 
 ---
 
+## UI/UX Design System Plan (priority: High — quality & polish)
+
+Goal: modernize the app's look-and-feel with a minimal-risk, staged approach that preserves existing UX flows, improves accessibility, and provides a reusable design system for future work.
+
+How we'll proceed (checklist):
+- [ ] Deep analysis and token consolidation (theme, spacing, motion, elevation).
+- [ ] Implement Quick Wins (non-breaking style tokens + base elements).
+- [ ] Add component primitives (buttons, forms, cards, skeletons) as a small CSS/SCSS library.
+- [ ] Add a responsive layout/grid and refine page containers.
+- [ ] Add accessibility improvements and reduced-motion support.
+- [ ] Add visual regression via Storybook + CI (optional, recommended).
+- [ ] Rollout plan: incremental PRs with smoke tests and QA signoff.
+
+Priority breakdown & tasks
+
+1) Quick Wins (low risk, single PRs)
+- PR-A: Token consolidation & motion tokens
+   - Files: `src/styles/theme.scss`, `src/styles/_utilities.scss`
+   - Changes: centralize color/spacing/radius/shadow tokens; add motion tokens (`--motion-fast`, `--motion-medium`, `--motion-ease`) and `prefers-reduced-motion` fallback.
+   - Acceptance: no functional changes; visual diffs minimal; app compiles and unit tests remain green.
+
+- PR-B: Base global styles and accessibility
+   - Files: `src/app/app.scss`, import tokens and utilities
+   - Changes: base typography, anchor/button resets, focus-ring improvements, `.sr-only` utility, improved `.page-container` gutters.
+   - Acceptance: keyboard focus visible across interactive elements; contrast checks pass for primary text.
+
+2) Component primitives (medium risk)
+- PR-C: Buttons & Form controls
+   - Files: `src/styles/components/_buttons.scss`, `src/styles/components/_forms.scss`, import in `app.scss`
+   - Changes: primary/secondary/ghost button variants; inputs with consistent heights, labels, error states; token-driven paddings.
+   - Acceptance: all existing forms and buttons keep behavior; visual QA on primary flows (login, register, forms).
+
+- PR-D: Cards, Page headers, Skeletons
+   - Files: `src/styles/components/_cards.scss`, `_skeletons.scss`
+   - Changes: page-card refinement (elevation tokens), skeleton loader utility, page-header spacing.
+   - Acceptance: list and card UIs render consistently; skeletons used on data-loading places.
+
+3) Layout & Navigation (medium risk)
+- PR-E: Responsive Grid and Page containers
+   - Files: `src/styles/_utilities.scss` (or new `_layout.scss`)
+   - Changes: 12-column helpers or CSS Grid utilities, container widths, breakpoints, sidebar spacing rules.
+   - Acceptance: key pages adapt correctly across breakpoints; sidebar collapse behavior retained (if present).
+
+- PR-F: Sidebar & Topbar polish
+   - Files: `src/app/layouts/*` (main-layout, sidebar-nav), small template tweaks and ARIA attributes
+   - Changes: improved collapsed state visuals, hover/focus states, accessible toggles.
+   - Acceptance: navigation keyboard operable; aria-expanded toggles correctly.
+
+4) Tooling & Quality (higher effort)
+- PR-G: Storybook + visual regression (recommended)
+   - Purpose: host component stories, enable visual diffs per PR.
+   - Acceptance: storybook runs locally; CI posts visual diffs for component changes.
+
+- PR-H: Accessibility tests in CI
+   - Tools: jest-axe or cypress-axe
+   - Acceptance: critical pages/tools pass basic axe checks; failures block merging.
+
+Files to change (initial list)
+- `src/styles/theme.scss` — extend tokens (motion, elevation, semantic colors).
+- `src/styles/_utilities.scss` — add layout/grid helpers and refine spacing utilities.
+- `src/app/app.scss` — import tokens and base components; central place for global element styles.
+- `src/styles/components/_buttons.scss`, `_forms.scss`, `_cards.scss`, `_skeletons.scss` — new partials for primitives.
+- `src/app/layouts/main-layout/*` and `sidebar-nav.component.ts/html` — small markup/spacing tweaks (only where needed).
+
+Rollout strategy (how to avoid breaking change)
+- Small focused PRs: each PR does one of the Quick Wins or one component set.
+- Tests & verification:
+   - Run unit tests locally: `npm test -- --watch=false --browsers=ChromeHeadless` (already in repo).
+   - Smoke test flows manually after each PR: login, navigation, key forms, primary pages.
+   - Optional: run Storybook + visual diffs (PR-G) before broad rollout.
+- Feature flags: None required for pure CSS changes; if a risky layout change is needed, gate via runtime class (e.g., `body.new-ui`) so you can toggle on/off.
+
+Deliverables (per milestone)
+- M1 (Quick wins): tokens consolidated, app.scss added, reduced-motion applied, focus improvements.
+- M2 (Primitives): buttons, forms, cards, skeletons, all wired and documented in a short `README.md` under `src/styles/components`.
+- M3 (Layout): responsive grid, container rules, sidebar polish.
+- M4 (Quality): Storybook, visual regression, CI accessibility checks.
+
+Acceptance criteria (definition of done)
+- All unit tests pass.
+- No critical visual regressions on main flows (login, dashboard, primary pages).
+- Keyboard navigation works across the main layouts and nav.
+- `prefers-reduced-motion` honored (no non-essential animations).
+- A short style-doc (`src/styles/README.md`) explains tokens, breakpoints, and how to add components.
+
+Notes and next immediate action
+- Next immediate step: I can implement PR-A (token consolidation + motion tokens + reduced-motion support) and create a tidy branch and PR with a short description and acceptance checklist. This is low risk and will make subsequent component work safer.
+
+
 ## Notes and references
 - Core files reviewed (initial scan): `package.json`, `angular.json`, `tsconfig.json`, `src/main.ts`, `src/app/app.ts`, `src/app/core/services/*`, `src/app/core/guards/*`, `src/app/core/interceptors/*`.
 - For security refactor, coordinate with backend/BFF owner. Client-only changes are not sufficient without server support for HttpOnly cookies and security headers.

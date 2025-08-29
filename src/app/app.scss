@@ -1,0 +1,63 @@
+@import "../styles/theme.scss";
+@import "../styles/_utilities.scss";
+@import "../styles/components/_buttons.scss";
+@import "../styles/components/_forms.scss";
+
+html, body {
+	font-family: var(--font-family);
+	font-size: var(--base-font-size);
+	line-height: var(--body-line-height);
+	margin: 0;
+	padding: 0;
+	background: var(--background-color);
+	color: var(--text-primary);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* Reduced motion utility class to toggle motion off when needed */
+.reduced-motion, :where(.reduced-motion *) {
+	transition-duration: 0ms !important;
+	animation-duration: 0ms !important;
+	animation-iteration-count: 1 !important;
+}
+
+/* Skip heavy transforms on low-spec envs */
+@media (prefers-reduced-motion: reduce) {
+	.page-card, :where(button, a, [role="button"]) {
+		transition-duration: 0ms !important;
+	}
+}
+
+/* Base element resets and accessibility helpers */
+*, *::before, *::after { box-sizing: border-box; }
+button { font: inherit; color: inherit; background: none; border: none; }
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; height: auto; display: block; }
+
+/* Screen-reader only helper */
+.sr-only {
+	position: absolute !important;
+	width: 1px !important;
+	height: 1px !important;
+	padding: 0 !important;
+	margin: -1px !important;
+	overflow: hidden !important;
+	clip: rect(0, 0, 0, 0) !important;
+	white-space: nowrap !important;
+	border: 0 !important;
+}
+
+/* Improved focus-visible default */
+:where(a, button, input, textarea, select) :focus {
+	outline: none;
+}
+:where(a, button, input, textarea, select):focus-visible {
+	box-shadow: 0 0 0 4px var(--focus-ring-color);
+	border-radius: 8px;
+}
+
+/* Slightly increased horizontal padding on small screens */
+@media (max-width: 599.98px) {
+	.page-container { padding-left: var(--space-3); padding-right: var(--space-3); }
+}
