@@ -44,70 +44,70 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       </div>
     </header>
 
-    <!-- Filters (stacked above table) -->
-    <div>
-      <div class="page-card">
-        <mat-card>
-          <form class="filters flat" (ngSubmit)="applyFilters()" aria-label="Transaction filters">
-            <mat-form-field appearance="fill" class="input">
-              <mat-label>Date From</mat-label>
-              <input matInput [matDatepicker]="pickerFrom" [(ngModel)]="dateFrom" name="dateFrom" aria-label="Date from">
-              <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
-              <mat-datepicker #pickerFrom></mat-datepicker>
-            </mat-form-field>
+    <!-- Two-column layout: left = filters, right = table -->
+    <div class="two-col">
+      <aside class="left-col">
+        <div class="page-card">
+          <mat-card>
+            <form class="filters flat" (ngSubmit)="applyFilters()" aria-label="Transaction filters">
+              <mat-form-field appearance="fill" class="input">
+                <mat-label>Date From</mat-label>
+                <input matInput [matDatepicker]="pickerFrom" [(ngModel)]="dateFrom" name="dateFrom" aria-label="Date from">
+                <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+                <mat-datepicker #pickerFrom></mat-datepicker>
+              </mat-form-field>
 
-            <mat-form-field appearance="fill" class="input">
-              <mat-label>Date To</mat-label>
-              <input matInput [matDatepicker]="pickerTo" [(ngModel)]="dateTo" name="dateTo" aria-label="Date to">
-              <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
-              <mat-datepicker #pickerTo></mat-datepicker>
-            </mat-form-field>
+              <mat-form-field appearance="fill" class="input">
+                <mat-label>Date To</mat-label>
+                <input matInput [matDatepicker]="pickerTo" [(ngModel)]="dateTo" name="dateTo" aria-label="Date to">
+                <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+                <mat-datepicker #pickerTo></mat-datepicker>
+              </mat-form-field>
 
-            <mat-form-field appearance="fill" class="input compact">
-              <mat-label>Type</mat-label>
-              <mat-select [(ngModel)]="type" name="type">
-                <mat-option [value]="undefined">Any</mat-option>
-                <mat-option value="debit">Debit</mat-option>
-                <mat-option value="credit">Credit</mat-option>
-              </mat-select>
-            </mat-form-field>
+              <mat-form-field appearance="fill" class="input compact">
+                <mat-label>Type</mat-label>
+                <mat-select [(ngModel)]="type" name="type">
+                  <mat-option [value]="undefined">Any</mat-option>
+                  <mat-option value="debit">Debit</mat-option>
+                  <mat-option value="credit">Credit</mat-option>
+                </mat-select>
+              </mat-form-field>
 
-            <mat-form-field appearance="fill" class="input compact">
-              <mat-label>Status</mat-label>
-              <mat-select [(ngModel)]="status" name="status">
-                <mat-option [value]="undefined">Any</mat-option>
-                <mat-option value="pending">Pending</mat-option>
-                <mat-option value="posted">Posted</mat-option>
-                <mat-option value="failed">Failed</mat-option>
-              </mat-select>
-            </mat-form-field>
+              <mat-form-field appearance="fill" class="input compact">
+                <mat-label>Status</mat-label>
+                <mat-select [(ngModel)]="status" name="status">
+                  <mat-option [value]="undefined">Any</mat-option>
+                  <mat-option value="pending">Pending</mat-option>
+                  <mat-option value="posted">Posted</mat-option>
+                  <mat-option value="failed">Failed</mat-option>
+                </mat-select>
+              </mat-form-field>
 
-            <mat-form-field appearance="fill" class="input amount">
-              <mat-label>Min</mat-label>
-              <input matInput type="number" [(ngModel)]="minAmount" name="minAmount" step="0.01" inputmode="decimal">
-            </mat-form-field>
+              <mat-form-field appearance="fill" class="input amount">
+                <mat-label>Min</mat-label>
+                <input matInput type="number" [(ngModel)]="minAmount" name="minAmount" step="0.01" inputmode="decimal">
+              </mat-form-field>
 
-            <mat-form-field appearance="fill" class="input amount">
-              <mat-label>Max</mat-label>
-              <input matInput type="number" [(ngModel)]="maxAmount" name="maxAmount" step="0.01" inputmode="decimal">
-            </mat-form-field>
+              <mat-form-field appearance="fill" class="input amount">
+                <mat-label>Max</mat-label>
+                <input matInput type="number" [(ngModel)]="maxAmount" name="maxAmount" step="0.01" inputmode="decimal">
+              </mat-form-field>
 
-            <div class="actions">
-              <button mat-flat-button color="primary" type="submit">Apply</button>
-              <button mat-stroked-button type="button" (click)="resetFilters()">Reset</button>
-            </div>
-          </form>
-        </mat-card>
-      </div>
-    </div>
+              <div class="actions">
+                <button mat-flat-button color="primary" type="submit">Apply</button>
+                <button mat-stroked-button type="button" (click)="resetFilters()">Reset</button>
+              </div>
+            </form>
+          </mat-card>
+        </div>
+      </aside>
 
-    <!-- Table -->
-    <div>
-      <div class="page-card">
-        <mat-card>
-          <ng-container *ngIf="vm as v">
-            <div class="table-responsive modern">
-              <table mat-table [dataSource]="v.items" class="mat-elevation-z0 transactions-table" aria-label="Transactions table">
+      <section class="right-col">
+        <div class="page-card">
+          <mat-card>
+            <ng-container *ngIf="vm as v">
+              <div class="table-responsive modern">
+                <table mat-table [dataSource]="v.items" class="mat-elevation-z0 transactions-table" aria-label="Transactions table">
           <ng-container matColumnDef="date">
             <th mat-header-cell *matHeaderCellDef>Date</th>
             <td mat-cell *matCellDef="let t">{{ t.date | date:'mediumDate' }}</td>
@@ -130,11 +130,13 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
           </table>
           <mat-paginator [length]="v.total" [pageSize]="v.pageSize" [pageIndex]="v.page - 1" (page)="onPage($event)"></mat-paginator>
-            </div>
-          </ng-container>
-        </mat-card>
-      </div>
+              </div>
+            </ng-container>
+          </mat-card>
+        </div>
+      </section>
     </div>
+  </div>
   `,
   styles: [`
     :host { display:block }
@@ -159,9 +161,17 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
     td.debit{ color: color-mix(in srgb, var(--error-color) 85%, black) }
     td.credit{ color: color-mix(in srgb, var(--success-color) 85%, black) }
+    
+    /* Two-column layout */
+    .two-col { display: grid; grid-template-columns: 320px 1fr; gap: var(--space-4); align-items:start; }
+    .left-col { min-width: 0; }
+    .right-col { min-width: 0; }
 
     /* Responsive adjustments */
-    @media (max-width:820px){ .filters.flat{ grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); } .page-header{ flex-direction:column; align-items:flex-start } }
+    @media (max-width:900px){
+      .two-col { grid-template-columns: 1fr; }
+      .page-header{ flex-direction:column; align-items:flex-start }
+    }
   `]
 })
 export class TransactionsListComponent implements OnInit {
