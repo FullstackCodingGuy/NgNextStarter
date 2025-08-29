@@ -30,7 +30,7 @@
   --focus-ring-color: rgba(31, 58, 147, 0.18);
 
   /* Header / Sidebar / surface accents (solid colors, no gradients) */
-  --header-bg: var(--primary-color); /* top header bar background */
+  --header-bg: whitesmoke; /* top header bar background */
   --header-foreground: #ffffff;     /* header text / icon color */
   --sidebar-bg: #e9eef7;           /* sidebar surface (light neutral) */
   --sidebar-foreground: var(--text-primary);
@@ -95,9 +95,11 @@
   --divider-strong: #D7DCE1;
 
   /* Explicit header and sidebar backgrounds for light theme */
-  /* Chosen: deeper, modern navy for header and very light bluish surface for sidebar */
-  --header-bg: #163973; /* deep navy */
-  --sidebar-bg: #f1f6fb; /* soft light-blue surface */
+  /* Chosen: modern elegant light note for header (warmer navy with slight desaturation)
+    and a bit darker, grounded sidebar for visual separation */
+  --header-bg: linear-whitesmoke; /* soft elegant navy gradient */
+  --header-foreground: #5d5c5c;
+  --sidebar-bg: #e6eef6; /* slightly darker soft-blue surface for depth */
 
   color-scheme: light;
   background-color: var(--background-color);

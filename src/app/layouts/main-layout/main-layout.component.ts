@@ -138,15 +138,16 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       font-size: 20px;
       font-weight: 700;
       letter-spacing: 0.02em;
-      color: #fff;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.08);
+      color: var(--header-foreground);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.06);
     }
 
     .avatar-button {
       padding: 0 var(--space-3);
       border-radius: 24px;
-      background: rgba(255,255,255,0.08);
-      transition: background 0.2s;
+      background: rgba(255,255,255,0.06);
+      transition: background 0.18s var(--motion-easing);
+      color: var(--header-foreground);
     }
     .menu-button, .avatar-button {
       transition: transform 120ms ease, box-shadow 120ms ease;
@@ -176,7 +177,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       border-radius: 8px;
     }
     .avatar-button:hover {
-      background: rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.12);
     }
 
     .user-avatar {
@@ -184,15 +185,15 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       height: 32px;
       border-radius: 50%;
       background: var(--user-avatar-bg);
-      color: #fff;
+      color: var(--header-foreground);
       display: inline-flex;
       align-items: center;
       justify-content: center;
       font-size: 16px;
       font-weight: 600;
       margin-right: var(--space-3);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-      border: 2px solid rgba(255,255,255,0.18);
+      box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+      border: 1px solid rgba(255,255,255,0.08);
     }
 
     .user-name {

@@ -99,6 +99,8 @@ export type NavItem = {
       height: 100%;
       overflow-y: auto;
       overflow-x: hidden;
+      background: var(--sidebar-bg);
+      color: var(--text-primary);
     }
 
     .nav-section {
@@ -112,25 +114,27 @@ export type NavItem = {
       padding: var(--space-3) var(--space-4);
       border-radius: var(--radius-md);
       text-decoration: none;
-      color: var(--text-secondary);
+      color: var(--text-primary);
+      opacity: 0.95;
       font-weight: 500;
       font-size: 14px;
       line-height: 1.4;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform 0.14s var(--motion-easing), background 0.14s var(--motion-easing), color 0.14s var(--motion-easing);
       position: relative;
       margin-bottom: var(--space-1);
     }
 
     .nav-link:hover {
-      background: rgba(15, 98, 254, 0.06);
+      background: color-mix(in srgb, var(--sidebar-bg) 80%, var(--primary-color) 6%);
       color: var(--primary-color);
       transform: translateX(2px);
     }
 
     .nav-link.active {
-      background: var(--primary-color);
-      color: white;
-      box-shadow: var(--shadow-md);
+      background: color-mix(in srgb, var(--primary-color) 14%, var(--sidebar-bg));
+      color: var(--primary-color);
+      box-shadow: 0 6px 18px rgba(22, 67, 115, 0.06);
+      border: 1px solid color-mix(in srgb, var(--primary-color) 8%, transparent);
     }
 
     .nav-link.active::after {
@@ -159,7 +163,7 @@ export type NavItem = {
       border: none;
       background: transparent;
       border-radius: var(--radius-md);
-      color: var(--text-secondary);
+      color: var(--text-primary);
       font-weight: 500;
       font-size: 14px;
       cursor: pointer;
@@ -168,12 +172,12 @@ export type NavItem = {
     }
 
     .nav-group-header:hover {
-      background: rgba(15, 98, 254, 0.06);
+      background: color-mix(in srgb, var(--sidebar-bg) 82%, var(--primary-color) 6%);
       color: var(--primary-color);
     }
 
     .nav-group-header.active {
-      background: rgba(15, 98, 254, 0.1);
+      background: color-mix(in srgb, var(--primary-color) 10%, var(--sidebar-bg));
       color: var(--primary-color);
     }
 
