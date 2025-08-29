@@ -22,6 +22,17 @@ export const environment = {
     passwordRequireSpecialChars: true,
     enableTwoFactorAuth: false
   },
+  sanitizer: {
+    // When true, client will perform conservative HTML-escaping of string fields
+    // in request bodies. Prefer to keep this OFF in production unless the
+    // backend contract expects escaped values.
+    enabled: true,
+    // Whitelist of request body field names to sanitize. If empty, all string
+    // fields will be escaped when sanitizer.enabled === true. Use caution.
+    whitelist: ['comment', 'notes', 'description'],
+    // Blacklist of fields to always skip (e.g., binary blobs, base64 content)
+    blacklist: ['file', 'attachment', 'imageData']
+  },
   monitoring: {
     enableLogging: true,
     logLevel: 'debug',
