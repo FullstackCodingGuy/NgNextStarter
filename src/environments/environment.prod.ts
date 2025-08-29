@@ -20,6 +20,11 @@ export const environment = {
     passwordRequireSpecialChars: true,
     enableTwoFactorAuth: true
   },
+  sanitizer: {
+    enabled: false,
+    whitelist: [],
+    blacklist: ['file', 'attachment', 'imageData']
+  },
   monitoring: {
     enableLogging: true,
     logLevel: 'error',

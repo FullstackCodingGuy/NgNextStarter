@@ -12,15 +12,9 @@ export class AuthInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // Add security headers
-    let secureReq = req.clone({
-      setHeaders: {
-        'X-Content-Type-Options': 'nosniff',
-        'X-Frame-Options': 'DENY',
-        'X-XSS-Protection': '1; mode=block',
-        'Referrer-Policy': 'strict-origin-when-cross-origin'
-      }
-    });
+  // NOTE: security response headers must be set by the server/CDN (BFF).
+  // Keep request-specific headers here only (e.g., Authorization).
+  let secureReq = req;
 
     // Add authentication token if available
     const token = this.authService.getToken();
@@ -46,53 +40,6 @@ export class AuthInterceptor implements HttpInterceptor {
         return throwError(() => error);
       })
     );
-  }
-}
-
-@Injectable()
-export class SecurityInterceptor implements HttpInterceptor {
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // Sanitize request data to prevent XSS
-    const sanitizedReq = this.sanitizeRequest(req);
-    
-    return next.handle(sanitizedReq);
-  }
-
-  private sanitizeRequest(req: HttpRequest<any>): HttpRequest<any> {
-    if (req.body && typeof req.body === 'object') {
-      const sanitizedBody = this.sanitizeObject(req.body);
-      return req.clone({ body: sanitizedBody });
-    }
-    return req;
-  }
-
-  private sanitizeObject(obj: any): any {
-    if (typeof obj !== 'object' || obj === null) {
-      return this.sanitizeString(obj);
-    }
-
-    if (Array.isArray(obj)) {
-      return obj.map(item => this.sanitizeObject(item));
-    }
-
-    const sanitized: any = {};
-    for (const key in obj) {
-      if (obj.hasOwnProperty(key)) {
-        sanitized[key] = this.sanitizeObject(obj[key]);
-      }
-    }
-    return sanitized;
-  }
-
-  private sanitizeString(value: any): any {
-    if (typeof value === 'string') {
-      // Basic XSS prevention - remove common script tags and event handlers
-      return value
-        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-        .replace(/on\w+\s*=\s*["'][^"']*["']/gi, '')
-        .replace(/javascript:/gi, '');
-    }
-    return value;
   }
 }
 
