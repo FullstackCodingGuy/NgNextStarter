@@ -310,7 +310,8 @@ export class SidebarNavComponent implements OnInit, OnDestroy {
     expanded = signal<Record<string, boolean>>({});
 
     readonly defaultItems: NavItem[] = [
-        { label: 'Dashboard', icon: 'fa-solid fa-gauge', route: '/dashboard' },
+  { label: 'Dashboard', icon: 'fa-solid fa-gauge', route: '/dashboard' },
+  { label: 'Storybook', icon: 'fa-regular fa-window-maximize', route: '/storybook' },
         { label: 'Global State Demo', icon: 'fa-solid fa-flask', route: '/global-state-demo' },
         {
             label: 'Banking', icon: 'fa-solid fa-building-columns',

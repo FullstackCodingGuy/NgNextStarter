@@ -24,6 +24,15 @@ export const routes: Routes = [
   loadChildren: () => import('./features/dashboard/dashboard.module').then(m => m.DashboardModule)
   },
   {
+    path: 'storybook',
+    canActivate: [AuthGuard],
+    data: { constrainedPage: true },
+    component: MainLayoutComponent,
+    children: [
+      { path: '', loadComponent: () => import('./features/storybook/storybook.component').then(c => c.StorybookComponent) }
+    ]
+  },
+  {
     path: 'users',
     canActivate: [AuthGuard],
     data: { roles: [UserRole.ADMIN, UserRole.MANAGER] },
