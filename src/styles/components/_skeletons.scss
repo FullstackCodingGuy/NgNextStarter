@@ -1,8 +1,10 @@
 /* Skeleton loader utilities */
 
 .skeleton {
-  background: linear-gradient(90deg, color-mix(in srgb, var(--surface-color) 94%, var(--background-color) 6%), color-mix(in srgb, var(--surface-color) 88%, var(--background-color) 12%));
-  background-size: 200% 100%;
+  /* Use a subtle solid background and an optional shimmer animation driven by a CSS variable
+    Shimmer is kept for motion-enabled environments but the visual gradient is removed. */
+  background: var(--skeleton-bg);
+  background-size: auto;
   animation: shimmer var(--motion-slow) var(--motion-easing) infinite linear;
   border-radius: 6px;
 }
@@ -14,5 +16,5 @@
 
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .skeleton { animation: none; background: color-mix(in srgb, var(--surface-color) 94%, var(--background-color) 6%); }
+  .skeleton { animation: none; background: var(--skeleton-bg); }
 }

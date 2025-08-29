@@ -46,7 +46,7 @@ import { RouterModule } from '@angular/router';
     }
 
     .auth-header {
-      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      background: var(--auth-header-bg);
       color: #fff;
       padding: var(--space-6) var(--space-5);
       text-align: center;

@@ -24,10 +24,9 @@
   transform: none;
 }
 
-/* Primary (brand) */
 .btn--primary {
-  background: linear-gradient(180deg, var(--primary-color), color-mix(in srgb, var(--primary-color) 88%, black 12%));
-  color: white;
+  background: var(--cta-bg);
+  color: var(--cta-foreground);
 }
 .btn--primary:hover:not(:disabled) {
   transform: translateY(-1px);

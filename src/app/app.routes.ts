@@ -51,6 +51,11 @@ export const routes: Routes = [
     path: 'unauthorized',
     component: UnauthorizedComponent
   },
+  // Dev-only visual QA route: renders the app shell for screenshots
+  {
+    path: 'dev/shell-preview',
+    loadComponent: () => import('./dev/shell-preview/shell-preview.component').then(c => c.ShellPreviewComponent)
+  },
   {
     path: '**',
     redirectTo: '/dashboard'

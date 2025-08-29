@@ -127,10 +127,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   height: var(--header-h);
       display: flex;
       align-items: center;
-      backdrop-filter: saturate(1.2) blur(6px);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-      border-bottom: 1px solid var(--border-color);
-      background: linear-gradient(90deg, var(--primary-color) 80%, var(--accent-color) 100%);
+  backdrop-filter: saturate(1.2) blur(6px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  border-bottom: 1px solid var(--border-color);
+  background: var(--header-bg);
   overflow-x: hidden;
     }
 
@@ -183,14 +183,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       width: 32px;
       height: 32px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent-color) 60%, var(--primary-color) 100%);
+      background: var(--user-avatar-bg);
       color: #fff;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       font-size: 16px;
       font-weight: 600;
-  margin-right: var(--space-3);
+      margin-right: var(--space-3);
       box-shadow: 0 1px 4px rgba(0,0,0,0.08);
       border: 2px solid rgba(255,255,255,0.18);
     }
@@ -250,14 +250,12 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       width: 260px;
       padding: var(--space-2) 0 var(--space-4);
       border-right: 1px solid var(--border-color);
-      background: linear-gradient(120deg, #e3e8f7 0%, #c7d0ea 60%, #b0b9d6 100%);
+      background: var(--sidebar-bg);
       border-radius: 0;
     }
 
     .main-content {
       background-color: var(--background-color);
-      /* subtle layered background to give depth */
-      background-image: linear-gradient(180deg, transparent 0%, rgba(16,24,40,0.015) 100%);
     }
 
     /* Page shell: centers content and constrains width for a professional layout */

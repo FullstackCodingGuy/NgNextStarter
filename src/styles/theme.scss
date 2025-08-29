@@ -5,18 +5,38 @@
   --font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
 
   // Brand colors
-  --primary-color: #0f62fe;      // Corporate blue
-  --accent-color: #8a3ffc;       // Purple accent
-  --success-color: #12b76a;
-  --warning-color: #f79009;
-  --error-color: #d92d20;
+  --primary-color: #1F3A93;      /* Deep Blue (Primary) */
+  --accent-color: #2980B9;       /* Cerulean Blue (Accent) */
+  --success-color: #2ECC71;      /* Mint Green (Success) */
+  --warning-color: #F39C12;      /* Amber (Warning) */
+  --error-color: #E74C3C;        /* Coral Red (Error) */
 
   // Surface and text
-  --background-color: #f7f7f9;   // App background
-  --surface-color: #ffffff;      // Cards/surfaces
-  --text-primary: #101828;       // High-contrast body text
-  --text-secondary: #667085;     // Muted text
-  --border-color: #e4e7ec;
+  --background-color: #F7F9FA;   /* Off-White Background Light */
+  --background-dark: #2C3E50;    /* Charcoal Background Dark */
+  --surface-color: #FFFFFF;      /* Surface / Card */
+  --text-primary: #2C3E50;       /* Dark Charcoal */
+  --text-secondary: #7F8C8D;     /* Medium Gray */
+  --muted-text: #95A5A6;         /* Muted / Disabled */
+  --border-color: #E0E0E0;       /* Light Gray Divider */
+  
+  /* Semantic tokens for UI elements */
+  --cta-bg: var(--primary-color);
+  --cta-foreground: #FFFFFF;
+  --link-color: #2980B9; /* use accent for links */
+  --info-color: #5DADE2; /* Sky Blue */
+  --card-elev-bg: color-mix(in srgb, var(--surface-color) 94%, var(--background-color));
+  --divider-strong: color-mix(in srgb, var(--border-color) 80%, black 20%);
+  --focus-ring-color: rgba(31, 58, 147, 0.18);
+
+  /* Header / Sidebar / surface accents (solid colors, no gradients) */
+  --header-bg: var(--primary-color); /* top header bar background */
+  --header-foreground: #ffffff;     /* header text / icon color */
+  --sidebar-bg: #e9eef7;           /* sidebar surface (light neutral) */
+  --sidebar-foreground: var(--text-primary);
+  --auth-header-bg: var(--primary-color);
+  --user-avatar-bg: var(--accent-color);
+  --skeleton-bg: color-mix(in srgb, var(--surface-color) 94%, var(--background-color) 6%);
 
   // Radii and shadows
   --radius-sm: 6px;
@@ -62,12 +82,22 @@
 
 // Theme classes toggle the variables for easy switching
 .light-theme {
-  --primary-color: #0f62fe;
-  --accent-color: #8a3ffc;
-  --background-color: #f7f7f9;
-  --surface-color: #ffffff;
-  --text-primary: #101828;
-  --text-secondary: #667085;
+  --primary-color: #1F3A93;
+  --accent-color: #2980B9;
+  --background-color: #F7F9FA;
+  --surface-color: #FFFFFF;
+  --text-primary: #2C3E50;
+  --text-secondary: #7F8C8D;
+  --cta-bg: var(--primary-color);
+  --cta-foreground: #FFFFFF;
+  --link-color: var(--accent-color);
+  --info-color: #5DADE2;
+  --divider-strong: #D7DCE1;
+
+  /* Explicit header and sidebar backgrounds for light theme */
+  /* Chosen: deeper, modern navy for header and very light bluish surface for sidebar */
+  --header-bg: #163973; /* deep navy */
+  --sidebar-bg: #f1f6fb; /* soft light-blue surface */
 
   color-scheme: light;
   background-color: var(--background-color);
@@ -75,12 +105,22 @@
 }
 
 .dark-theme {
-  --primary-color: #8ab4ff;
-  --accent-color: #c3a6ff;
-  --background-color: #0b0f17;
-  --surface-color: #121826;
-  --text-primary: #f2f4f7;
-  --text-secondary: #98a2b3;
+  --primary-color: #1F3A93;
+  --accent-color: #2980B9;
+  --background-color: #111418; /* darker canvas */
+  --surface-color: #14181B; /* card surface in dark */
+  --text-primary: #F7F9FA;
+  --text-secondary: #95A5A6;
+  --cta-bg: #1E3A7F; /* slightly muted CTA in dark */
+  --cta-foreground: #FFFFFF;
+  --link-color: #7fb1da;
+  --info-color: #5DADE2;
+  --divider-strong: rgba(255,255,255,0.06);
+
+  /* Explicit header and sidebar backgrounds for dark theme */
+  /* Chosen: near-black teal/navy header and slightly darker sidebar surface for depth */
+  --header-bg: #071927; /* very dark teal/blue */
+  --sidebar-bg: #0f1416; /* dark sidebar surface */
 
   color-scheme: dark;
   background-color: var(--background-color);
@@ -112,6 +152,28 @@
   background-color: var(--background-color);
   color: var(--text-primary);
 }
+
+/* Alternative header/sidebar presets and utility helpers
+   Use these utility classes on the <body> or a top-level wrapper to quickly
+   preview higher/lower header contrast and warmer/cooler sidebar tints.
+   Example usage (dev-only): <body class="header-contrast-high sidebar-warmer"> */
+
+:root {
+  /* stronger/darker header for high contrast */
+  --header-bg-strong: #0f2748; /* darker navy */
+  /* muted/lighter header for lower contrast */
+  --header-bg-muted: #254f82; /* softened navy */
+
+  /* warmer/cooler sidebar presets */
+  --sidebar-warmer: #fbf6ef; /* warm off-white */
+  --sidebar-cooler: #eef6ff; /* cool light-blue */
+}
+
+.header-contrast-high { --header-bg: var(--header-bg-strong); }
+.header-contrast-low  { --header-bg: var(--header-bg-muted); }
+
+.sidebar-warmer { --sidebar-bg: var(--sidebar-warmer); }
+.sidebar-cooler { --sidebar-bg: var(--sidebar-cooler); }
 
 /* Respect user reduced motion preference by zeroing motion tokens */
 @media (prefers-reduced-motion: reduce) {
