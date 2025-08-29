@@ -1,0 +1,18 @@
+/* Skeleton loader utilities */
+
+.skeleton {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--surface-color) 94%, var(--background-color) 6%), color-mix(in srgb, var(--surface-color) 88%, var(--background-color) 12%));
+  background-size: 200% 100%;
+  animation: shimmer var(--motion-slow) var(--motion-easing) infinite linear;
+  border-radius: 6px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .skeleton { animation: none; background: color-mix(in srgb, var(--surface-color) 94%, var(--background-color) 6%); }
+}

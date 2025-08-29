@@ -1,0 +1,58 @@
+/* Responsive layout and grid utilities
+   - 12-column CSS Grid
+   - .container with sensible max-widths
+   - .grid and .col-span-{1..12}
+   - gutter control and mobile stacking helpers
+*/
+
+:root {
+  --grid-gap: var(--space-4);
+}
+
+/* Container: centers page content with responsive max-widths */
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+}
+
+/* Breakpoint-based max widths */
+@media (min-width: 600px) {
+  .container { max-width: 720px; }
+}
+@media (min-width: 900px) {
+  .container { max-width: 960px; }
+}
+@media (min-width: 1200px) {
+  .container { max-width: 1200px; }
+}
+
+/* Grid: 12 column responsive grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--grid-gap);
+  align-items: start;
+}
+
+/* Mobile-first: allow stacking helpers */
+@media (max-width: 599.98px) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+/* Column span utilities */
+@for $i from 1 through 12 {
+  .col-span-#{$i} { grid-column: span #{$i}; }
+}
+
+/* Helpers */
+.no-gap { gap: 0 !important; }
+.grid-center { justify-items: center; }
+.stack-on-mobile {
+  grid-template-columns: repeat(12, 1fr);
+}
+@media (max-width: 599.98px) {
+  .stack-on-mobile { grid-template-columns: 1fr !important; }
+}

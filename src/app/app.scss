@@ -1,7 +1,4 @@
-@import "../styles/theme.scss";
-@import "../styles/_utilities.scss";
-@import "../styles/components/_buttons.scss";
-@import "../styles/components/_forms.scss";
+@use "../styles/index" as *;
 
 html, body {
 	font-family: var(--font-family);

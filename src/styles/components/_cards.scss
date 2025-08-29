@@ -1,0 +1,26 @@
+/* Card and page header primitives */
+
+.card {
+  background: var(--surface-color);
+  border-radius: var(--radius-md);
+  padding: clamp(var(--space-3), 1vw, var(--space-5));
+  box-shadow: var(--shadow-sm);
+  border: 1px solid color-mix(in srgb, var(--border-color) 60%, transparent);
+  transition: box-shadow var(--motion-fast) var(--motion-easing), transform var(--motion-fast) var(--motion-easing);
+}
+
+.card--hoverable:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.card--flat { box-shadow: none; border: 1px solid var(--border-color); }
+
+/* Page header variations */
+.page-header--title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.page-header--actions { margin-left: auto; display: flex; gap: var(--space-3); }
