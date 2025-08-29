@@ -28,7 +28,6 @@ import { BankAccount } from '../../data/models';
           </div>
         </header>
         <mat-card>
-          <mat-card-title>My Accounts</mat-card-title>
           <div class="table-responsive" *ngIf="vm as v">
         <table mat-table [dataSource]="v.items" class="mat-elevation-z0 accounts-table" aria-label="Accounts table">
           <ng-container matColumnDef="name">
@@ -85,10 +84,10 @@ export class AccountsListComponent implements OnInit {
   vm: { items: BankAccount[]; total: number; page: number; pageSize: number } | null = null;
 
   private destroyRef = inject(DestroyRef);
-  constructor(private facade: AccountsFacade){}
+  constructor(private facade: AccountsFacade) { }
 
   ngOnInit(): void {
-  this.facade.accounts$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(v => this.vm = v);
+    this.facade.accounts$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(v => this.vm = v);
     this.facade.load();
   }
 

@@ -184,3 +184,13 @@
     --motion-easing: linear;
   }
 }
+
+/* Global override: make Angular Material mat-card use transparent background so
+   our page-card surfaces remain the primary content surface. This is safe as
+   long as components relying on mat-card visuals include their own surface
+   wrappers when needed. */
+.mat-mdc-card, .mat-mdc-table, .mat-mdc-paginator-outer-container, mat-card, mat-paginator {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}

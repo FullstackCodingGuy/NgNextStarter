@@ -258,25 +258,29 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       background-color: var(--background-color);
     }
 
-    /* Page shell: centers content and constrains width for a professional layout */
+    /* Page shell: make content stretch to full available width in the main area */
     .content-wrapper {
-      // min-height: calc(100vh - var(--header-h));
       display: flex;
       flex-direction: column;
-      align-items: center; /* center the page container */
+      align-items: stretch; /* allow the page container to fill the width */
       gap: var(--space-6);
       overflow-y: auto;
+      width: 100%;
     }
 
-    /* Constrained content area used by pages */
+    /* Content area now allows full-width pages; keep comfortable inner padding */
     .page-container {
       width: 100%;
-      max-width: 1200px; /* comfortable reading width */
+      max-width: none; /* allow pages to span the main-content area */
       display: block;
+      padding-inline: clamp(var(--space-4), 2vw, var(--space-6));
+      box-sizing: border-box;
     }
 
-    /* A clean, elevated card used as the primary content surface */
+    /* Page card fills the available width but keeps internal padding and elevation */
     .page-card {
+      width: 100%;
+      max-width: none;
       background: color-mix(in srgb, var(--surface-color) 94%, var(--background-color));
       border-radius: var(--radius-md);
       padding: clamp(var(--space-4), 1.2vw, var(--space-5));
