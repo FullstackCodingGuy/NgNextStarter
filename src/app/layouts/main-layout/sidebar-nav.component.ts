@@ -322,19 +322,7 @@ export class SidebarNavComponent implements OnInit, OnDestroy {
                 { label: 'Transactions', icon: 'fa-solid fa-right-left', route: '/banking/transactions' },
             ]
         },
-        {
-            label: 'Users', icon: 'fa-solid fa-users',
-            permissions: { roles: [UserRole.ADMIN, UserRole.MANAGER] },
-            children: [
-                { label: 'List', icon: 'fa-regular fa-rectangle-list', route: '/users/list' },
-            ]
-        },
-        {
-            label: 'Securities', icon: 'fa-solid fa-shield-halved',
-            children: [
-                { label: 'List', icon: 'fa-regular fa-rectangle-list', route: '/securities/list' },
-            ]
-        },
+  // Users and Securities removed per request
     ];
 
     filteredItems = computed(() => this.filterByAccess(this.items ?? this.defaultItems));

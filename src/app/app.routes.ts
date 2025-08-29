@@ -32,17 +32,7 @@ export const routes: Routes = [
       { path: '', loadComponent: () => import('./features/storybook/storybook.component').then(c => c.StorybookComponent) }
     ]
   },
-  {
-    path: 'users',
-    canActivate: [AuthGuard],
-    data: { roles: [UserRole.ADMIN, UserRole.MANAGER] },
-    loadChildren: () => import('./features/users/users.module').then(m => m.UsersModule)
-  },
-  {
-    path: 'securities',
-    canActivate: [AuthGuard],
-    loadChildren: () => import('./features/securities/securities.module').then(m => m.SecuritiesModule)
-  },
+  // Users and Securities routes removed
   {
     path: 'global-state-demo',
     canActivate: [AuthGuard],
