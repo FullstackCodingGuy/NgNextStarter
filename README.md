@@ -10,6 +10,11 @@ An Angular 20 + Material starter kit with enterprise security patterns, centrali
 - **Securities Management**: CRUD operations for managing securities positions
 - **User Management**: Admin interface for managing users and roles
 - **Responsive Design**: Mobile-first design using Angular Material
+### Core Features
+- **Authentication & Authorization**: Demo auth with BFF-friendly patterns and role-based access control (RBAC)
+- **Dashboard**: Feature-rich dashboard (portfolio overview, performance metrics, sector allocation and visualizations)
+- **Banking**: Banking feature module is present (accounts, balances, transactions) and protected by permission guards
+- **Responsive Design**: Mobile-first design using Angular Material
 
 ### Security Features
 - **BFF + Cookie Sessions**: Authorization Code + PKCE handled server-side; browser holds HttpOnly, Secure, SameSite cookies only
