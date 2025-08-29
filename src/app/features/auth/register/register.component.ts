@@ -44,7 +44,7 @@ function passwordMatchValidator(control: AbstractControl): {[key: string]: any} 
   ],
   template: `
     <div class="page-container">
-      <div class="page-card">
+      <div class="">
         <app-auth-form-shell title="Create your account" subtitle="Join us and get started in minutes">
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
         <div class="grid">
